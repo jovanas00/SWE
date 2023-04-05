@@ -1,6 +1,21 @@
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<PPContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PetPlanetCS"));
+});
+
+builder.Services.AddCors(options=>
+{
+    options.AddPolicy("CORS", policy =>
+    {
+        policy.AllowAnyHeader()
+        .AllowAnyMethod()
+        .WithOrigins("https://localhost:5555/",
+                     "http://localhost:5555");
+    });
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
