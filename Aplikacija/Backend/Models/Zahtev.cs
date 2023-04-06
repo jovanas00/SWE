@@ -19,26 +19,14 @@ namespace BackEnd.Models
         public string Zivotinja { get; set; }
 
         [Column("Cena")]
-<<<<<<< HEAD
-=======
-        //ogranicenje?---NEMA
->>>>>>> f075a7cd4bccdbf3ad6ef553ef86b7d22a4ea904
         [Required()]
         public float Cena { get; set; }
 
         [Column("DatumVreme")]
-<<<<<<< HEAD
-=======
-        //ogranicenje?---NEMA
->>>>>>> f075a7cd4bccdbf3ad6ef553ef86b7d22a4ea904
         [Required()]
         public DateTime DatumVreme { get; set; }
 
         [Column("Status")]
-<<<<<<< HEAD
-=======
-        //ogranicenje i tip?---NEMA,ENUM
->>>>>>> f075a7cd4bccdbf3ad6ef553ef86b7d22a4ea904
         [Required()]
         public string Status { get; set; }
 

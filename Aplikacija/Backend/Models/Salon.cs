@@ -24,23 +24,13 @@ namespace BackEnd.Models
         public string Grad { get; set; }
 
         [Column("ProsecnaOcena")]
-<<<<<<< HEAD
-=======
-        //mozda neko ogranicenje da ne moze da bude veca od 5---Ogranicenje kod ocene kad klijent oceni je dovoljno
->>>>>>> f075a7cd4bccdbf3ad6ef553ef86b7d22a4ea904
         [Required()]
         public float ProsecnaOcena { get; set; }
 
         [Column("BrojTelefona")]
-<<<<<<< HEAD
         [MaxLength(13)]
         [Required()] 
         public string BrojTelefona { get; set; }
-=======
-        //ogranicenje da nema vise od 13 cifre/karaktera za broj telefona---NE
-        [Required()] //da li je bolje da je string, a ne broj---STRING
-        public long BrojTelefona { get; set; }
->>>>>>> f075a7cd4bccdbf3ad6ef553ef86b7d22a4ea904
 
         #region ReferenceNaDrugeKlase
         //[JsonIgnore]

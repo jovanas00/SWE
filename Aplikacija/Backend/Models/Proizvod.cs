@@ -14,26 +14,14 @@ namespace BackEnd.Models
         public string Naziv {get; set;}
 
         [Column("Cena")]
-<<<<<<< HEAD
-=======
-        //ogranicenje?---NEMA
->>>>>>> f075a7cd4bccdbf3ad6ef553ef86b7d22a4ea904
         [Required()]
         public float Cena {get; set;}
 
         [Column("Dostupnost")]
-<<<<<<< HEAD
-=======
-        //ogranicenje?---NEMA
->>>>>>> f075a7cd4bccdbf3ad6ef553ef86b7d22a4ea904
         [Required()]
         public bool Dostupnost {get; set;}
 
         [Column("Slika")]
-<<<<<<< HEAD
-=======
-        //tip i ogranicenje?---STRING,NEMA
->>>>>>> f075a7cd4bccdbf3ad6ef553ef86b7d22a4ea904
         [Required()]
         public string Slika {get; set;}
 

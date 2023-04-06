@@ -14,19 +14,11 @@ namespace BackEnd.Models
         public string Tekst {get; set;}
 
         [Column("Ocena")]
-<<<<<<< HEAD
         [Range(1, 5)] 
-=======
-        //ogranicenje npr manja od 5---Range 1 do 5
->>>>>>> f075a7cd4bccdbf3ad6ef553ef86b7d22a4ea904
         [Required()]
         public float Ocena {get; set;}
 
         [Column("Datum")]
-<<<<<<< HEAD
-=======
-        //ogranicenje i tip?---Isto od malopre
->>>>>>> f075a7cd4bccdbf3ad6ef553ef86b7d22a4ea904
         [Required()]
         public DateTime Datum {get; set;}
 
