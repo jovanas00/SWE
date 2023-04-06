@@ -14,12 +14,12 @@ namespace BackEnd.Models
         public string Tekst {get; set;}
 
         [Column("Ocena")]
-        //ogranicenje npr manja od 5
+        //ogranicenje npr manja od 5---Range 1 do 5
         [Required()]
         public float Ocena {get; set;}
 
         [Column("Datum")]
-        //ogranicenje i tip?
+        //ogranicenje i tip?---Isto od malopre
         [Required()]
         [NotMapped] //pravi problem kod migracije, trebalo bi da to znaci da ga ne mapira na bazu
                                                    //tako da mislim da bi trebalo da s resi nekako s modelBuilder u PPContext

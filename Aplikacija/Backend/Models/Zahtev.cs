@@ -19,17 +19,17 @@ namespace BackEnd.Models
         public string Zivotnja { get; set; }
 
         [Column("Cena")]
-        //ogranicenje?
+        //ogranicenje?---NEMA
         [Required()]
         public float Cena { get; set; }
 
         [Column("DatumVreme")]
-        //ogranicenje?
+        //ogranicenje?---NEMA
         [Required()]
         public DateTime DatumVreme { get; set; }
 
         [Column("Status")]
-        //ogranicenje i tip?
+        //ogranicenje i tip?---NEMA,ENUM
         [Required()]
         public string Status { get; set; }
 

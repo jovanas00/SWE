@@ -24,12 +24,12 @@ namespace BackEnd.Models
         public string Opis {get; set;}
 
         [Column("Kapacitet")]
-        //do 15?  
+        //do 15?---NE MORA
         [Required()]
         public int Kapacitet {get; set;}
 
         [Column("Dostupnost")]
-        //ogranicenje?
+        //ogranicenje?---NEMA
         [Required()]
         public bool Dostupnost {get; set;}
 

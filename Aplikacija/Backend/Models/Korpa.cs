@@ -9,7 +9,7 @@ namespace BackEnd.Models
         public int ID { get; set; }
 
         [Column("UkupnaCena")]
-        //ogranicnje?
+        //ogranicnje?---NEMA
         [Required()]
         public float UkupnaCena { get; set; }
 

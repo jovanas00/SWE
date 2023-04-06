@@ -29,8 +29,8 @@ namespace BackEnd.Models
         public string Grad { get; set; }
 
         [Column("BrojTelefona")]
-        //ogranicenje da nema vise od 13 cifre/karaktera za broj telefona
-        [Required()] //da li je bolje da je string, a ne broj
+        //ogranicenje da nema vise od 13 cifre/karaktera za broj telefona---NEMA
+        [Required()] //da li je bolje da je string, a ne broj---STRING
         public long BrojTelefona { get; set; }
 
         #region ReferenceNaDrugeKlase
