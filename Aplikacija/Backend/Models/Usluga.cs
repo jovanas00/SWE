@@ -22,11 +22,21 @@ namespace BackEnd.Models
         [Required()]
         public string Opis {get; set;}
 
+<<<<<<< HEAD
         // [Column("Kapacitet")] 
         // [Required()]
         // public int Kapacitet {get; set;}
 
         [Column("Dostupnost")]
+=======
+        [Column("Kapacitet")]
+        //do 15?---NE MORA
+        [Required()]
+        public int Kapacitet {get; set;}
+
+        [Column("Dostupnost")]
+        //ogranicenje?---NEMA
+>>>>>>> f075a7cd4bccdbf3ad6ef553ef86b7d22a4ea904
         [Required()]
         public bool Dostupnost {get; set;}
 
