@@ -13,23 +13,20 @@ namespace BackEnd.Models
         [Required()]
         public string ImeLjubimca {get; set;}
 
-        [Column("Zivotnja")]
+        [Column("Zivotinja")]
         [MaxLength(20)]
         [Required()]
-        public string Zivotnja { get; set; }
+        public string Zivotinja { get; set; }
 
         [Column("Cena")]
-        //ogranicenje?
         [Required()]
         public float Cena { get; set; }
 
         [Column("DatumVreme")]
-        //ogranicenje?
         [Required()]
         public DateTime DatumVreme { get; set; }
 
         [Column("Status")]
-        //ogranicenje i tip?
         [Required()]
         public string Status { get; set; }
 

@@ -16,7 +16,7 @@ namespace BackEnd.Models
         public DbSet<Zahtev> Zahtev { get; set; }
 
         //tabele spoja
-        public DbSet<KorpaProizvod> Proizvodi { get; set; }
+        public DbSet<KorpaProizvod> KorpaProizvodi { get; set; }
 
         public PPContext(DbContextOptions options) : base(options)
         {
@@ -39,6 +39,20 @@ namespace BackEnd.Models
 
             modelBuilder.Entity<KorpaProizvod>()
             .HasKey(kp => new { kp.KorpaID, kp.ProizvodID });
+
+            modelBuilder.Entity<Pitanje>()
+            .Property(p => p.Datum)
+            .HasColumnType("datetime");
+
+            modelBuilder
+            .Entity<Recenzija>()
+            .Property(e => e.Datum)
+            .HasColumnType("datetime");
+
+            modelBuilder
+            .Entity<Narudzbina>()
+            .Property(e => e.Datum)
+            .HasColumnType("datetime");
         }
     }
 }

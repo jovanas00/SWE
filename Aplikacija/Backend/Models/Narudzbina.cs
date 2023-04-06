@@ -23,6 +23,10 @@ namespace BackEnd.Models
         [Required()]
         public float UkupnaCena {get; set;}
 
+        [Column("Datum")]
+        [Required()]
+        public DateTime Datum {get; set;}
+
         #region ReferenceNaDrugeKlase
         [JsonIgnore]
         public virtual List<KorpaProizvod> Proizvodi {get;set;} 

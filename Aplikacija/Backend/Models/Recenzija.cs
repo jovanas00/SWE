@@ -14,16 +14,13 @@ namespace BackEnd.Models
         public string Tekst {get; set;}
 
         [Column("Ocena")]
-        //ogranicenje npr manja od 5
+        [Range(1, 5)] 
         [Required()]
         public float Ocena {get; set;}
 
         [Column("Datum")]
-        //ogranicenje i tip?
         [Required()]
-        [NotMapped] //pravi problem kod migracije, trebalo bi da to znaci da ga ne mapira na bazu
-                                                   //tako da mislim da bi trebalo da s resi nekako s modelBuilder u PPContext
-        public DateOnly Datum {get; set;}
+        public DateTime Datum {get; set;}
 
         #region ReferenceNaDrugeKlase
         [JsonIgnore]

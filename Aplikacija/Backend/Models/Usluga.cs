@@ -14,7 +14,6 @@ namespace BackEnd.Models
         public string Naziv {get; set;}
 
         [Column("Cena")]
-        //ogranicenje
         [Required()]
         public float Cena {get; set;}
 
@@ -23,13 +22,11 @@ namespace BackEnd.Models
         [Required()]
         public string Opis {get; set;}
 
-        [Column("Kapacitet")]
-        //do 15?  
-        [Required()]
-        public int Kapacitet {get; set;}
+        // [Column("Kapacitet")] 
+        // [Required()]
+        // public int Kapacitet {get; set;}
 
         [Column("Dostupnost")]
-        //ogranicenje?
         [Required()]
         public bool Dostupnost {get; set;}
 

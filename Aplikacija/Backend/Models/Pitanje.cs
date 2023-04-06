@@ -21,8 +21,8 @@ namespace BackEnd.Models
         [Column("Datum")]
         //ogranicenje i tip?
         [Required()]
-        [NotMapped] //pravi mi problem kad pokusam da kreiram migracije, ali ne znam okej li je
-        public DateOnly Datum {get; set;}
+        //[NotMapped] //pravi mi problem kad pokusam da kreiram migracije, ali ne znam okej li je
+        public DateTime Datum {get; set;}
 
         #region ReferenceNaDrugeKlase
         [JsonIgnore]

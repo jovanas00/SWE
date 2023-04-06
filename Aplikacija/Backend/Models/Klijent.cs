@@ -29,13 +29,14 @@ namespace BackEnd.Models
         public string Grad { get; set; }
 
         [Column("BrojTelefona")]
+        [MaxLength(13)]
         //ogranicenje da nema vise od 13 cifre/karaktera za broj telefona
         [Required()] //da li je bolje da je string, a ne broj
-        public long BrojTelefona { get; set; }
+        public string BrojTelefona { get; set; }
 
         #region ReferenceNaDrugeKlase
-        [JsonIgnore]
-        public virtual Korisnik Korisnik {get;set;} 
+        // [JsonIgnore]
+        // public virtual Korisnik Korisnik {get;set;} 
         [JsonIgnore]
         public virtual Korpa Korpa {get;set;}  
         [JsonIgnore]
