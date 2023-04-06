@@ -41,7 +41,7 @@ namespace BackEnd.Models
         [JsonIgnore]
         public virtual Klijent Klijent {get;set;} 
         [JsonIgnore]
-        public virtual List<Usluga> Usluge {get;set;}  
+        public virtual Usluga Usluga {get;set;}  
         #endregion ReferenceNaDrugeKlase
     }
 }

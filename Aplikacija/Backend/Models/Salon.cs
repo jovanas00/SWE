@@ -1,7 +1,7 @@
 namespace BackEnd.Models
 {
     [Table("SALON")]
-    public class Salon //: Korisnik
+    public class Salon
     {
         [Key()]
         [JsonIgnore]
@@ -33,8 +33,6 @@ namespace BackEnd.Models
         public string BrojTelefona { get; set; }
 
         #region ReferenceNaDrugeKlase
-        //[JsonIgnore]
-        //public virtual Korisnik Korisnik {get;set;} 
         [JsonIgnore]
         public virtual List<Usluga> Usluge {get;set;}  
         [JsonIgnore]

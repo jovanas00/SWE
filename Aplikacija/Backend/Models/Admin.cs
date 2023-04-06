@@ -1,7 +1,7 @@
 namespace BackEnd.Models
 {
     [Table("ADMIN")]
-    public class Admin //: Korisnik
+    public class Admin
     {
         [Key()]
         [JsonIgnore]
@@ -10,10 +10,8 @@ namespace BackEnd.Models
 
         [Column("Ime")]
         [MaxLength(20)]
-        [Required()] //atribut Required() i 
-                     //requred posle public nemaju veze jedno s drugim
-        public string Ime {get; set;} //ovo requred nam sklanja warnings kad je nullable enable
-                                                //kad nesto moze null da bude onda samo u nastavku =null! ili ? posle tipa
+        [Required()]
+        public string Ime {get; set;}
 
         [Column("Prezime")]
         [MaxLength(20)]

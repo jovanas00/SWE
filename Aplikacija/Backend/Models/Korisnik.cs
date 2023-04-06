@@ -9,7 +9,6 @@ namespace BackEnd.Models
         public int ID { get; set; }
 
         [JsonIgnore]
-        //neko ogranicenje za mail---REGULARNI IZRAZ,VRV NE
         [Column("Email")]
         public string Email { get; set; }
 
@@ -29,7 +28,6 @@ namespace BackEnd.Models
         public string Tip { get; set; }
 
         [Column("Slika")]
-        //tip koji bi bio, treba li neko ogranicenje---STRING,PUTANJA DO SLIKE
         public string Slika { get; set; }
    }
 }

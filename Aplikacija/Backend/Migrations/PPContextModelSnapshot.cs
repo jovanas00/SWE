@@ -484,6 +484,9 @@ namespace Backend.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Status");
 
+                    b.Property<int?>("UslugaID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Zivotinja")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -496,22 +499,9 @@ namespace Backend.Migrations
 
                     b.HasIndex("SalonID");
 
+                    b.HasIndex("UslugaID");
+
                     b.ToTable("ZAHTEV");
-                });
-
-            modelBuilder.Entity("UslugaZahtev", b =>
-                {
-                    b.Property<int>("UslugeID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ZahteviID")
-                        .HasColumnType("int");
-
-                    b.HasKey("UslugeID", "ZahteviID");
-
-                    b.HasIndex("ZahteviID");
-
-                    b.ToTable("UslugaZahtev");
                 });
 
             modelBuilder.Entity("BackEnd.Models.Korpa", b =>
@@ -635,24 +625,15 @@ namespace Backend.Migrations
                         .WithMany("Zahtevi")
                         .HasForeignKey("SalonID");
 
+                    b.HasOne("BackEnd.Models.Usluga", "Usluga")
+                        .WithMany("Zahtevi")
+                        .HasForeignKey("UslugaID");
+
                     b.Navigation("Klijent");
 
                     b.Navigation("Salon");
-                });
 
-            modelBuilder.Entity("UslugaZahtev", b =>
-                {
-                    b.HasOne("BackEnd.Models.Usluga", null)
-                        .WithMany()
-                        .HasForeignKey("UslugeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BackEnd.Models.Zahtev", null)
-                        .WithMany()
-                        .HasForeignKey("ZahteviID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Usluga");
                 });
 
             modelBuilder.Entity("BackEnd.Models.Kategorija", b =>
@@ -702,6 +683,11 @@ namespace Backend.Migrations
 
                     b.Navigation("Usluge");
 
+                    b.Navigation("Zahtevi");
+                });
+
+            modelBuilder.Entity("BackEnd.Models.Usluga", b =>
+                {
                     b.Navigation("Zahtevi");
                 });
 #pragma warning restore 612, 618

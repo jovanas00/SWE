@@ -19,9 +19,7 @@ namespace BackEnd.Models
         public string TekstO {get; set;}
 
         [Column("Datum")]
-        //ogranicenje i tip?---NEMA OGRANICENJE,DateTime pa se format napravi da prikaze samo datum?
         [Required()]
-        //[NotMapped] //pravi mi problem kad pokusam da kreiram migracije, ali ne znam okej li je
         public DateTime Datum {get; set;}
 
         #region ReferenceNaDrugeKlase

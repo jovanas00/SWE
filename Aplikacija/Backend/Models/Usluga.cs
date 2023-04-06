@@ -22,10 +22,6 @@ namespace BackEnd.Models
         [Required()]
         public string Opis {get; set;}
 
-        // [Column("Kapacitet")] 
-        // [Required()]
-        // public int Kapacitet {get; set;}
-
         [Column("Dostupnost")]
         [Required()]
         public bool Dostupnost {get; set;}

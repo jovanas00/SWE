@@ -3867,25 +3867,26 @@
   "projectFileDependencyGroups": {
     "net7.0": [
       "Microsoft.AspNetCore.OpenApi >= 7.0.0",
+      "Microsoft.EntityFrameworkCore.Analyzers >= 7.0.4",
       "Microsoft.EntityFrameworkCore.Design >= 7.0.4",
       "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.4",
       "Swashbuckle.AspNetCore >= 6.4.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Sasa\\.nuget\\packages\\": {}
+    "C:\\Users\\Danilo\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Sasa\\Documents\\Faks IV\\VIII semestar\\SWE\\si.23.26.petplanet\\Aplikacija\\Backend\\Backend.csproj",
+      "projectUniqueName": "C:\\Faks\\3\\SWE\\si.23.26.petplanet\\Aplikacija\\Backend\\Backend.csproj",
       "projectName": "Backend",
-      "projectPath": "C:\\Users\\Sasa\\Documents\\Faks IV\\VIII semestar\\SWE\\si.23.26.petplanet\\Aplikacija\\Backend\\Backend.csproj",
-      "packagesPath": "C:\\Users\\Sasa\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Sasa\\Documents\\Faks IV\\VIII semestar\\SWE\\si.23.26.petplanet\\Aplikacija\\Backend\\obj\\",
+      "projectPath": "C:\\Faks\\3\\SWE\\si.23.26.petplanet\\Aplikacija\\Backend\\Backend.csproj",
+      "packagesPath": "C:\\Users\\Danilo\\.nuget\\packages\\",
+      "outputPath": "C:\\Faks\\3\\SWE\\si.23.26.petplanet\\Aplikacija\\Backend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Sasa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Danilo\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3914,6 +3915,10 @@
           "Microsoft.AspNetCore.OpenApi": {
             "target": "Package",
             "version": "[7.0.0, )"
+          },
+          "Microsoft.EntityFrameworkCore.Analyzers": {
+            "target": "Package",
+            "version": "[7.0.4, )"
           },
           "Microsoft.EntityFrameworkCore.Design": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
@@ -3949,7 +3954,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }

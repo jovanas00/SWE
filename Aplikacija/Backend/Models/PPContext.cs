@@ -16,14 +16,14 @@ namespace BackEnd.Models
         public DbSet<Zahtev> Zahtev { get; set; }
 
         //tabele spoja
-        public DbSet<KorpaProizvod> KorpaProizvodi { get; set; }
+        public DbSet<KorpaProizvod> KorpeProizvodi { get; set; }
 
         public PPContext(DbContextOptions options) : base(options)
         {
 
         }
 
-        //za ovaj deo nisam sigurna da li je dobro
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

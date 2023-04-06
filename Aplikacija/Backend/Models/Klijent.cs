@@ -1,7 +1,7 @@
 namespace BackEnd.Models
 {
     [Table("KLIJENT")]
-    public class Klijent //: Korisnik 
+    public class Klijent 
     {
         [Key()]
         [JsonIgnore]
@@ -30,13 +30,10 @@ namespace BackEnd.Models
 
         [Column("BrojTelefona")]
         [MaxLength(13)]
-        //ogranicenje da nema vise od 13 cifre/karaktera za broj telefona
-        [Required()] //da li je bolje da je string, a ne broj
+        [Required()]
         public string BrojTelefona { get; set; }
 
         #region ReferenceNaDrugeKlase
-        // [JsonIgnore]
-        // public virtual Korisnik Korisnik {get;set;} 
         [JsonIgnore]
         public virtual Korpa Korpa {get;set;}  
         [JsonIgnore]

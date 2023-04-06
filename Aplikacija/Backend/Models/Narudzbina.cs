@@ -9,7 +9,6 @@ namespace BackEnd.Models
         public int ID { get; set; }
 
         [Column("Status")]
-        //ogranicenje i tip?---NEMA OGRANICENJE,MOZDA ENUM SA OPCIJAMA KOJE STATUS IMA
         [Required()]
         public string Status {get; set;}
 
@@ -19,7 +18,6 @@ namespace BackEnd.Models
         public string KomentarSalona {get; set;}
 
         [Column("UkupnaCena")]
-        //ogranicenje?---NEMA
         [Required()]
         public float UkupnaCena {get; set;}
 
