@@ -44,6 +44,7 @@ namespace BackEnd.Models
         public virtual List<Zahtev> Zahtevi {get;set;}
         [JsonIgnore]
         public virtual List<Narudzbina> Narudzbine {get;set;}  
+        public virtual Korisnik Korisnik { get; set; }
         #endregion ReferenceNaDrugeKlase
    }
 }

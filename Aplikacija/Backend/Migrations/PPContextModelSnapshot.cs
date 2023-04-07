@@ -37,6 +37,9 @@ namespace Backend.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("Ime");
 
+                    b.Property<int?>("KorisnikID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Prezime")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -44,6 +47,8 @@ namespace Backend.Migrations
                         .HasColumnName("Prezime");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("KorisnikID");
 
                     b.ToTable("ADMIN");
                 });
@@ -101,6 +106,9 @@ namespace Backend.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("Ime");
 
+                    b.Property<int?>("KorisnikID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Prezime")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -108,6 +116,8 @@ namespace Backend.Migrations
                         .HasColumnName("Prezime");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("KorisnikID");
 
                     b.ToTable("KLIJENT");
                 });
@@ -390,6 +400,9 @@ namespace Backend.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("Grad");
 
+                    b.Property<int?>("KorisnikID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Naziv")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -401,6 +414,8 @@ namespace Backend.Migrations
                         .HasColumnName("ProsecnaOcena");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("KorisnikID");
 
                     b.ToTable("SALON");
                 });
@@ -504,6 +519,24 @@ namespace Backend.Migrations
                     b.ToTable("ZAHTEV");
                 });
 
+            modelBuilder.Entity("BackEnd.Models.Admin", b =>
+                {
+                    b.HasOne("BackEnd.Models.Korisnik", "Korisnik")
+                        .WithMany()
+                        .HasForeignKey("KorisnikID");
+
+                    b.Navigation("Korisnik");
+                });
+
+            modelBuilder.Entity("BackEnd.Models.Klijent", b =>
+                {
+                    b.HasOne("BackEnd.Models.Korisnik", "Korisnik")
+                        .WithMany()
+                        .HasForeignKey("KorisnikID");
+
+                    b.Navigation("Korisnik");
+                });
+
             modelBuilder.Entity("BackEnd.Models.Korpa", b =>
                 {
                     b.HasOne("BackEnd.Models.Klijent", "Klijent")
@@ -604,6 +637,15 @@ namespace Backend.Migrations
                     b.Navigation("Klijent");
 
                     b.Navigation("Salon");
+                });
+
+            modelBuilder.Entity("BackEnd.Models.Salon", b =>
+                {
+                    b.HasOne("BackEnd.Models.Korisnik", "Korisnik")
+                        .WithMany()
+                        .HasForeignKey("KorisnikID");
+
+                    b.Navigation("Korisnik");
                 });
 
             modelBuilder.Entity("BackEnd.Models.Usluga", b =>

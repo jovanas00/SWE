@@ -17,5 +17,9 @@ namespace BackEnd.Models
         [MaxLength(20)]
         [Required()]
         public string Prezime {get; set;}
+        #region ReferenceNaDrugeKlase
+        public virtual Korisnik Korisnik { get; set; }
+        
+        #endregion ReferenceNaDrugeKlase
    }
 }
