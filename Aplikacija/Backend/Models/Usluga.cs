@@ -15,16 +15,16 @@ namespace BackEnd.Models
 
         [Column("Cena")]
         [Required()]
-        public float Cena {get; set;}
+        public float cena {get; set;}
 
         [Column("Opis")]
         [MaxLength(300)]
         [Required()]
-        public string Opis {get; set;}
+        public string opis {get; set;}
 
         [Column("Dostupnost")]
         [Required()]
-        public bool Dostupnost {get; set;}
+        public bool dostupnost {get; set;}
 
         #region ReferenceNaDrugeKlase
         [JsonIgnore]

@@ -11,19 +11,19 @@ namespace BackEnd.Models
         [Column("Naziv")]
         [MaxLength(20)]
         [Required()]
-        public string Naziv {get; set;}
+        public string naziv {get; set;}
 
         [Column("Cena")]
         [Required()]
-        public float Cena {get; set;}
+        public float cena {get; set;}
 
         [Column("Dostupnost")]
         [Required()]
-        public bool Dostupnost {get; set;}
+        public bool dostupnost {get; set;}
 
         [Column("Slika")]
         [Required()]
-        public string Slika {get; set;}
+        public string slika {get; set;}
 
         #region ReferenceNaDrugeKlase
         [JsonIgnore]

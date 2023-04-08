@@ -11,16 +11,16 @@ namespace BackEnd.Models
         [Column("TekstP")]
         [MaxLength(50)]
         [Required()]
-        public string TekstP {get; set;}
+        public string tekstP {get; set;}
 
         [Column("TekstO")]
         [MaxLength(50)]
         [Required()]
-        public string TekstO {get; set;}
+        public string tekstO {get; set;}
 
         [Column("Datum")]
         [Required()]
-        public DateTime Datum {get; set;}
+        public DateTime datum {get; set;}
 
         #region ReferenceNaDrugeKlase
         [JsonIgnore]

@@ -7,20 +7,20 @@ namespace BackEnd.Models
         public virtual Proizvod Proizvod { get; set; }
 
         [Column("ProizvodID")]
-        public int ProizvodID { get; set; }
+        public int proizvodID { get; set; }
 
         [Column("NazivProizvoda")]
         [MaxLength(30)]
-        public string NazivProizvoda { get; set; }
+        public string nazivProizvoda { get; set; }
 
         [Column("SlikaProizvoda")]
-        public string SlikaProizvoda { get; set; }
+        public string slikaProizvoda { get; set; }
 
         [JsonIgnore]
         public virtual Korpa Korpa { get; set; }
 
         [Column("KorpaID")]
-        public int KorpaID { get; set; }
+        public int korpaID { get; set; }
 
         [Required()]
         [Column("Kolicina")]

@@ -11,26 +11,26 @@ namespace BackEnd.Models
         [Column("Naziv")]
         [MaxLength(20)]
         [Required()]
-        public string Naziv {get; set;}
+        public string naziv {get; set;}
 
         [Column("Adresa")]
         [MaxLength(20)]
         [Required()]
-        public string Adresa { get; set; }
+        public string adresa { get; set; }
 
         [Column("Grad")]
         [MaxLength(20)]
         [Required()]
-        public string Grad { get; set; }
+        public string grad { get; set; }
 
         [Column("ProsecnaOcena")]
         [Required()]
-        public float ProsecnaOcena { get; set; }
+        public float prosecnaOcena { get; set; }
 
         [Column("BrojTelefona")]
         [MaxLength(13)]
         [Required()] 
-        public string BrojTelefona { get; set; }
+        public string brojTelefona { get; set; }
 
         #region ReferenceNaDrugeKlase
         [JsonIgnore]

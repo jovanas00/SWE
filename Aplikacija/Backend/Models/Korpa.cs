@@ -10,7 +10,7 @@ namespace BackEnd.Models
 
         [Column("UkupnaCena")]
         [Required()]
-        public float UkupnaCena { get; set; }
+        public float ukupnaCena { get; set; }
 
         #region ReferenceNaDrugeKlase
         [JsonIgnore]

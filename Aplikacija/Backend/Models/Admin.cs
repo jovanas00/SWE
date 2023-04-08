@@ -11,12 +11,12 @@ namespace BackEnd.Models
         [Column("Ime")]
         [MaxLength(20)]
         [Required()]
-        public string Ime {get; set;}
+        public string ime {get; set;}
 
         [Column("Prezime")]
         [MaxLength(20)]
         [Required()]
-        public string Prezime {get; set;}
+        public string prezime {get; set;}
         #region ReferenceNaDrugeKlase
         public virtual Korisnik Korisnik { get; set; }
         

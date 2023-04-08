@@ -2,18 +2,18 @@ namespace BackEnd.Models
 {
     public class PPContext : DbContext
     {
-        public DbSet<Admin> Admin { get; set; }
-        public DbSet<Kategorija> Kategorija { get; set; }
-        public DbSet<Klijent> Klijent { get; set; }
-        public DbSet<Korisnik> Korisnik {get;set;}
-        public DbSet<Korpa> Korpa { get; set; }
-        public DbSet<Narudzbina> Narudzbina { get; set; }
-        public DbSet<Pitanje> Pitanje { get; set; }
-        public DbSet<Proizvod> Proizvod { get; set; }
-        public DbSet<Recenzija> Recenzija { get; set; }
-        public DbSet<Salon> Salon { get; set; }
-        public DbSet<Usluga> Usluga { get; set; }
-        public DbSet<Zahtev> Zahtev { get; set; }
+        public DbSet<Admin> Admini { get; set; }
+        public DbSet<Kategorija> Kategorije { get; set; }
+        public DbSet<Klijent> Klijenti { get; set; }
+        public DbSet<Korisnik> Korisnici {get;set;}
+        public DbSet<Korpa> Korpe { get; set; }
+        public DbSet<Narudzbina> Narudzbine { get; set; }
+        public DbSet<Pitanje> Pitanja { get; set; }
+        public DbSet<Proizvod> Proizvodi { get; set; }
+        public DbSet<Recenzija> Recenzije { get; set; }
+        public DbSet<Salon> Saloni { get; set; }
+        public DbSet<Usluga> Usluge { get; set; }
+        public DbSet<Zahtev> Zahtevi { get; set; }
 
         //tabele spoja
         public DbSet<KorpaProizvod> KorpeProizvodi { get; set; }
@@ -38,20 +38,20 @@ namespace BackEnd.Models
             .HasForeignKey<Narudzbina>(n => n.ID);
 
             modelBuilder.Entity<KorpaProizvod>()
-            .HasKey(kp => new { kp.KorpaID, kp.ProizvodID });
+            .HasKey(kp => new { kp.korpaID, kp.proizvodID });
 
             modelBuilder.Entity<Pitanje>()
-            .Property(p => p.Datum)
+            .Property(p => p.datum)
             .HasColumnType("datetime");
 
             modelBuilder
             .Entity<Recenzija>()
-            .Property(e => e.Datum)
+            .Property(e => e.datum)
             .HasColumnType("datetime");
 
             modelBuilder
             .Entity<Narudzbina>()
-            .Property(e => e.Datum)
+            .Property(e => e.datum)
             .HasColumnType("datetime");
         }
     }

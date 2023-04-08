@@ -10,24 +10,24 @@ namespace BackEnd.Models
 
         [Column("Status")]
         [Required()]
-        public string Status {get; set;}
+        public string status {get; set;}
 
         [Column("KomentarSalona")]
         [MaxLength(150)]
         [Required()]
-        public string KomentarSalona {get; set;}
+        public string komentarSalona {get; set;}
 
         [Column("UkupnaCena")]
         [Required()]
-        public float UkupnaCena {get; set;}
+        public float ukupnaCena {get; set;}
 
         [Column("Datum")]
         [Required()]
-        public DateTime Datum {get; set;}
+        public DateTime datum {get; set;}
 
         #region ReferenceNaDrugeKlase
         [JsonIgnore]
-        public virtual List<KorpaProizvod> Proizvodi {get;set;} 
+        public virtual List<KorpaProizvod> proizvodi {get;set;} 
         [JsonIgnore]
         public virtual Korpa Korpa {get;set;} 
         [JsonIgnore]

@@ -11,29 +11,29 @@ namespace BackEnd.Models
         [Column("ImeLjubimca")]
         [MaxLength(20)]
         [Required()]
-        public string ImeLjubimca {get; set;}
+        public string imeLjubimca {get; set;}
 
         [Column("Zivotinja")]
         [MaxLength(20)]
         [Required()]
-        public string Zivotinja { get; set; }
+        public string zivotinja { get; set; }
 
         [Column("Cena")]
         [Required()]
-        public float Cena { get; set; }
+        public float cena { get; set; }
 
         [Column("DatumVreme")]
         [Required()]
-        public DateTime DatumVreme { get; set; }
+        public DateTime datumVreme { get; set; }
 
         [Column("Status")]
         [Required()]
-        public string Status { get; set; }
+        public string status { get; set; }
 
         [Column("KomentarSalona")]
         [MaxLength(150)]
         [Required()]
-        public string KomentarSalona { get; set; }
+        public string komentarSalona { get; set; }
 
         #region ReferenceNaDrugeKlase
         [JsonIgnore]

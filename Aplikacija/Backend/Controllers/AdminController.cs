@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.Security.Cryptography;
 
 namespace BackEnd.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize(Roles = "Admin")]
+//[Authorize(Roles = "Admin")]
 public class AdminController : ControllerBase
 {
     public PPContext Context { get; set; }
@@ -18,22 +20,36 @@ public class AdminController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> AddAdmin(string korisnicko_ime,string lozinka, string email,string ime, string prezime)
     {
+        byte[] salt = new byte[128 / 8];
+            using (var rngCsp = new RNGCryptoServiceProvider())
+            {
+                rngCsp.GetNonZeroBytes(salt);
+            }
+           
+            // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
+            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: lozinka,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 100000,
+                numBytesRequested: 256 / 8));
         try
             {  
                 Korisnik k=new Korisnik{
-                    KorisnickoIme=korisnicko_ime,
-                    Sifra=lozinka,
-                    Email=email,
-                    Tip="Admin"
+                    korisnickoIme=korisnicko_ime,
+                    sifra=lozinka,
+                    email=email,
+                    salt_value=salt,
+                    tip="Admin"
                 };
                 
                  Admin a=new Admin{
-                     Ime=ime,
-                     Prezime=prezime,
+                     ime=ime,
+                     prezime=prezime,
                      Korisnik=k
                     };
-                    Context.Admin.Add(a);
-                    Context.Korisnik.Add(k);
+                    Context.Admini.Add(a);
+                    Context.Korisnici.Add(k);
                     await Context.SaveChangesAsync();
                     return Ok("Uspesno dodat admin");
             }
@@ -42,6 +58,7 @@ public class AdminController : ControllerBase
                 return BadRequest(e.Message);
             }
     }
+
     [Route("DodajKategoriju/{naziv}")]
     [HttpPost]
     public async Task<ActionResult> DodajKategoriju(string naziv)
@@ -49,9 +66,9 @@ public class AdminController : ControllerBase
         try
             {  
                 Kategorija k = new Kategorija{
-                    Naziv=naziv
+                    naziv=naziv
                 };
-                Context.Kategorija.Add(k);
+                Context.Kategorije.Add(k);
                 await Context.SaveChangesAsync();
                 return Ok("Uspesno dodata kategorija");
             }
@@ -60,14 +77,15 @@ public class AdminController : ControllerBase
                 return BadRequest(e.Message);
             }
     }
+
     [Route("ObrisiKategoriju/{id_kategorija}")]
     [HttpPost]
     public async Task<ActionResult> ObrisiKategoriju(int id_kategorija)
     {
         try
             {  
-                Kategorija k = await Context.Kategorija.FindAsync(id_kategorija);
-                Context.Kategorija.Remove(k);
+                Kategorija k = await Context.Kategorije.FindAsync(id_kategorija);
+                Context.Kategorije.Remove(k);
                 await Context.SaveChangesAsync();
                 return Ok("Uspesno obrisana kategorija");
             }

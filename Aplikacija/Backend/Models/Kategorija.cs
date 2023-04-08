@@ -11,7 +11,7 @@ namespace BackEnd.Models
         [Column("Naziv")]
         [MaxLength(20)]
         [Required()]
-        public string Naziv {get; set;}
+        public string naziv {get; set;}
 
         #region ReferenceNaDrugeKlase
         [JsonIgnore]

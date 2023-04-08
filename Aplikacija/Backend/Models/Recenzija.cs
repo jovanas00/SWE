@@ -11,16 +11,16 @@ namespace BackEnd.Models
         [Column("Tekst")]
         [MaxLength(100)]
         [Required()]
-        public string Tekst {get; set;}
+        public string tekst {get; set;}
 
         [Column("Ocena")]
         [Range(1, 5)] 
         [Required()]
-        public float Ocena {get; set;}
+        public float ocena {get; set;}
 
         [Column("Datum")]
         [Required()]
-        public DateTime Datum {get; set;}
+        public DateTime datum {get; set;}
 
         #region ReferenceNaDrugeKlase
         [JsonIgnore]
