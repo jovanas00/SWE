@@ -37,7 +37,7 @@ public class AdminController : ControllerBase
             {  
                 Korisnik k=new Korisnik{
                     korisnickoIme=korisnicko_ime,
-                    sifra=lozinka,
+                    sifra=hashed,
                     email=email,
                     salt_value=salt,
                     tip="Admin"
