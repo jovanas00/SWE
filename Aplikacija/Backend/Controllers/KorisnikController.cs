@@ -102,10 +102,15 @@ public class KorisnikController : ControllerBase
                        adresa=adresa,
                        grad=grad,
                        brojTelefona=broj,
-                       Korisnik=k 
+                       Korisnik=k
+                   };
+                   Korpa kor = new Korpa{
+                    // ukupnaCena=0,
+                    Klijent = kl
                    };
                     Context.Korisnici.Add(k);
                     Context.Klijenti.Add(kl);
+                    Context.Korpe.Add(kor);
                     await Context.SaveChangesAsync();
                     return Ok(true);
                 }
