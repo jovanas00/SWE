@@ -16,7 +16,8 @@ public class AdminController : ControllerBase
         Context = context;
         _config=config;
     }
-    [Route("AddAdmin/{korisnicko_ime}/{lozinka}/{email}/{ime}/{prezime}")]
+
+    [Route("DodajAdmina/{korisnicko_ime}/{lozinka}/{email}/{ime}/{prezime}")]
     [HttpPost]
     public async Task<ActionResult> AddAdmin(string korisnicko_ime,string lozinka, string email,string ime, string prezime)
     {
@@ -57,6 +58,28 @@ public class AdminController : ControllerBase
             {
                 return BadRequest(e.Message);
             }
+    }
+
+    [Route("IzmeniAdmina/{korisnicko_ime}/{ime}/{prezime}")]
+    [HttpPut]
+     public async Task<ActionResult> IzmeniAdmina(string korisnicko_ime,string ime, string prezime)
+    {
+        try
+        {    
+            Korisnik k = await Context.Korisnici.Where(p => p.korisnickoIme == korisnicko_ime ).FirstOrDefaultAsync();
+            if(k==null) return Ok(false);  
+                k.korisnickoIme=korisnicko_ime;
+            Admin a = await Context.Admini.Where(p=>p.Korisnik==k).FirstOrDefaultAsync(); 
+            a.ime=ime;
+            a.prezime=prezime;
+            await Context.SaveChangesAsync();
+            return Ok("Uspesno izmenjen admin");
+        }
+        catch (Exception e)
+        {            
+            return BadRequest(e.Message);
+        }
+        
     }
 
     [Route("DodajKategoriju/{naziv}")]

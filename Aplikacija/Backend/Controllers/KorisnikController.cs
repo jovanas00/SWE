@@ -190,9 +190,73 @@ public class KorisnikController : ControllerBase
                 else
                 return null;
             }
-            catch (Exception e)
-            {
+            catch (Exception)
+        {
                 return null;
             }
         }
+
+        [Route("IzmeniLozinku/{email}/{lozinka}/{NovaLozinka}")]
+        [HttpPut]
+        [AllowAnonymous]
+        public async Task<ActionResult> IzmeniLozinku(string email, string lozinka, string NovaLozinka)
+        {
+            
+             if(string.IsNullOrWhiteSpace(email) || email.Length > 60)
+                return BadRequest("Email nije validan");
+
+             if(string.IsNullOrWhiteSpace(lozinka) ||  lozinka.Length > 30)
+                return BadRequest("Lozinka nije validna");   
+
+             if(string.IsNullOrWhiteSpace(NovaLozinka) || NovaLozinka.Length > 30  && lozinka.CompareTo(NovaLozinka)==0)
+                return BadRequest("Lozinka nije validna");  
+                
+
+            Korisnik Current = Context.Korisnici.FirstOrDefault(p => p.email.ToLower() == email.ToLower());
+            lozinka=lozinka.Replace("01abfc750a0c942167651c40d088531d","#");
+
+            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+
+            password: lozinka,
+
+            salt: Current.salt_value,
+
+            prf: KeyDerivationPrf.HMACSHA256,
+
+            iterationCount: 100000,
+
+            numBytesRequested: 256 / 8));
+
+            if(Current.sifra.CompareTo(hashed)==0)
+            {
+                byte[] salt = new byte[128 / 8];
+                using (var rngCsp = new RNGCryptoServiceProvider())
+                {
+                    rngCsp.GetNonZeroBytes(salt);
+                }
+           
+            // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
+                hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: NovaLozinka,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 100000,
+                numBytesRequested: 256 / 8));
+                try
+                {
+                    var p = await Context.Korisnici.Where(p => p.email.ToLower() == email.ToLower() ).FirstOrDefaultAsync();
+                    if(p==null) return Ok("Ne postoji taj korisnik");
+                        p.sifra=hashed;
+                        p.salt_value = salt;
+                    await Context.SaveChangesAsync();
+                    return Ok(true);   
+                } 
+                catch (Exception)
+            {
+                    return Ok(false);
+                }
+            }
+            else return Ok();
+        }
+
 }
