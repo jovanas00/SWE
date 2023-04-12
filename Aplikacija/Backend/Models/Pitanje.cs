@@ -15,12 +15,14 @@ namespace BackEnd.Models
 
         [Column("TekstO")]
         [MaxLength(50)]
-        [Required()]
         public string tekstO {get; set;}
 
-        [Column("Datum")]
+        [Column("DatumPostavljanja")]
         [Required()]
-        public DateTime datum {get; set;}
+        public DateTime datumPostavljanja {get; set;}
+
+        [Column("DatumOdgovaranja")]
+        public DateTime? datumOdgovaranja {get; set;}
 
         #region ReferenceNaDrugeKlase
         [JsonIgnore]

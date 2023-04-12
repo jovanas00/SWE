@@ -3914,19 +3914,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Danilo\\.nuget\\packages\\": {}
+    "C:\\Users\\Sasa\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Faks\\3\\SWE\\si.23.26.petplanet\\Aplikacija\\Backend\\Backend.csproj",
+      "projectUniqueName": "C:\\Users\\Sasa\\Documents\\Faks IV\\VIII semestar\\SWE\\si.23.26.petplanet\\Aplikacija\\Backend\\Backend.csproj",
       "projectName": "Backend",
-      "projectPath": "C:\\Faks\\3\\SWE\\si.23.26.petplanet\\Aplikacija\\Backend\\Backend.csproj",
-      "packagesPath": "C:\\Users\\Danilo\\.nuget\\packages\\",
-      "outputPath": "C:\\Faks\\3\\SWE\\si.23.26.petplanet\\Aplikacija\\Backend\\obj\\",
+      "projectPath": "C:\\Users\\Sasa\\Documents\\Faks IV\\VIII semestar\\SWE\\si.23.26.petplanet\\Aplikacija\\Backend\\Backend.csproj",
+      "packagesPath": "C:\\Users\\Sasa\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Sasa\\Documents\\Faks IV\\VIII semestar\\SWE\\si.23.26.petplanet\\Aplikacija\\Backend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Danilo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Sasa\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4006,7 +4006,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }

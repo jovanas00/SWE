@@ -41,7 +41,11 @@ namespace BackEnd.Models
             .HasKey(kp => new { kp.korpaID, kp.proizvodID });
 
             modelBuilder.Entity<Pitanje>()
-            .Property(p => p.datum)
+            .Property(p => p.datumPostavljanja)
+            .HasColumnType("datetime");
+
+            modelBuilder.Entity<Pitanje>()
+            .Property(p => p.datumOdgovaranja)
             .HasColumnType("datetime");
 
             modelBuilder

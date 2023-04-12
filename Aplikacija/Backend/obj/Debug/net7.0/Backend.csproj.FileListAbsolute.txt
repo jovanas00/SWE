@@ -151,3 +151,4 @@ C:\Faks\3\SWE\si.23.26.petplanet\Aplikacija\Backend\obj\Debug\net7.0\Backend.pdb
 C:\Faks\3\SWE\si.23.26.petplanet\Aplikacija\Backend\obj\Debug\net7.0\Backend.genruntimeconfig.cache
 C:\Faks\3\SWE\si.23.26.petplanet\Aplikacija\Backend\obj\Debug\net7.0\ref\Backend.dll
 C:\Faks\3\SWE\si.23.26.petplanet\Aplikacija\Backend\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Sasa\Documents\Faks IV\VIII semestar\SWE\si.23.26.petplanet\Aplikacija\Backend\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
