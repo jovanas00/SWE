@@ -3914,20 +3914,28 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Sasa\\.nuget\\packages\\": {}
+    "C:\\Users\\i5\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Sasa\\Documents\\Faks IV\\VIII semestar\\SWE\\si.23.26.petplanet\\Aplikacija\\Backend\\Backend.csproj",
+      "projectUniqueName": "C:\\si.23.26.petplanet\\Aplikacija\\Backend\\Backend.csproj",
       "projectName": "Backend",
-      "projectPath": "C:\\Users\\Sasa\\Documents\\Faks IV\\VIII semestar\\SWE\\si.23.26.petplanet\\Aplikacija\\Backend\\Backend.csproj",
-      "packagesPath": "C:\\Users\\Sasa\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Sasa\\Documents\\Faks IV\\VIII semestar\\SWE\\si.23.26.petplanet\\Aplikacija\\Backend\\obj\\",
+      "projectPath": "C:\\si.23.26.petplanet\\Aplikacija\\Backend\\Backend.csproj",
+      "packagesPath": "C:\\Users\\i5\\.nuget\\packages\\",
+      "outputPath": "C:\\si.23.26.petplanet\\Aplikacija\\Backend\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Sasa\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\i5\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -4006,7 +4014,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
       }
     }
   }

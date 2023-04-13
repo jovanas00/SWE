@@ -74,4 +74,92 @@ public class SalonController : ControllerBase
             return BadRequest(e);
         }
     }
+
+    [HttpPut("ObradiZahtev/{zahtevID}")]
+    public async Task<ActionResult> ObradiZahtev([FromBody]Zahtev zahtev, int zahtevID)
+    {
+        try
+        {
+            var stariZahtev = await Context.Zahtevi.FindAsync(zahtevID);
+            if (stariZahtev != null)
+            {
+                stariZahtev.status = zahtev.status; //salon menja samo status
+                Context.Zahtevi.Update(stariZahtev);
+            }
+            await Context.SaveChangesAsync();
+            return Ok($"ID obrađenog zahteva je: {zahtevID}");
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpPut("ObradiNarudzbinu/{narudzbinaID}")]
+    public async Task<ActionResult> ObradiNarudzbinu([FromBody]Narudzbina narudzbina, int narudzbinaID)
+    {
+        try
+        {
+            var staraNarudzbina = await Context.Narudzbine.FindAsync(narudzbinaID);
+            if (staraNarudzbina != null)
+            {
+                staraNarudzbina.status = narudzbina.status; //salon menja samo status
+                Context.Narudzbine.Update(staraNarudzbina);
+            }
+            await Context.SaveChangesAsync();
+            return Ok("Narudžbina je obrađena");
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    //da salon preuzme zahteve
+    [HttpGet("PreuzmiZahteve")]
+
+    public async Task<ActionResult> PreuzmiZahteve()
+    {
+        try
+        {
+            return Ok(await Context.Zahtevi.ToListAsync());
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpGet("PreuzmiNarudzbine")]
+
+    public async Task<ActionResult> PreuzmiNarudzbine()
+    {
+        try
+        {
+            return Ok(await Context.Narudzbine.ToListAsync());
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpGet("PreuzmiRecenzije")]
+
+    public async Task<ActionResult> PreuzmiRecenzije()
+    {
+        try
+        {
+            return Ok(await Context.Recenzije.ToListAsync());
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+
+    
+
+    
 }
