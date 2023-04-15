@@ -75,15 +75,15 @@ public class SalonController : ControllerBase
         }
     }
 
-    [HttpPut("ObradiZahtev/{zahtevID}")]
-    public async Task<ActionResult> ObradiZahtev([FromBody]Zahtev zahtev, int zahtevID)
+    [HttpPost("ObradiZahtev/{zahtevID}/{status}")]
+    public async Task<ActionResult<Zahtev>> ObradiZahtev(int zahtevID, string status)
     {
         try
         {
             var stariZahtev = await Context.Zahtevi.FindAsync(zahtevID);
             if (stariZahtev != null)
             {
-                stariZahtev.status = zahtev.status; //salon menja samo status
+                stariZahtev.status = status; //salon menja samo status
                 Context.Zahtevi.Update(stariZahtev);
             }
             await Context.SaveChangesAsync();
@@ -94,20 +94,21 @@ public class SalonController : ControllerBase
             return BadRequest(e.Message);
         }
     }
+    
 
-    [HttpPut("ObradiNarudzbinu/{narudzbinaID}")]
-    public async Task<ActionResult> ObradiNarudzbinu([FromBody]Narudzbina narudzbina, int narudzbinaID)
+    [HttpPut("ObradiNarudzbinu/{narudzbinaID}/{status}")]
+    public async Task<ActionResult<Narudzbina>> ObradiNarudzbinu(int narudzbinaID, string status)
     {
         try
         {
             var staraNarudzbina = await Context.Narudzbine.FindAsync(narudzbinaID);
             if (staraNarudzbina != null)
             {
-                staraNarudzbina.status = narudzbina.status; //salon menja samo status
+                staraNarudzbina.status = status; //salon menja samo status
                 Context.Narudzbine.Update(staraNarudzbina);
             }
             await Context.SaveChangesAsync();
-            return Ok("Narudžbina je obrađena");
+            return Ok("ID obrađene narudžbine je: {narudzbinaID}");
         }
         catch (Exception e)
         {
