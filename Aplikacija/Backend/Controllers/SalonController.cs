@@ -75,15 +75,16 @@ public class SalonController : ControllerBase
         }
     }
 
-    [HttpPost("ObradiZahtev/{zahtevID}/{status}")]
-    public async Task<ActionResult<Zahtev>> ObradiZahtev(int zahtevID, string status)
+    [HttpPut("ObradiZahtev/{zahtevID}/{status}/{komentarSalona}")]
+    public async Task<ActionResult<Zahtev>> ObradiZahtev(int zahtevID, string status, string komentarSalona)
     {
         try
         {
             var stariZahtev = await Context.Zahtevi.FindAsync(zahtevID);
             if (stariZahtev != null)
             {
-                stariZahtev.status = status; //salon menja samo status
+                stariZahtev.status = status; 
+                stariZahtev.komentarSalona = komentarSalona;
                 Context.Zahtevi.Update(stariZahtev);
             }
             await Context.SaveChangesAsync();

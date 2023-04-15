@@ -82,7 +82,7 @@ public class KlijentController : ControllerBase
         }
     }
 
-    [HttpPost("PošaljiZahtev/{imeLjubimca}/{zivotinja}")]//a koja je usluga, to treba iz klase usluga??
+    [HttpPost("PošaljiZahtev/{imeLjubimca}/{zivotinja}")]
     public async Task<ActionResult<Zahtev>> PošaljiZahtev(string imeLjubimca, string zivotinja) 
     {
         try
@@ -90,10 +90,10 @@ public class KlijentController : ControllerBase
             Zahtev z = new Zahtev{
                 imeLjubimca = imeLjubimca,
                 zivotinja = zivotinja,
-                cena = 0, //ovo mora da se postavi na početku, posle salon menja..
+                cena = 0, 
                 datumVreme = DateTime.Now,
                 status = "Neobrađen",
-                komentarSalona = "Sačekajte odgovor salona."//i ovo
+                komentarSalona = "Sačekajte odgovor salona."
             };
                 Context.Zahtevi.Add(z);
                 await Context.SaveChangesAsync();
@@ -107,14 +107,30 @@ public class KlijentController : ControllerBase
         
     }
 
-    /*[HttpPost("PošaljiZahtev")]
-    public async Task<IActionResult> PošaljiZahtev([FromBody] Zahtev zahtev) 
+    /*[HttpPost("PošaljiZahtev/{idSalona}/{imeLjubimca}/{zivotinja}")]//a koja je usluga, to treba iz klase usluga??
+    public async Task<ActionResult<Zahtev>> PošaljiZahtev(int idSalona, string imeLjubimca, string zivotinja) 
     {
         try
         {
-            await Context.Zahtevi.AddAsync(zahtev);
-            await Context.SaveChangesAsync();
-            return Ok($"ID dodatog zahteva je: {zahtev.ID}");
+            Salon s = await Context.Saloni.FindAsync(idSalona);
+            if (s != null)
+            {
+                Zahtev z = new Zahtev{
+                    imeLjubimca = imeLjubimca,
+                    zivotinja = zivotinja,
+                    cena = 0, //ovo mora da se postavi na početku, posle salon menja..
+                    datumVreme = DateTime.Now,
+                    status = "Neobrađen",
+                    komentarSalona = "Sačekajte odgovor salona."//i ovo
+                };
+                Context.Zahtevi.Add(z);
+                await Context.SaveChangesAsync();
+                return Ok($"ID dodatog zahteva je: {z.ID}");
+            }
+            else 
+            return Ok("Nije pronađen Vaš salon");
+
+
         }
         catch (Exception e)
         {
@@ -180,8 +196,8 @@ public class KlijentController : ControllerBase
         
     }
 
-    [HttpPut("DodajUKorpu/{proizvodID}/{korpaID}")]
-    public async Task<ActionResult<Korpa>> DodajUKorpu(int proizvodID, int korpaID)
+    [HttpPut("DodajUKorpu/{proizvodID}/{korpaID}/{nazivProizvoda}/{kolicina}")]
+    public async Task<ActionResult<Korpa>> DodajUKorpu(int proizvodID, int korpaID, string nazivProizvoda, int kolicina)
     {
         try
         {
@@ -193,7 +209,16 @@ public class KlijentController : ControllerBase
                 staraKorpa.ukupnaCena = staraKorpa.ukupnaCena + proizvod.cena; 
                 Context.Korpe.Update(staraKorpa);
             }
-            Context.Proizvodi.Add(proizvod);
+            KorpaProizvod kp = new KorpaProizvod{
+                    proizvodID = proizvodID,
+                    nazivProizvoda = nazivProizvoda,
+                    slikaProizvoda = "Nema trenutno",
+                    korpaID = korpaID,
+                    Kolicina = kolicina
+                };
+                Context.KorpeProizvodi.Add(kp);
+                await Context.SaveChangesAsync();
+            //Context.Proizvodi.Add(proizvod);
             await Context.SaveChangesAsync();
             return Ok($"ID dodatog proizvoda je: {proizvod.ID}");
         }
@@ -215,7 +240,8 @@ public class KlijentController : ControllerBase
                 staraKorpa.ukupnaCena = staraKorpa.ukupnaCena - proizvod.cena; //samo cenu oduzme od ukupne cene?
                 Context.Korpe.Update(staraKorpa);
             }
-            Context.Proizvodi.Remove(proizvod);
+            var korPro = await Context.KorpeProizvodi.FindAsync(proizvodID);
+            Context.KorpeProizvodi.Remove(korPro);
             await Context.SaveChangesAsync();
             return Ok($"ID izbačenog proizvoda je: {proizvod.ID}");
         }
