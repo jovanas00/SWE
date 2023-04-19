@@ -105,14 +105,15 @@ public class KorisnikController : ControllerBase
                        Korisnik=k
                    };
                    Korpa kor = new Korpa{
-                    // ukupnaCena=0,
-                    Klijent = kl
+                    //ukupnaCena=0,
+                    Klijent = kl,
+                    Proizvodi = new List<KorpaProizvod>()
                    };
                     Context.Korisnici.Add(k);
                     Context.Klijenti.Add(kl);
                     Context.Korpe.Add(kor);
                     await Context.SaveChangesAsync();
-                    return Ok(true);
+                    return Ok($"ID kreirane korpe je: {kor.ID}");
                 }
                 catch(Exception e)
                 {

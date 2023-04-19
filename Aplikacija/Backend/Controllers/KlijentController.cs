@@ -56,12 +56,13 @@ public class KlijentController : ControllerBase
         }
     }
 
-    [Route("PostaviPitanje/{tekst}/{id_salon}")]
+    [Route("PostaviPitanje/{tekst}/{id_salon}/{id_klijent}")]
     [HttpPost]
-    public async Task<ActionResult<Klijent>> PostaviPitanje(string tekst, int id_salon)
+    public async Task<ActionResult<Klijent>> PostaviPitanje(string tekst, int id_salon, int id_klijent)
     {
         Salon s = await Context.Saloni.FindAsync(id_salon);
-        if(s==null)
+        Klijent k = await Context.Klijenti.FindAsync(id_klijent);
+        if(s==null || k == null)
             return BadRequest("Salon ne postoji.");
         try{
             Pitanje p = new Pitanje{
@@ -69,7 +70,8 @@ public class KlijentController : ControllerBase
                 tekstO = null,
                 datumPostavljanja = DateTime.Now,
                 datumOdgovaranja = null,
-                Salon = s
+                Salon = s,
+                Klijent = k
             };
             Context.Pitanja.Add(p);
             await Context.SaveChangesAsync();
@@ -82,23 +84,33 @@ public class KlijentController : ControllerBase
         }
     }
 
-    [HttpPost("PošaljiZahtev/{imeLjubimca}/{zivotinja}")]
-    public async Task<ActionResult<Zahtev>> PošaljiZahtev(string imeLjubimca, string zivotinja) 
+    [HttpPost("PosaljiZahtev/{imeLjubimca}/{zivotinja}/{id_salon}/{klijentID}/{uslugaID}")]
+    public async Task<ActionResult<Zahtev>> PosaljiZahtev(string imeLjubimca, string zivotinja, int id_salon, int klijentID, int uslugaID) 
     {
         try
         {
-            Zahtev z = new Zahtev{
-                imeLjubimca = imeLjubimca,
-                zivotinja = zivotinja,
-                cena = 0, 
-                datumVreme = DateTime.Now,
-                status = "Neobrađen",
-                komentarSalona = "Sačekajte odgovor salona."
-            };
-                Context.Zahtevi.Add(z);
-                await Context.SaveChangesAsync();
-                return Ok($"ID dodatog zahteva je: {z.ID}");
-
+            Salon s = await Context.Saloni.FindAsync(id_salon);
+            Klijent k = await Context.Klijenti.FindAsync(klijentID);
+            Usluga u = await Context.Usluge.FindAsync(uslugaID);
+            if(s==null || k==null || u==null)
+                return BadRequest("Salon ne postoji.");
+                else
+                {
+                    Zahtev z = new Zahtev{
+                    Salon = s,
+                    Klijent = k,
+                    Usluga = u,
+                    imeLjubimca = imeLjubimca,
+                    zivotinja = zivotinja,
+                    cena = 0, 
+                    datumVreme = DateTime.Now,
+                    status = "Neobrađen",
+                    komentarSalona = "Sačekajte odgovor salona."
+                    };
+                    Context.Zahtevi.Add(z);
+                    await Context.SaveChangesAsync();
+                    return Ok($"ID dodatog zahteva je: {z.ID}");
+                }
         }
         catch (Exception e)
         {
@@ -166,19 +178,22 @@ public class KlijentController : ControllerBase
         }
     }
 
-    [HttpPost("OceniSalon/{idSalona}/{tekst}/{ocena}")]
-    public async Task<ActionResult<Recenzija>> OceniSalon(int idSalona, string tekst, float ocena) 
+    [HttpPost("OceniSalon/{idSalona}/{tekst}/{ocena}/{klijentID}")]
+    public async Task<ActionResult<Recenzija>> OceniSalon(int idSalona, string tekst, float ocena, int klijentID) 
     {
         try
         {
             var salon = await Context.Saloni.FindAsync(idSalona);
+            var klijent = await Context.Klijenti.FindAsync(klijentID);
 
             if (salon != null)
             {   
                 Recenzija r = new Recenzija{
                     tekst = tekst,
                     ocena = ocena,
-                    datum = DateTime.Now
+                    datum = DateTime.Now,
+                    Salon = salon, //izračunavanje prosečne ocene 
+                    Klijent = klijent
                 };
                 Context.Recenzije.Add(r);
                 await Context.SaveChangesAsync();
@@ -196,26 +211,38 @@ public class KlijentController : ControllerBase
         
     }
 
-    [HttpPut("DodajUKorpu/{proizvodID}/{korpaID}/{nazivProizvoda}/{kolicina}")]
-    public async Task<ActionResult<Korpa>> DodajUKorpu(int proizvodID, int korpaID, string nazivProizvoda, int kolicina)
+    [HttpPut("DodajUKorpu/{proizvodID}/{korpaID}/{kolicina}")]
+    public async Task<ActionResult<Korpa>> DodajUKorpu(int proizvodID, int korpaID, int kolicina)
     {
         try
         {
             var proizvod = await Context.Proizvodi.FindAsync(proizvodID);
 
             var staraKorpa = await Context.Korpe.FindAsync(korpaID);
+            var kp = new KorpaProizvod{
+                proizvodID = proizvodID,
+                nazivProizvoda = proizvod.naziv,
+                slikaProizvoda = "Nema trenutno",
+                korpaID = korpaID,
+                Kolicina = kolicina
+            };
+            //staraKorpa.Proizvodi.Add(kp);
+            /*List<KorpaProizvod> lista = new List<KorpaProizvod>();
+            lista.Add(kp);
+            staraKorpa.Proizvodi = lista;
+            foreach (KorpaProizvod pk in lista){
+                Console.WriteLine(pk.nazivProizvoda);
+            }*/
+            //lista = new List<KorpaProizvod>();
+            //lista.Add(kp);
+            List<KorpaProizvod> lista = staraKorpa.Proizvodi;
+            lista.Add(kp);
             if (staraKorpa != null && proizvod != null)
             {
-                staraKorpa.ukupnaCena = staraKorpa.ukupnaCena + proizvod.cena; 
+                staraKorpa.ukupnaCena = staraKorpa.ukupnaCena + proizvod.cena*kp.Kolicina; 
                 Context.Korpe.Update(staraKorpa);
             }
-            KorpaProizvod kp = new KorpaProizvod{
-                    proizvodID = proizvodID,
-                    nazivProizvoda = nazivProizvoda,
-                    slikaProizvoda = "Nema trenutno",
-                    korpaID = korpaID,
-                    Kolicina = kolicina
-                };
+
                 Context.KorpeProizvodi.Add(kp);
                 await Context.SaveChangesAsync();
             //Context.Proizvodi.Add(proizvod);
@@ -227,21 +254,21 @@ public class KlijentController : ControllerBase
             return BadRequest(e.Message);
         }
     }
-    //treba jos u listu da dodaje i izbacuje
+   
     [HttpPut("IzbaciIzKorpe/{proizvodID}/{korpaID}")]
     public async Task<ActionResult<Korpa>> IzbaciIzKorpe(int proizvodID, int korpaID)
     {
         try
         {
+            var proizvod_korpa = Context.KorpeProizvodi.Where(p=>p.korpaID==korpaID && p.proizvodID==proizvodID).FirstOrDefault();
             var proizvod = await Context.Proizvodi.FindAsync(proizvodID);
             var staraKorpa = await Context.Korpe.FindAsync(korpaID);
             if (staraKorpa != null && proizvod != null)
             {
-                staraKorpa.ukupnaCena = staraKorpa.ukupnaCena - proizvod.cena; //samo cenu oduzme od ukupne cene?
+                staraKorpa.ukupnaCena = staraKorpa.ukupnaCena - proizvod.cena*proizvod_korpa.Kolicina; //samo cenu oduzme od ukupne cene?
                 Context.Korpe.Update(staraKorpa);
             }
-            var korPro = await Context.KorpeProizvodi.FindAsync(proizvodID);
-            Context.KorpeProizvodi.Remove(korPro);
+            Context.KorpeProizvodi.Remove(proizvod_korpa);
             await Context.SaveChangesAsync();
             return Ok($"ID izbačenog proizvoda je: {proizvod.ID}");
         }
@@ -251,20 +278,37 @@ public class KlijentController : ControllerBase
         }
     }
 
-    //Naruči narudžbinu, manja status na "neobrađen" i šalje salonu?
-    [HttpPut("Naruci/{narudzbinaID}")]
-    public async Task<ActionResult> Naruci([FromBody]Narudzbina narudzbina, int narudzbinaID)
+    
+    [HttpPost("Naruci/{korpaID}/{klijentID}/{salonID}")]
+    public async Task<ActionResult<Narudzbina>> Naruci(int korpaID, int klijentID, int salonID)
     {
         try
         {
-            var staraNarudzbina = await Context.Narudzbine.FindAsync(narudzbinaID);
-            if (staraNarudzbina != null)
+            var korpa = await Context.Korpe.FindAsync(korpaID);
+            var klijent = await Context.Klijenti.FindAsync(klijentID);
+            var salon = await Context.Saloni.FindAsync(salonID);
+            if (korpa == null)
             {
-                staraNarudzbina.status = "Neobrađena"; //salonu se šalje narudžbina kao neobrađena
-                Context.Narudzbine.Update(staraNarudzbina);
+                return Ok("Nije pronađena korpa.");
             }
-            await Context.SaveChangesAsync();
-            return Ok("Narudžbina je poslata salonu");
+
+            Narudzbina n = new Narudzbina{
+                    status = "Neobrađena",
+                    komentarSalona = "Salon nije uneo komentar.",
+                    ukupnaCena = korpa.ukupnaCena,
+                    datum = DateTime.Now,
+                    Korpa=korpa,
+                    Klijent=klijent,
+                    Salon=salon,
+                    //proizvodi=korpa.Proizvodi
+                };
+                Context.Narudzbine.Add(n);
+                await Context.SaveChangesAsync();
+                foreach(KorpaProizvod kp in korpa.Proizvodi)
+                {
+                    Console.WriteLine(kp.nazivProizvoda);
+                }
+            return Ok(n.proizvodi);
         }
         catch (Exception e)
         {
