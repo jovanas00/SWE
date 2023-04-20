@@ -3,6 +3,11 @@ namespace BackEnd.Models
     [Table("KORPA")]
     public class Korpa
     {
+        // public Korpa()
+        // {
+        //     Proizvodi = new List<KorpaProizvod>();  
+        // }
+
         [Key()]
         [JsonIgnore]
         [Column("KorpaID")]

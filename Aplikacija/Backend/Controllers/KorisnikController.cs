@@ -106,8 +106,7 @@ public class KorisnikController : ControllerBase
                    };
                    Korpa kor = new Korpa{
                     //ukupnaCena=0,
-                    Klijent = kl,
-                    Proizvodi = new List<KorpaProizvod>()
+                    Klijent = kl
                    };
                     Context.Korisnici.Add(k);
                     Context.Klijenti.Add(kl);

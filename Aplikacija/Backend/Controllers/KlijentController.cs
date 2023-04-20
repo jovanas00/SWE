@@ -226,26 +226,12 @@ public class KlijentController : ControllerBase
                 korpaID = korpaID,
                 Kolicina = kolicina
             };
-            //staraKorpa.Proizvodi.Add(kp);
-            /*List<KorpaProizvod> lista = new List<KorpaProizvod>();
-            lista.Add(kp);
-            staraKorpa.Proizvodi = lista;
-            foreach (KorpaProizvod pk in lista){
-                Console.WriteLine(pk.nazivProizvoda);
-            }*/
-            //lista = new List<KorpaProizvod>();
-            //lista.Add(kp);
-            List<KorpaProizvod> lista = staraKorpa.Proizvodi;
-            lista.Add(kp);
             if (staraKorpa != null && proizvod != null)
             {
                 staraKorpa.ukupnaCena = staraKorpa.ukupnaCena + proizvod.cena*kp.Kolicina; 
                 Context.Korpe.Update(staraKorpa);
             }
-
-                Context.KorpeProizvodi.Add(kp);
-                await Context.SaveChangesAsync();
-            //Context.Proizvodi.Add(proizvod);
+            Context.KorpeProizvodi.Add(kp);
             await Context.SaveChangesAsync();
             return Ok($"ID dodatog proizvoda je: {proizvod.ID}");
         }
@@ -253,6 +239,24 @@ public class KlijentController : ControllerBase
         {
             return BadRequest(e.Message);
         }
+    }
+    
+    [HttpGet("VratiProizvode/{id_korpa}")]
+    public async Task<ActionResult<List<KorpaProizvod>>> VratiProizvode(int id_korpa)
+    {
+        Korpa k = await Context.Korpe
+                    .Include(k => k.Proizvodi)
+                    .FirstOrDefaultAsync(k => k.ID == id_korpa);
+        List<KorpaProizvod> lista = new List<KorpaProizvod>();
+
+        if (k != null)
+        {
+            foreach (KorpaProizvod kp in k.Proizvodi)
+            {
+                lista.Add(kp);
+            }
+        }
+        return lista;
     }
    
     [HttpPut("IzbaciIzKorpe/{proizvodID}/{korpaID}")]
