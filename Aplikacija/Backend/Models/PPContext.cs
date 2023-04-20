@@ -32,10 +32,10 @@ namespace BackEnd.Models
             .WithOne(kp => kp.Klijent)
             .HasForeignKey<Korpa>(kp => kp.ID);
 
-            modelBuilder.Entity<Korpa>()
-            .HasOne(k => k.Narudzbina)
-            .WithOne(n => n.Korpa)
-            .HasForeignKey<Narudzbina>(n => n.ID);
+            // modelBuilder.Entity<Korpa>()
+            // .HasOne(k => k.Narudzbina)
+            // .WithOne(n => n.Korpa)
+            // .HasForeignKey<Narudzbina>(n => n.ID);
 
             modelBuilder.Entity<KorpaProizvod>()
             .HasKey(kp => new { kp.korpaID, kp.proizvodID });

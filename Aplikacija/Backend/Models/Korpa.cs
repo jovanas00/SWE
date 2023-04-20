@@ -21,7 +21,7 @@ namespace BackEnd.Models
         [JsonIgnore]
         public virtual Klijent Klijent {get;set;} 
         [JsonIgnore]
-        public virtual Narudzbina Narudzbina {get;set;}  
+        public virtual List<Narudzbina> Narudzbina {get;set;}  
         [JsonIgnore]
         public virtual List<KorpaProizvod> Proizvodi {get;set;} 
         #endregion ReferenceNaDrugeKlase

@@ -314,8 +314,17 @@ public class KlijentController : ControllerBase
             {
                 n.proizvodi.Add(kp);
             }
-                Context.Narudzbine.Add(n);
-                await Context.SaveChangesAsync();
+            Context.Narudzbine.Add(n);
+            
+            var izbaciti = await Context.KorpeProizvodi.Where(k=>k.korpaID==korpaID).ToListAsync();
+            foreach(var kp in izbaciti)
+            {
+                k.Proizvodi.Remove(kp);
+            }
+
+            Context.KorpeProizvodi.RemoveRange(izbaciti);
+            await Context.SaveChangesAsync();
+
             return Ok(n.proizvodi);
         }
         catch (Exception e)
