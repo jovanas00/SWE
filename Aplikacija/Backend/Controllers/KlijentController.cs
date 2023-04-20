@@ -288,10 +288,14 @@ public class KlijentController : ControllerBase
     {
         try
         {
-            var korpa = await Context.Korpe.FindAsync(korpaID);
+            Korpa k = await Context.Korpe
+                    .Include(k => k.Proizvodi)
+                    .FirstOrDefaultAsync(k => k.ID == korpaID);
+
+            //var korpa = await Context.Korpe.FindAsync(korpaID);
             var klijent = await Context.Klijenti.FindAsync(klijentID);
             var salon = await Context.Saloni.FindAsync(salonID);
-            if (korpa == null)
+            if (k == null)
             {
                 return Ok("Nije pronađena korpa.");
             }
@@ -299,25 +303,43 @@ public class KlijentController : ControllerBase
             Narudzbina n = new Narudzbina{
                     status = "Neobrađena",
                     komentarSalona = "Salon nije uneo komentar.",
-                    ukupnaCena = korpa.ukupnaCena,
+                    ukupnaCena = k.ukupnaCena,
                     datum = DateTime.Now,
-                    Korpa=korpa,
+                    Korpa=k,
                     Klijent=klijent,
                     Salon=salon,
-                    //proizvodi=korpa.Proizvodi
+                    proizvodi=new List<KorpaProizvod>()
                 };
+            foreach(KorpaProizvod kp in k.Proizvodi)
+            {
+                n.proizvodi.Add(kp);
+            }
                 Context.Narudzbine.Add(n);
                 await Context.SaveChangesAsync();
-                foreach(KorpaProizvod kp in korpa.Proizvodi)
-                {
-                    Console.WriteLine(kp.nazivProizvoda);
-                }
             return Ok(n.proizvodi);
         }
         catch (Exception e)
         {
             return BadRequest(e.Message);
         }
+    }
+
+    [HttpGet("VratiProizvodeNarudzbina/{id_narudzbine}")]
+    public async Task<ActionResult<List<KorpaProizvod>>> VratiProizvodeNarudzbina(int id_narudzbine)
+    {
+        Narudzbina n = await Context.Narudzbine
+                    .Include(n => n.proizvodi)
+                    .FirstOrDefaultAsync(n => n.ID == id_narudzbine);
+        List<KorpaProizvod> lista = new List<KorpaProizvod>();
+
+        if (n != null)
+        {
+            foreach (KorpaProizvod kp in n.proizvodi)
+            {
+                lista.Add(kp);
+            }
+        }
+        return lista;
     }
 
 
