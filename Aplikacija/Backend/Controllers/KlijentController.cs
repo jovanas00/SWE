@@ -10,29 +10,6 @@ public class KlijentController : ControllerBase
         Context = context;
     }
 
-    // [Route("IzmeniProfilKlijenta/{id_klijent}")]
-    // [HttpPut]
-    // public async Task<ActionResult<Klijent>> IzmeniProfil(int id_klijent, Klijent noviKlijent)
-    // {
-    //     var k = await Context.Klijenti.FindAsync(id_klijent);
-    //     if(k == null)
-    //         return NotFound();
-    //     try{
-    //         k.ime = noviKlijent.ime;
-    //         k.prezime = noviKlijent.prezime;
-    //         k.adresa = noviKlijent.adresa;
-    //         k.grad = noviKlijent.grad;
-    //         k.brojTelefona = noviKlijent.brojTelefona;
-    //         await Context.SaveChangesAsync();
-
-    //         return Ok(k);
-    //     }
-    //     catch(Exception e)
-    //     {
-    //         return BadRequest(e.Message);
-    //     }
-    // }
-
     [Route("IzmeniProfilKlijenta/{korisnicko_ime}/{ime}/{prezime}/{adresa}/{grad}/{brojTelefona}")]
     [HttpPut]
     public async Task<ActionResult<Klijent>> IzmeniProfil(string korisnicko_ime, string ime, string prezime, string adresa, string grad, string brojTelefona)
@@ -102,7 +79,7 @@ public class KlijentController : ControllerBase
                     Usluga = u,
                     imeLjubimca = imeLjubimca,
                     zivotinja = zivotinja,
-                    cena = 0, 
+                    cena = u.cena, 
                     datumVreme = DateTime.Now,
                     status = "Neobrađen",
                     komentarSalona = "Sačekajte odgovor salona."
@@ -118,41 +95,6 @@ public class KlijentController : ControllerBase
         }
         
     }
-
-    /*[HttpPost("PošaljiZahtev/{idSalona}/{imeLjubimca}/{zivotinja}")]//a koja je usluga, to treba iz klase usluga??
-    public async Task<ActionResult<Zahtev>> PošaljiZahtev(int idSalona, string imeLjubimca, string zivotinja) 
-    {
-        try
-        {
-            Salon s = await Context.Saloni.FindAsync(idSalona);
-            if (s != null)
-            {
-                Zahtev z = new Zahtev{
-                    imeLjubimca = imeLjubimca,
-                    zivotinja = zivotinja,
-                    cena = 0, //ovo mora da se postavi na početku, posle salon menja..
-                    datumVreme = DateTime.Now,
-                    status = "Neobrađen",
-                    komentarSalona = "Sačekajte odgovor salona."//i ovo
-                };
-                Context.Zahtevi.Add(z);
-                await Context.SaveChangesAsync();
-                return Ok($"ID dodatog zahteva je: {z.ID}");
-            }
-            else 
-            return Ok("Nije pronađen Vaš salon");
-
-
-        }
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }
-        
-    }*/
-
-
-    //treba funkcija završi sa kupovinom, da se napravi narudžbina na osnovu korpe
 
     [HttpDelete("ObrisiZahtev/{idZahteva}")]
     public async Task<ActionResult> ObrišiZahtev(int idZahteva)
@@ -207,8 +149,7 @@ public class KlijentController : ControllerBase
         catch (Exception e)
         {
             return BadRequest(e.Message);
-        }
-        
+        }       
     }
 
     [HttpPut("DodajUKorpu/{proizvodID}/{korpaID}/{kolicina}")]
@@ -219,6 +160,8 @@ public class KlijentController : ControllerBase
             var proizvod = await Context.Proizvodi.FindAsync(proizvodID);
 
             var staraKorpa = await Context.Korpe.FindAsync(korpaID);
+
+            //mogucnost da se doda vise puta isti proizvod,samo da se promeni kolicina u korpi
             var kp = new KorpaProizvod{
                 proizvodID = proizvodID,
                 nazivProizvoda = proizvod.naziv,
@@ -241,8 +184,8 @@ public class KlijentController : ControllerBase
         }
     }
     
-    [HttpGet("VratiProizvode/{id_korpa}")]
-    public async Task<ActionResult<List<KorpaProizvod>>> VratiProizvode(int id_korpa)
+    [HttpGet("VratiProizvodeIzKorpe/{id_korpa}")]
+    public async Task<ActionResult<List<KorpaProizvod>>> VratiProizvodeIzKorpe(int id_korpa)
     {
         Korpa k = await Context.Korpe
                     .Include(k => k.Proizvodi)
@@ -269,7 +212,7 @@ public class KlijentController : ControllerBase
             var staraKorpa = await Context.Korpe.FindAsync(korpaID);
             if (staraKorpa != null && proizvod != null)
             {
-                staraKorpa.ukupnaCena = staraKorpa.ukupnaCena - proizvod.cena*proizvod_korpa.Kolicina; //samo cenu oduzme od ukupne cene?
+                staraKorpa.ukupnaCena = staraKorpa.ukupnaCena - proizvod.cena*proizvod_korpa.Kolicina;
                 Context.Korpe.Update(staraKorpa);
             }
             Context.KorpeProizvodi.Remove(proizvod_korpa);
@@ -282,7 +225,6 @@ public class KlijentController : ControllerBase
         }
     }
 
-    
     [HttpPost("Naruci/{korpaID}/{klijentID}/{salonID}")]
     public async Task<ActionResult<Narudzbina>> Naruci(int korpaID, int klijentID, int salonID)
     {
@@ -292,7 +234,9 @@ public class KlijentController : ControllerBase
                     .Include(k => k.Proizvodi)
                     .FirstOrDefaultAsync(k => k.ID == korpaID);
 
-            //var korpa = await Context.Korpe.FindAsync(korpaID);
+            //mozda bi ovde mogao i klijent da se include,da se ne prosledjuje i id korpe i id klijenta
+            //var klijent = Context.Klijenti.Where(k=>k.Korpa.ID==korpaID).FirstOrDefault();
+            
             var klijent = await Context.Klijenti.FindAsync(klijentID);
             var salon = await Context.Saloni.FindAsync(salonID);
             if (k == null)
@@ -350,7 +294,4 @@ public class KlijentController : ControllerBase
         }
         return lista;
     }
-
-
-
 }
