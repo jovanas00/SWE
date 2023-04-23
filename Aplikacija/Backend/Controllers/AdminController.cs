@@ -117,4 +117,50 @@ public class AdminController : ControllerBase
                 return BadRequest(e.Message);
             }
     }
+
+    [Route("ObrisiKorisnika/{korisnicko_ime}")]
+    [HttpDelete]
+    public async Task<ActionResult> ObrisiKorisnika(string korisnicko_ime)
+    {
+        try
+        {
+            Korisnik za_brisanje = Context.Korisnici.FirstOrDefault(k=>k.korisnickoIme.ToLower()==korisnicko_ime.ToLower());
+            if(za_brisanje!=null)
+            {
+                switch(za_brisanje.tip)
+                {
+                    case "Salon":
+                    break;
+
+                    case "Klijent":
+                    var klijent = Context.Klijenti.Include(k=>k.Korisnik).FirstOrDefault(k=>k.Korisnik.ID==za_brisanje.ID);
+                    var korpa = Context.Korpe.Include(k=>k.Klijent).FirstOrDefault(k=>k.Klijent.ID==klijent.ID);
+                    List<Narudzbina> narudzbine = await Context.Narudzbine.Include(k=>k.Korpa).Where(k=>k.Korpa.ID==korpa.ID).ToListAsync();
+                    if(narudzbine==null)
+                    {}
+                    else
+                    {
+                        foreach(Narudzbina n in narudzbine)
+                        {
+                            Context.Narudzbine.Remove(n);
+                            //Console.WriteLine(n.ID);
+                        }
+                    }
+                    //Console.WriteLine(klijent.ID);
+                    //Console.WriteLine(korpa.ID);
+
+                    Context.Klijenti.Remove(klijent);
+                    Context.Korpe.Remove(korpa);
+                    break;
+                }
+            }
+            Context.Korisnici.Remove(za_brisanje);
+            await Context.SaveChangesAsync();
+            return Ok(true);
+        }
+        catch(Exception e)
+        {
+               return Ok(e.ToString());
+        }
+    }
 }
