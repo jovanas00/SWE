@@ -1,13 +1,12 @@
 namespace BackEnd.Models
 {
-    [Table("KORPA_PROIZVOD")]
-    public class KorpaProizvod
+    [Table("NARUCENI_PROIZVOD")]
+    public class NaruceniProizvod
     {
+        [Key()]
         [JsonIgnore]
-        public virtual Proizvod Proizvod { get; set; }
-
-        [Column("ProizvodID")]
-        public int proizvodID { get; set; }
+        [Column("NaruceniProizvodID")]
+        public int ID { get; set; }
 
         [Column("NazivProizvoda")]
         [MaxLength(30)]
@@ -16,14 +15,10 @@ namespace BackEnd.Models
         [Column("SlikaProizvoda")]
         public string slikaProizvoda { get; set; }
 
-        [JsonIgnore]
-        public virtual Korpa Korpa { get; set; }
-
-        [Column("KorpaID")]
-        public int korpaID { get; set; }
-
         [Required()]
         [Column("Kolicina")]
         public int kolicina { get; set; }
+
+        public virtual Narudzbina Narudzbina {get;set;}  
     }
 }

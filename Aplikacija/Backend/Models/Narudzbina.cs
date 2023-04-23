@@ -27,7 +27,7 @@ namespace BackEnd.Models
 
         #region ReferenceNaDrugeKlase
         [JsonIgnore]
-        public virtual List<KorpaProizvod> proizvodi {get;set;} 
+        public virtual List<NaruceniProizvod> NaruceniProizvodi {get;set;} 
         [JsonIgnore]
         public virtual Korpa Korpa {get;set;} 
         [JsonIgnore]

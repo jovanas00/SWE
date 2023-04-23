@@ -158,21 +158,19 @@ public class KlijentController : ControllerBase
         try
         {
             var proizvod = await Context.Proizvodi.FindAsync(proizvodID);
+            var korpa = await Context.Korpe.FindAsync(korpaID);
 
-            var staraKorpa = await Context.Korpe.FindAsync(korpaID);
-
-            //mogucnost da se doda vise puta isti proizvod,samo da se promeni kolicina u korpi
             var kp = new KorpaProizvod{
                 proizvodID = proizvodID,
                 nazivProizvoda = proizvod.naziv,
                 slikaProizvoda = "Nema trenutno",
                 korpaID = korpaID,
-                Kolicina = kolicina
+                kolicina = kolicina
             };
-            if (staraKorpa != null && proizvod != null)
+            if (korpa != null && proizvod != null)
             {
-                staraKorpa.ukupnaCena = staraKorpa.ukupnaCena + proizvod.cena*kp.Kolicina; 
-                Context.Korpe.Update(staraKorpa);
+                korpa.ukupnaCena = korpa.ukupnaCena + proizvod.cena*kp.kolicina; 
+                Context.Korpe.Update(korpa);
             }
             Context.KorpeProizvodi.Add(kp);
             await Context.SaveChangesAsync();
@@ -190,16 +188,7 @@ public class KlijentController : ControllerBase
         Korpa k = await Context.Korpe
                     .Include(k => k.Proizvodi)
                     .FirstOrDefaultAsync(k => k.ID == id_korpa);
-        List<KorpaProizvod> lista = new List<KorpaProizvod>();
-
-        if (k != null)
-        {
-            foreach (KorpaProizvod kp in k.Proizvodi)
-            {
-                lista.Add(kp);
-            }
-        }
-        return lista;
+        return k.Proizvodi;
     }
    
     [HttpPut("IzbaciIzKorpe/{proizvodID}/{korpaID}")]
@@ -212,7 +201,7 @@ public class KlijentController : ControllerBase
             var staraKorpa = await Context.Korpe.FindAsync(korpaID);
             if (staraKorpa != null && proizvod != null)
             {
-                staraKorpa.ukupnaCena = staraKorpa.ukupnaCena - proizvod.cena*proizvod_korpa.Kolicina;
+                staraKorpa.ukupnaCena = staraKorpa.ukupnaCena - proizvod.cena*proizvod_korpa.kolicina;
                 Context.Korpe.Update(staraKorpa);
             }
             Context.KorpeProizvodi.Remove(proizvod_korpa);
@@ -225,23 +214,20 @@ public class KlijentController : ControllerBase
         }
     }
 
-    [HttpPost("Naruci/{korpaID}/{klijentID}/{salonID}")]
-    public async Task<ActionResult<Narudzbina>> Naruci(int korpaID, int klijentID, int salonID)
+    [HttpPost("Naruci/{korpaID}/{salonID}")]
+    public async Task<ActionResult<Narudzbina>> Naruci(int korpaID,int salonID)
     {
         try
         {
             Korpa k = await Context.Korpe
                     .Include(k => k.Proizvodi)
                     .FirstOrDefaultAsync(k => k.ID == korpaID);
-
-            //mozda bi ovde mogao i klijent da se include,da se ne prosledjuje i id korpe i id klijenta
-            //var klijent = Context.Klijenti.Where(k=>k.Korpa.ID==korpaID).FirstOrDefault();
-            
-            var klijent = await Context.Klijenti.FindAsync(klijentID);
+            var klijent = Context.Klijenti.Where(k=>k.Korpa.ID==korpaID).FirstOrDefault();
             var salon = await Context.Saloni.FindAsync(salonID);
-            if (k == null)
+
+            if (k == null || salon==null)
             {
-                return Ok("Nije pronađena korpa.");
+                return Ok("Neuspesno narucivanje!");
             }
 
             Narudzbina n = new Narudzbina{
@@ -252,24 +238,27 @@ public class KlijentController : ControllerBase
                     Korpa=k,
                     Klijent=klijent,
                     Salon=salon,
-                    proizvodi=new List<KorpaProizvod>()
+                    NaruceniProizvodi=new List<NaruceniProizvod>()
                 };
+
             foreach(KorpaProizvod kp in k.Proizvodi)
             {
-                n.proizvodi.Add(kp);
+                NaruceniProizvod np = new NaruceniProizvod{
+                    nazivProizvoda=kp.nazivProizvoda,
+                    slikaProizvoda=kp.slikaProizvoda,
+                    kolicina=kp.kolicina,
+                    Narudzbina=n
+                };
+                Context.NaruceniProizvodi.Add(np);
             }
             Context.Narudzbine.Add(n);
             
             var izbaciti = await Context.KorpeProizvodi.Where(k=>k.korpaID==korpaID).ToListAsync();
-            foreach(var kp in izbaciti)
-            {
-                k.Proizvodi.Remove(kp);
-            }
-
             Context.KorpeProizvodi.RemoveRange(izbaciti);
-            await Context.SaveChangesAsync();
+            k.ukupnaCena=0;
 
-            return Ok(n.proizvodi);
+            await Context.SaveChangesAsync();
+            return Ok(n);
         }
         catch (Exception e)
         {
@@ -278,20 +267,13 @@ public class KlijentController : ControllerBase
     }
 
     [HttpGet("VratiProizvodeNarudzbina/{id_narudzbine}")]
-    public async Task<ActionResult<List<KorpaProizvod>>> VratiProizvodeNarudzbina(int id_narudzbine)
+    public async Task<ActionResult<List<NaruceniProizvod>>> VratiProizvodeNarudzbina(int id_narudzbine)
     {
         Narudzbina n = await Context.Narudzbine
-                    .Include(n => n.proizvodi)
+                    .Include(n => n.NaruceniProizvodi)
                     .FirstOrDefaultAsync(n => n.ID == id_narudzbine);
-        List<KorpaProizvod> lista = new List<KorpaProizvod>();
-
-        if (n != null)
-        {
-            foreach (KorpaProizvod kp in n.proizvodi)
-            {
-                lista.Add(kp);
-            }
-        }
-        return lista;
+        return n.NaruceniProizvodi;
     }
+
+
 }

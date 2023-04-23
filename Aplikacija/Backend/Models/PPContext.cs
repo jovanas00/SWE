@@ -14,6 +14,7 @@ namespace BackEnd.Models
         public DbSet<Salon> Saloni { get; set; }
         public DbSet<Usluga> Usluge { get; set; }
         public DbSet<Zahtev> Zahtevi { get; set; }
+        public DbSet<NaruceniProizvod> NaruceniProizvodi { get; set; }
 
         //tabele spoja
         public DbSet<KorpaProizvod> KorpeProizvodi { get; set; }
