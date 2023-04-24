@@ -130,7 +130,90 @@ public class AdminController : ControllerBase
                 switch(za_brisanje.tip)
                 {
                     case "Salon":
-                    //zahtev,usluga,pitanje,proizvod,recenzija,narudzbina,naruceniproizvodi...
+                    var salon = Context.Saloni.Include(k=>k.Korisnik).FirstOrDefault(k=>k.Korisnik.ID==za_brisanje.ID);
+
+                    List<Zahtev> zahtevi_salon = await Context.Zahtevi.Include(k=>k.Salon).Where(k=>k.Salon.ID==salon.ID).ToListAsync();
+                    if(zahtevi_salon==null)
+                    {}
+                    else
+                    {
+                        foreach(Zahtev z in zahtevi_salon)
+                        {
+                            Context.Zahtevi.Remove(z);
+                            //Console.WriteLine(z.ID);
+                        }
+                    }
+
+                    List<Usluga> usluge = await Context.Usluge.Include(k=>k.Salon).Where(k=>k.Salon.ID==salon.ID).ToListAsync();
+                    if(usluge==null)
+                    {}
+                    else
+                    {
+                        foreach(Usluga u in usluge)
+                        {
+                            Context.Usluge.Remove(u);
+                            //Console.WriteLine(z.ID);
+                        }
+                    }
+
+                    List<Pitanje> pitanja_salon = await Context.Pitanja.Include(k=>k.Salon).Where(k=>k.Salon.ID==salon.ID).ToListAsync();
+                    if(pitanja_salon==null)
+                    {}
+                    else
+                    {
+                        foreach(Pitanje p in pitanja_salon)
+                        {
+                            Context.Pitanja.Remove(p);
+                            //Console.WriteLine(z.ID);
+                        }
+                    }
+
+                    List<Recenzija> recenzije_salon = await Context.Recenzije.Include(k=>k.Salon).Where(k=>k.Salon.ID==salon.ID).ToListAsync();
+                    if(recenzije_salon==null)
+                    {}
+                    else
+                    {
+                        foreach(Recenzija r in recenzije_salon)
+                        {
+                            Context.Recenzije.Remove(r);
+                            //Console.WriteLine(z.ID);
+                        }
+                    }
+
+                    List<Narudzbina> narudzbine_salon = await Context.Narudzbine.Include(k=>k.Salon).Where(k=>k.Salon.ID==salon.ID).ToListAsync();
+                    if(narudzbine_salon==null)
+                    {}
+                    else
+                    {
+                        foreach(Narudzbina n in narudzbine_salon)
+                        {
+                            List<NaruceniProizvod> proizvodi = await Context.NaruceniProizvodi.Where(k=>k.Narudzbina.ID==n.ID).ToListAsync();
+                            foreach(NaruceniProizvod p in proizvodi)
+                            {
+                                Context.NaruceniProizvodi.Remove(p);
+                                //Console.WriteLine(p.nazivProizvoda);
+                            }
+                            Context.Narudzbine.Remove(n);
+                            //Console.WriteLine(n.ID);
+                        }
+                    }
+
+                    List<Proizvod> proizvodi_salon = await Context.Proizvodi.Include(k=>k.Salon).Where(k=>k.Salon.ID==salon.ID).ToListAsync();
+                    if(proizvodi_salon==null)
+                    {}
+                    else
+                    {
+                        foreach(Proizvod pro in proizvodi_salon)
+                        {
+                            List<KorpaProizvod> korpe_proizvodi = await Context.KorpeProizvodi.Where(p=>p.Proizvod.ID==pro.ID).ToListAsync();
+                            foreach(KorpaProizvod kp in korpe_proizvodi)
+                            {
+                                Context.KorpeProizvodi.Remove(kp);
+                            }
+                            Context.Proizvodi.Remove(pro);
+                            //Console.WriteLine(z.ID);
+                        }
+                    }
                     break;
 
                     case "Klijent":
