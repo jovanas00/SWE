@@ -208,6 +208,8 @@ public class AdminController : ControllerBase
                             List<KorpaProizvod> korpe_proizvodi = await Context.KorpeProizvodi.Where(p=>p.Proizvod.ID==pro.ID).ToListAsync();
                             foreach(KorpaProizvod kp in korpe_proizvodi)
                             {
+                                Korpa korpa_ = await Context.Korpe.FindAsync(kp.korpaID);
+                                korpa_.ukupnaCena-=kp.Proizvod.cena*kp.kolicina;
                                 Context.KorpeProizvodi.Remove(kp);
                             }
                             Context.Proizvodi.Remove(pro);
