@@ -11,7 +11,7 @@ const Slider = ({ slides }) => {
                 <Carousel.Item>
                     <img
                         className="d-block w-100"
-                        style={{height: 750}}
+                        style={{maxWidth: "100%", height: "auto"}}
                         src={slider1}
                         alt="First slide"
                     />
@@ -23,7 +23,7 @@ const Slider = ({ slides }) => {
                 <Carousel.Item>
                     <img
                         className="d-block w-100"
-                        style={{height: 750}}
+                        style={{maxWidth: "100%", height: "auto"}}
                         src={slider2}
                         alt="Second slide"
                     />
@@ -36,7 +36,7 @@ const Slider = ({ slides }) => {
                 <Carousel.Item>
                     <img
                         className="d-block w-100"
-                        style={{height: 750}}
+                        style={{maxWidth: "100%", height: "auto"}}
                         src={slider3}
                         alt="Third slide"
                     />
