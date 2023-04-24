@@ -160,7 +160,7 @@ public class KorisnikController : ControllerBase
                        grad=grad,
                        brojTelefona=broj,
                        Korisnik=k,
-                       prosecnaOcena=0,
+                       //prosecnaOcena=0,
                    };
                     Context.Korisnici.Add(k);
                     Context.Saloni.Add(s);

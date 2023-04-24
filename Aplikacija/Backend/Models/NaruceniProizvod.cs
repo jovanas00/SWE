@@ -19,6 +19,7 @@ namespace BackEnd.Models
         [Column("Kolicina")]
         public int kolicina { get; set; }
 
-        public virtual Narudzbina Narudzbina {get;set;}  
+        public virtual Narudzbina Narudzbina { get; set;}  
+        public virtual Klijent Klijent { get; set;}
     }
 }

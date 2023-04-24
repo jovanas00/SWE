@@ -222,7 +222,8 @@ public class KlijentController : ControllerBase
             Korpa k = await Context.Korpe
                     .Include(k => k.Proizvodi)
                     .FirstOrDefaultAsync(k => k.ID == korpaID);
-            var klijent = Context.Klijenti.Where(k=>k.Korpa.ID==korpaID).FirstOrDefault();
+            Klijent klijent = Context.Klijenti.Where(k=>k.Korpa.ID==korpaID).FirstOrDefault();
+            Console.WriteLine(klijent.ID);
             var salon = await Context.Saloni.FindAsync(salonID);
 
             if (k == null || salon==null)
@@ -247,7 +248,8 @@ public class KlijentController : ControllerBase
                     nazivProizvoda=kp.nazivProizvoda,
                     slikaProizvoda=kp.slikaProizvoda,
                     kolicina=kp.kolicina,
-                    Narudzbina=n
+                    Narudzbina=n,
+                    Klijent=klijent
                 };
                 Context.NaruceniProizvodi.Add(np);
             }

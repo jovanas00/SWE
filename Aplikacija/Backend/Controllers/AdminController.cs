@@ -130,11 +130,24 @@ public class AdminController : ControllerBase
                 switch(za_brisanje.tip)
                 {
                     case "Salon":
+                    //zahtev,usluga,pitanje,proizvod,recenzija,narudzbina,naruceniproizvodi...
                     break;
 
                     case "Klijent":
                     var klijent = Context.Klijenti.Include(k=>k.Korisnik).FirstOrDefault(k=>k.Korisnik.ID==za_brisanje.ID);
                     var korpa = Context.Korpe.Include(k=>k.Klijent).FirstOrDefault(k=>k.Klijent.ID==klijent.ID);
+
+                    List<KorpaProizvod> proizvodi_korpa = await Context.KorpeProizvodi.Where(k=>k.Korpa.ID==korpa.ID).ToListAsync();
+                    if(proizvodi_korpa==null)
+                    {}
+                    else
+                    {
+                        foreach(KorpaProizvod kp in proizvodi_korpa)
+                        {
+                            Context.KorpeProizvodi.Remove(kp);
+                        }
+                    }
+
                     List<Narudzbina> narudzbine = await Context.Narudzbine.Include(k=>k.Korpa).Where(k=>k.Korpa.ID==korpa.ID).ToListAsync();
                     if(narudzbine==null)
                     {}
@@ -142,8 +155,50 @@ public class AdminController : ControllerBase
                     {
                         foreach(Narudzbina n in narudzbine)
                         {
+                            List<NaruceniProizvod> proizvodi = await Context.NaruceniProizvodi.Include(k=>k.Klijent).Where(k=>k.Klijent.ID==klijent.ID && k.Narudzbina.ID==n.ID).ToListAsync();
+                            foreach(NaruceniProizvod p in proizvodi)
+                            {
+                                Context.NaruceniProizvodi.Remove(p);
+                                //Console.WriteLine(p.nazivProizvoda);
+                            }
                             Context.Narudzbine.Remove(n);
                             //Console.WriteLine(n.ID);
+                        }
+                    }
+
+                    List<Recenzija> recenzije = await Context.Recenzije.Include(k=>k.Klijent).Where(k=>k.Klijent.ID==klijent.ID).ToListAsync();
+                    if(recenzije==null)
+                    {}
+                    else
+                    {
+                        foreach(Recenzija r in recenzije)
+                        {
+                            Context.Recenzije.Remove(r);
+                            //Console.WriteLine(r.ID);
+                        }
+                    }
+
+                    List<Pitanje> pitanja = await Context.Pitanja.Include(k=>k.Klijent).Where(k=>k.Klijent.ID==klijent.ID).ToListAsync();
+                    if(pitanja==null)
+                    {}
+                    else
+                    {
+                        foreach(Pitanje p in pitanja)
+                        {
+                            Context.Pitanja.Remove(p);
+                            //Console.WriteLine(p.ID);
+                        }
+                    }
+
+                    List<Zahtev> zahtevi = await Context.Zahtevi.Include(k=>k.Klijent).Where(k=>k.Klijent.ID==klijent.ID).ToListAsync();
+                    if(zahtevi==null)
+                    {}
+                    else
+                    {
+                        foreach(Zahtev z in zahtevi)
+                        {
+                            Context.Zahtevi.Remove(z);
+                            //Console.WriteLine(z.ID);
                         }
                     }
                     //Console.WriteLine(klijent.ID);
