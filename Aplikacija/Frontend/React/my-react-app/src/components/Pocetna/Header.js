@@ -16,7 +16,7 @@ const Header = () => {
     <header >
       <div className="logo">
         <a href="/#"><img src={logo} alt="Logo" /></a>
-        <h3>Pet Planet</h3>
+        <h3 class="petplanet-header">Pet Planet</h3>
       </div>
       {/* <h3 className="logo"><a href="/#"><img src={logo} alt="Logo" /></a></h3> */}
       <nav ref={navRef}>

@@ -20,7 +20,7 @@ header {
 	align-items: center;
 	justify-content: space-between;
 	height: 80px;
-	padding: 0 2rem;
+	padding: 0 1rem;
 	background-color: var(--mainColor);
 	color: var(--textColor);
 }
@@ -36,7 +36,7 @@ nav a:hover {
 }
 
 header .nav-btn {
-	padding: 5px;
+	padding: 0px;
 	cursor: pointer;
 	background: transparent;
 	border: none;
@@ -44,13 +44,27 @@ header .nav-btn {
 	color: var(--textColor);
 	visibility: hidden;
 	opacity: 0;
-	font-size: 1.8rem;
+	font-size: 2.5rem;
 }
+.logo {
+	display: flex;
+	align-items: center;
+	white-space: nowrap;
+	margin-right: auto;
+  }
+  
+.petplanet-header {
+	margin-right: auto;
+	align-items: center;
+  }
 
 header div,
 nav {
 	display: flex;
+	justify-content: flex-end;
 	align-items: center;
+	flex: 1;
+	padding-right: 0rem; /* ili margin-right: 1rem; */
 }
 
 @media only screen and (max-width: 1024px) {
