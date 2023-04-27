@@ -1,16 +1,18 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Header from './Header';
 import Slider from './Slider';
 import Footer from './Footer';
 
-const Pocetna = () => {
-    return(
-        <Fragment>
-            <Header/>
-            <Slider/>
-            <Footer/>
-        </Fragment>
-    );
+function Pocetna() {
+  return (
+    <div className="Pocetna">
+      <Header />
+      <Slider />
+      <div className="main-content">
+      </div>
+      <Footer />
+    </div>
+  );
 }
 
 export default Pocetna;
