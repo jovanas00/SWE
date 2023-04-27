@@ -1,63 +1,47 @@
-import React, { useState, useRef, Fragment } from 'react';
+import React, { useState, useRef } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import './Header.css';
 import logo from '../../images/logo.png';
 import { Link } from 'react-router-dom';
-import { ImCross } from 'react-icons/im';
 
 const Header = () => {
-  const navRef = useRef(); //referenca na element s kojim se radi na ekranu
+  const [isNavOpen, setIsNavOpen] = useState(false);
+
+  const navRef = useRef(null); // dodaj null da se ne bi javila greška
 
   const showNavbar = () => {
-    navRef.current.classList.toggle("responsive_nav");
+    if (navRef.current) { // proveri da li postoji referenca
+      navRef.current.classList.toggle("responsive_nav");
+    }
   }
 
   return (
-    <header >
+    <header>
       <div className="logo">
         <a href="/#"><img src={logo} alt="Logo" /></a>
-        <h3 class="petplanet-header">Pet Planet</h3>
+        <h3 className="petplanet-header">Pet Planet</h3> {/* ispravi klasu */}
       </div>
-      {/* <h3 className="logo"><a href="/#"><img src={logo} alt="Logo" /></a></h3> */}
-      <nav ref={navRef}>
-        <a href="/#">Pocetna</a>
-        <a href="/#">Saloni</a>
-        <a href="/#">Prijavi se</a>
-        <a href="/#">Registruj se</a>
+      <nav className={isNavOpen ? 'nav-open' : ''} ref={navRef}> {/* dodaj ref */}
+        <Link to="/" onClick={() => setIsNavOpen(false)}>
+          Početna
+        </Link>
+        <Link to="/saloni" onClick={() => setIsNavOpen(false)}>
+          Saloni
+        </Link>
+        <Link to="/prijavise" onClick={() => setIsNavOpen(false)}>
+          Prijavi se
+        </Link>
+        <Link to="/registrujse" onClick={() => setIsNavOpen(false)}>
+          Registruj se
+        </Link>
         <button className="nav-btn nav-close-btn" onClick={showNavbar}>
           <FaTimes/>
         </button>
       </nav>
-      {/* za ptvaranje navbara u nav screenu */}
       <button className="nav-btn" onClick={showNavbar}>
         <FaBars />
       </button>
     </header>
-    // <nav className="navbar">
-    //   <div className="container">
-    //     <h3 className="logo">Logo</h3>
-
-    //     <ul className={mobile? "nav-links-mobile" : "nav-links"} onClick={() =>setMobile(false)}>
-    //       <Link to="/" className="pocetna">
-    //         <li>Pocetna</li>
-    //       </Link>
-    //       <Link to="/saloni" className="saloni">
-    //         <li>Saloni</li>
-    //       </Link>
-    //       <Link to="/prijavise" className="prijavise">
-    //         <li>Prijavi se</li>
-    //       </Link>
-    //       <Link to="/registrujse" className="registrujse">
-    //         <li>Registruj se</li>
-    //       </Link>
-    //     </ul>
-    //     <button className="mobile-menu-icon" onClick={() => setMobile(!mobile)}>
-    //       {mobile? <ImCross/> : <FaBars/>}
-    //     </button>
-    //   </div>
-    //</nav>
-
-
   );
 };
 
