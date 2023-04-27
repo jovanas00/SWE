@@ -16,8 +16,9 @@ const Slider = ({ slides }) => {
                         alt="First slide"
                     />
                     <Carousel.Caption>
-                        <h3>First slide label</h3>
-                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                        <div style={{ color: "#ff1a1a" }}>
+                            <h3>Vaši ljubimci zaslužuju najbolje, a mi im to pružamo!</h3>
+                        </div>
                     </Carousel.Caption>
                 </Carousel.Item>
                 <Carousel.Item>
@@ -29,8 +30,9 @@ const Slider = ({ slides }) => {
                     />
 
                     <Carousel.Caption>
-                        <h3>Second slide label</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <div style={{ color: "#ff1a1a" }}>
+                            <h3>Obezbedite svojim ljubimcima pažnju i negu koju zaslužuju u našim salonima za kućne ljubimce.</h3>
+                        </div>
                     </Carousel.Caption>
                 </Carousel.Item>
                 <Carousel.Item>
@@ -42,10 +44,10 @@ const Slider = ({ slides }) => {
                     />
 
                     <Carousel.Caption>
-                        <h3>Third slide label</h3>
-                        <p>
-                            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-                        </p>
+                        <div style={{ color: "#ff1a1a" }}>
+                            <h3>U našim salonima za kućne ljubimce možete pronaći širok izbor usluga i proizvoda za negu vaših ljubimaca.</h3>
+                        </div>
+
                     </Carousel.Caption>
                 </Carousel.Item>
             </Carousel>
