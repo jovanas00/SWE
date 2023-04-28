@@ -13,14 +13,11 @@ function App() {
   return (
     <Router>
       <div>
-
-
         <Routes>
           <Route path="/" element={<Pocetna />} />
           <Route path="/saloni" element={<Saloni />} />
-          <Route path="/prijavise" element={<Prijava />} />
-          <Route path="/registrujse" element={<Registracija />} />
-
+          <Route path="/prijava" element={<Prijava />} />
+          <Route path="/registracija" element={<Registracija />} />
         </Routes>
       </div>
     </Router>

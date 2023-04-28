@@ -53,7 +53,7 @@ const SalonRegistracija = () => {
         <input type="text" id="phone" name="phone" onChange={handleChange} value={salon.phone} required />
         <button type="submit">Registruj se</button>
       </form>
-      <p className="registration-login">Već imaš nalog? <Link to="/prijavise">Prijavi se</Link></p>
+      <p className="registration-login">Već imaš nalog? <Link to="/prijava">Prijavi se</Link></p>
     </div>
   );
 };

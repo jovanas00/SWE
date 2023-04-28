@@ -56,7 +56,7 @@ const KlijentRegistracija = () => {
         <input type="text" id="city" name="city" onChange={handleChange} value={client.city} required />
         <button type="submit">Registruj se</button>
       </form>
-      <p className="registration-login">Već imaš nalog? <Link to="/prijavise">Prijavi se</Link></p>
+      <p className="registration-login">Već imaš nalog? <Link to="/prijava">Prijavi se</Link></p>
     </div>
   );
 };
