@@ -8,8 +8,6 @@ function Pocetna() {
     <div className="Pocetna">
       <Header />
       <Slider />
-      <div className="main-content">
-      </div>
       <Footer />
     </div>
   );
