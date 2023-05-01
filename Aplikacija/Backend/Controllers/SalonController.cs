@@ -36,7 +36,8 @@ public class SalonController : ControllerBase
     [HttpPut]
     public async Task<ActionResult<Pitanje>> OdgovoriNaPitanje(int id_pitanje, string tekst)
     {
-        try{
+        try
+        {
             Pitanje p = await Context.Pitanja.FindAsync(id_pitanje);
             if(p==null)
                 return NotFound();
@@ -51,20 +52,20 @@ public class SalonController : ControllerBase
         }
     }
 
-    [HttpPut("ObradiZahtev/{zahtevID}/{status}/{komentarSalona}")]
-    public async Task<ActionResult<Zahtev>> ObradiZahtev(int zahtevID, string status, string komentarSalona)
+    [HttpPut("ObradiZahtev/{id_zahtev}/{status}/{komentarSalona}")]
+    public async Task<ActionResult<Zahtev>> ObradiZahtev(int id_zahtev, string status, string komentarSalona)
     {
         try
         {
-            var stariZahtev = await Context.Zahtevi.FindAsync(zahtevID);
-            if (stariZahtev != null)
+            var zahtev = await Context.Zahtevi.FindAsync(id_zahtev);
+            if (zahtev != null)
             {
-                stariZahtev.status = status; 
-                stariZahtev.komentarSalona = komentarSalona;
-                Context.Zahtevi.Update(stariZahtev);
+                zahtev.status = status; 
+                zahtev.komentarSalona = komentarSalona;
+                Context.Zahtevi.Update(zahtev);
             }
             await Context.SaveChangesAsync();
-            return Ok($"ID obrađenog zahteva je: {zahtevID}");
+            return Ok($"ID obrađenog zahteva je: {id_zahtev}");
         }
         catch (Exception e)
         {
@@ -73,66 +74,24 @@ public class SalonController : ControllerBase
     }
     
 
-    [HttpPut("ObradiNarudzbinu/{narudzbinaID}/{status}")]
-    public async Task<ActionResult<Narudzbina>> ObradiNarudzbinu(int narudzbinaID, string status)
+    [HttpPut("ObradiNarudzbinu/{id_narudzbina}/{status}/{komentar_salona}")]
+    public async Task<ActionResult<Narudzbina>> ObradiNarudzbinu(int id_narudzbina, string status,string komentar_salona)
     {
         try
         {
-            var staraNarudzbina = await Context.Narudzbine.FindAsync(narudzbinaID);
-            if (staraNarudzbina != null)
+            var narudzbina = await Context.Narudzbine.FindAsync(id_narudzbina);
+            if (narudzbina != null)
             {
-                staraNarudzbina.status = status; //salon menja samo status
-                Context.Narudzbine.Update(staraNarudzbina);
+                narudzbina.status = status;
+                narudzbina.komentarSalona = komentar_salona;
+                Context.Narudzbine.Update(narudzbina);
             }
             await Context.SaveChangesAsync();
-            return Ok("ID obrađene narudžbine je: {narudzbinaID}");
+            return Ok("ID obrađene narudžbine je: {id_narudzbina}");
         }
         catch (Exception e)
         {
             return BadRequest(e.Message);
         }
     }
-
-    // //da salon preuzme zahteve
-    // [HttpGet("PreuzmiZahteve")]
-
-    // public async Task<ActionResult> PreuzmiZahteve()
-    // {
-    //     try
-    //     {
-    //         return Ok(await Context.Zahtevi.ToListAsync());
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         return BadRequest(e.Message);
-    //     }
-    // }
-
-    // [HttpGet("PreuzmiNarudzbine")]
-
-    // public async Task<ActionResult> PreuzmiNarudzbine()
-    // {
-    //     try
-    //     {
-    //         return Ok(await Context.Narudzbine.ToListAsync());
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         return BadRequest(e.Message);
-    //     }
-    // }
-
-    // [HttpGet("PreuzmiRecenzije")]
-
-    // public async Task<ActionResult> PreuzmiRecenzije()
-    // {
-    //     try
-    //     {
-    //         return Ok(await Context.Recenzije.ToListAsync());
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         return BadRequest(e.Message);
-    //     }
-    // }
 }

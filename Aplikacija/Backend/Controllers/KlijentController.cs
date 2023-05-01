@@ -134,7 +134,7 @@ public class KlijentController : ControllerBase
                     tekst = tekst,
                     ocena = ocena,
                     datum = DateTime.Now,
-                    Salon = salon, //izračunavanje prosečne ocene 
+                    Salon = salon,
                     Klijent = klijent
                 };
                 Context.Recenzije.Add(r);
@@ -181,7 +181,31 @@ public class KlijentController : ControllerBase
             return BadRequest(e.Message);
         }
     }
-    
+    [HttpPut("PromeniKolicinu/{id_proizvod}/{id_korpa}/{kolicina}")]
+    public async Task<ActionResult<Korpa>> PromeniKolicinu(int id_proizvod,int id_korpa,int kolicina)
+    {
+        try
+        {
+            var proizvod_korpa = Context.KorpeProizvodi.Where(kp=>kp.proizvodID==id_proizvod && kp.korpaID==id_korpa).FirstOrDefault();
+            Proizvod proizvod = await Context.Proizvodi.FindAsync(id_proizvod);
+            Korpa korpa = await Context.Korpe.FindAsync(id_korpa);
+
+            korpa.ukupnaCena-=proizvod.cena*proizvod_korpa.kolicina;
+            korpa.ukupnaCena+=proizvod.cena*kolicina;
+
+            proizvod_korpa.kolicina=kolicina;
+
+            Context.KorpeProizvodi.Update(proizvod_korpa);
+            Context.Korpe.Update(korpa);
+            await Context.SaveChangesAsync();
+            return Ok(korpa);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
     [HttpGet("VratiProizvodeIzKorpe/{id_korpa}")]
     public async Task<ActionResult<List<KorpaProizvod>>> VratiProizvodeIzKorpe(int id_korpa)
     {

@@ -85,6 +85,21 @@ public class KorisnikController : ControllerBase
         public async Task<ActionResult> RegistracijaKlijent(string korisnicko_ime,string lozinka,string email,string ime,string prezime,string adresa,string broj,string grad)
         {
             //dodatna ogranicenja...
+            if(string.IsNullOrWhiteSpace(korisnicko_ime))
+                return BadRequest("Korisnicko ime nije validno");
+             if(string.IsNullOrWhiteSpace(lozinka))
+                return BadRequest("Lozinka nije validna");   
+            if(string.IsNullOrWhiteSpace(email) ||  email.Length > 60)
+                return BadRequest("Email nije validan");   
+            if(string.IsNullOrWhiteSpace(grad))
+                return BadRequest("Grad nije validan");
+            if(string.IsNullOrWhiteSpace(ime) ||  ime.Length > 30)
+                return BadRequest("Ime nije validno");   
+            if(string.IsNullOrWhiteSpace(prezime) ||  prezime.Length > 60)
+                return BadRequest("Prezime nije validno"); 
+            if(string.IsNullOrWhiteSpace(broj) ||  broj.Length > 13)
+                return BadRequest("Broj nije validan"); 
+
             if(await Context.Korisnici.Where(p=>p.korisnickoIme==korisnicko_ime).FirstOrDefaultAsync()!=null) return BadRequest("Korisnicko ime zauzeto");
             if(await Context.Korisnici.Where(p=>p.email==email).FirstOrDefaultAsync()!=null) return BadRequest("Email je zauzet");
 
@@ -142,7 +157,19 @@ public class KorisnikController : ControllerBase
         [AllowAnonymous]
         public async Task<ActionResult> RegistracijaSalon(string korisnicko_ime,string lozinka,string email,string naziv,string grad,string adresa,string broj)
         {
-            //dodatna ogranicenja...
+             if(string.IsNullOrWhiteSpace(korisnicko_ime))
+                return BadRequest("Korisnicko ime nije validno");
+             if(string.IsNullOrWhiteSpace(lozinka))
+                return BadRequest("Lozinka nije validna");   
+            if(string.IsNullOrWhiteSpace(email) ||  email.Length > 60)
+                return BadRequest("Email nije validan");   
+            if(string.IsNullOrWhiteSpace(grad))
+                return BadRequest("Grad nije validan");
+            if(string.IsNullOrWhiteSpace(naziv))
+                return BadRequest("Naziv nije validan");   
+            if(string.IsNullOrWhiteSpace(broj) ||  broj.Length > 13)
+                return BadRequest("Broj nije validan"); 
+
             if(await Context.Korisnici.Where(p=>p.korisnickoIme==korisnicko_ime).FirstOrDefaultAsync()!=null) return BadRequest("Korisnicko ime zauzeto");
             if(await Context.Korisnici.Where(p=>p.email==email).FirstOrDefaultAsync()!=null) return BadRequest("Email je zauzet");
 
@@ -222,10 +249,10 @@ public class KorisnikController : ControllerBase
              if(string.IsNullOrWhiteSpace(email) || email.Length > 60)
                 return BadRequest("Email nije validan");
 
-             if(string.IsNullOrWhiteSpace(lozinka) ||  lozinka.Length > 30)
+             if(string.IsNullOrWhiteSpace(lozinka))
                 return BadRequest("Lozinka nije validna");   
 
-             if(string.IsNullOrWhiteSpace(NovaLozinka) || NovaLozinka.Length > 30  && lozinka.CompareTo(NovaLozinka)==0)
+             if(string.IsNullOrWhiteSpace(NovaLozinka) && lozinka.CompareTo(NovaLozinka)==0)
                 return BadRequest("Lozinka nije validna");  
                 
 
@@ -313,7 +340,4 @@ public class KorisnikController : ControllerBase
                 return StatusCode(500, $"Internal server error: {e}");
             }
         }
-
-        
-
 }

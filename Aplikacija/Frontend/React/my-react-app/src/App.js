@@ -12,7 +12,7 @@ import axios, { Axios } from 'axios';
 
 function App() {
   // useEffect(()=>{
-  //   axios.get('http://localhost:5169/ProizvodUsluga/VratiSveProizvode')
+  //   axios.get('http://localhost:5169/Proizvod/VratiSveProizvode')
   //   .then((response)=>{
   //     console.log(response.data);
   //   })
