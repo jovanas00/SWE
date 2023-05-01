@@ -33,6 +33,7 @@ namespace Backend.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     KorisnickoIme = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Sifra = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Salt_value = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     Tip = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Slika = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -93,7 +94,6 @@ namespace Backend.Migrations
                     Naziv = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Adresa = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Grad = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    ProsecnaOcena = table.Column<float>(type: "real", nullable: false),
                     BrojTelefona = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
                     KorisnikID = table.Column<int>(type: "int", nullable: true)
                 },
@@ -132,8 +132,9 @@ namespace Backend.Migrations
                     PitanjeID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TekstP = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    TekstO = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Datum = table.Column<DateTime>(type: "datetime", nullable: false),
+                    TekstO = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DatumPostavljanja = table.Column<DateTime>(type: "datetime", nullable: false),
+                    DatumOdgovaranja = table.Column<DateTime>(type: "datetime", nullable: true),
                     SalonID = table.Column<int>(type: "int", nullable: true),
                     KlijentID = table.Column<int>(type: "int", nullable: true)
                 },
@@ -233,11 +234,13 @@ namespace Backend.Migrations
                 name: "NARUDZBINA",
                 columns: table => new
                 {
-                    NarudzbinaID = table.Column<int>(type: "int", nullable: false),
+                    NarudzbinaID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     KomentarSalona = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     UkupnaCena = table.Column<float>(type: "real", nullable: false),
                     Datum = table.Column<DateTime>(type: "datetime", nullable: false),
+                    KorpaID = table.Column<int>(type: "int", nullable: true),
                     KlijentID = table.Column<int>(type: "int", nullable: true),
                     SalonID = table.Column<int>(type: "int", nullable: true)
                 },
@@ -250,16 +253,42 @@ namespace Backend.Migrations
                         principalTable: "KLIJENT",
                         principalColumn: "KlijentID");
                     table.ForeignKey(
-                        name: "FK_NARUDZBINA_KORPA_NarudzbinaID",
-                        column: x => x.NarudzbinaID,
+                        name: "FK_NARUDZBINA_KORPA_KorpaID",
+                        column: x => x.KorpaID,
                         principalTable: "KORPA",
-                        principalColumn: "KorpaID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "KorpaID");
                     table.ForeignKey(
                         name: "FK_NARUDZBINA_SALON_SalonID",
                         column: x => x.SalonID,
                         principalTable: "SALON",
                         principalColumn: "SalonID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "KORPA_PROIZVOD",
+                columns: table => new
+                {
+                    ProizvodID = table.Column<int>(type: "int", nullable: false),
+                    KorpaID = table.Column<int>(type: "int", nullable: false),
+                    NazivProizvoda = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    SlikaProizvoda = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Kolicina = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_KORPA_PROIZVOD", x => new { x.KorpaID, x.ProizvodID });
+                    table.ForeignKey(
+                        name: "FK_KORPA_PROIZVOD_KORPA_KorpaID",
+                        column: x => x.KorpaID,
+                        principalTable: "KORPA",
+                        principalColumn: "KorpaID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_KORPA_PROIZVOD_PROIZVOD_ProizvodID",
+                        column: x => x.ProizvodID,
+                        principalTable: "PROIZVOD",
+                        principalColumn: "ProizvodID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -273,7 +302,7 @@ namespace Backend.Migrations
                     Cena = table.Column<float>(type: "real", nullable: false),
                     DatumVreme = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KomentarSalona = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    KomentarSalona = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     SalonID = table.Column<int>(type: "int", nullable: true),
                     KlijentID = table.Column<int>(type: "int", nullable: true),
                     UslugaID = table.Column<int>(type: "int", nullable: true)
@@ -299,36 +328,30 @@ namespace Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "KORPA_PROIZVOD",
+                name: "NARUCENI_PROIZVOD",
                 columns: table => new
                 {
-                    ProizvodID = table.Column<int>(type: "int", nullable: false),
-                    KorpaID = table.Column<int>(type: "int", nullable: false),
+                    NaruceniProizvodID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     NazivProizvoda = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
                     SlikaProizvoda = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Kolicina = table.Column<int>(type: "int", nullable: false),
-                    NarudzbinaID = table.Column<int>(type: "int", nullable: true)
+                    NarudzbinaID = table.Column<int>(type: "int", nullable: true),
+                    KlijentID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_KORPA_PROIZVOD", x => new { x.KorpaID, x.ProizvodID });
+                    table.PrimaryKey("PK_NARUCENI_PROIZVOD", x => x.NaruceniProizvodID);
                     table.ForeignKey(
-                        name: "FK_KORPA_PROIZVOD_KORPA_KorpaID",
-                        column: x => x.KorpaID,
-                        principalTable: "KORPA",
-                        principalColumn: "KorpaID",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_NARUCENI_PROIZVOD_KLIJENT_KlijentID",
+                        column: x => x.KlijentID,
+                        principalTable: "KLIJENT",
+                        principalColumn: "KlijentID");
                     table.ForeignKey(
-                        name: "FK_KORPA_PROIZVOD_NARUDZBINA_NarudzbinaID",
+                        name: "FK_NARUCENI_PROIZVOD_NARUDZBINA_NarudzbinaID",
                         column: x => x.NarudzbinaID,
                         principalTable: "NARUDZBINA",
                         principalColumn: "NarudzbinaID");
-                    table.ForeignKey(
-                        name: "FK_KORPA_PROIZVOD_PROIZVOD_ProizvodID",
-                        column: x => x.ProizvodID,
-                        principalTable: "PROIZVOD",
-                        principalColumn: "ProizvodID",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -342,19 +365,29 @@ namespace Backend.Migrations
                 column: "KorisnikID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_KORPA_PROIZVOD_NarudzbinaID",
-                table: "KORPA_PROIZVOD",
-                column: "NarudzbinaID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_KORPA_PROIZVOD_ProizvodID",
                 table: "KORPA_PROIZVOD",
                 column: "ProizvodID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_NARUCENI_PROIZVOD_KlijentID",
+                table: "NARUCENI_PROIZVOD",
+                column: "KlijentID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NARUCENI_PROIZVOD_NarudzbinaID",
+                table: "NARUCENI_PROIZVOD",
+                column: "NarudzbinaID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_NARUDZBINA_KlijentID",
                 table: "NARUDZBINA",
                 column: "KlijentID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NARUDZBINA_KorpaID",
+                table: "NARUDZBINA",
+                column: "KorpaID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_NARUDZBINA_SalonID",
@@ -427,6 +460,9 @@ namespace Backend.Migrations
                 name: "KORPA_PROIZVOD");
 
             migrationBuilder.DropTable(
+                name: "NARUCENI_PROIZVOD");
+
+            migrationBuilder.DropTable(
                 name: "PITANJE");
 
             migrationBuilder.DropTable(
@@ -436,19 +472,19 @@ namespace Backend.Migrations
                 name: "ZAHTEV");
 
             migrationBuilder.DropTable(
-                name: "NARUDZBINA");
+                name: "PROIZVOD");
 
             migrationBuilder.DropTable(
-                name: "PROIZVOD");
+                name: "NARUDZBINA");
 
             migrationBuilder.DropTable(
                 name: "USLUGA");
 
             migrationBuilder.DropTable(
-                name: "KORPA");
+                name: "KATEGORIJA");
 
             migrationBuilder.DropTable(
-                name: "KATEGORIJA");
+                name: "KORPA");
 
             migrationBuilder.DropTable(
                 name: "SALON");

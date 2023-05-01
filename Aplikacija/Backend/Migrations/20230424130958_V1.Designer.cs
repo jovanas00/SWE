@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(PPContext))]
-    [Migration("20230407145747_V1")]
+    [Migration("20230424130958_V1")]
     partial class V1
     {
         /// <inheritdoc />
@@ -34,16 +34,16 @@ namespace Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("Ime")
+                    b.Property<int?>("KorisnikID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ime")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("Ime");
 
-                    b.Property<int?>("KorisnikID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Prezime")
+                    b.Property<string>("prezime")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
@@ -65,7 +65,7 @@ namespace Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("Naziv")
+                    b.Property<string>("naziv")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
@@ -85,34 +85,34 @@ namespace Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("Adresa")
+                    b.Property<int?>("KorisnikID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("adresa")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("Adresa");
 
-                    b.Property<string>("BrojTelefona")
+                    b.Property<string>("brojTelefona")
                         .IsRequired()
                         .HasMaxLength(13)
                         .HasColumnType("nvarchar(13)")
                         .HasColumnName("BrojTelefona");
 
-                    b.Property<string>("Grad")
+                    b.Property<string>("grad")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("Grad");
 
-                    b.Property<string>("Ime")
+                    b.Property<string>("ime")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("Ime");
 
-                    b.Property<int?>("KorisnikID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Prezime")
+                    b.Property<string>("prezime")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
@@ -134,27 +134,31 @@ namespace Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("Email")
+                    b.Property<string>("email")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Email");
 
-                    b.Property<string>("KorisnickoIme")
+                    b.Property<string>("korisnickoIme")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("KorisnickoIme");
 
-                    b.Property<string>("Sifra")
+                    b.Property<byte[]>("salt_value")
+                        .HasColumnType("varbinary(max)")
+                        .HasColumnName("Salt_value");
+
+                    b.Property<string>("sifra")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)")
                         .HasColumnName("Sifra");
 
-                    b.Property<string>("Slika")
+                    b.Property<string>("slika")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Slika");
 
-                    b.Property<string>("Tip")
+                    b.Property<string>("tip")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)")
@@ -171,7 +175,7 @@ namespace Backend.Migrations
                         .HasColumnType("int")
                         .HasColumnName("KorpaID");
 
-                    b.Property<float>("UkupnaCena")
+                    b.Property<float>("ukupnaCena")
                         .HasColumnType("real")
                         .HasColumnName("UkupnaCena");
 
@@ -182,73 +186,113 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("BackEnd.Models.KorpaProizvod", b =>
                 {
-                    b.Property<int>("KorpaID")
+                    b.Property<int>("korpaID")
                         .HasColumnType("int")
                         .HasColumnName("KorpaID");
 
-                    b.Property<int>("ProizvodID")
+                    b.Property<int>("proizvodID")
                         .HasColumnType("int")
                         .HasColumnName("ProizvodID");
 
-                    b.Property<int>("Kolicina")
+                    b.Property<int>("kolicina")
                         .HasColumnType("int")
                         .HasColumnName("Kolicina");
 
-                    b.Property<int?>("NarudzbinaID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NazivProizvoda")
+                    b.Property<string>("nazivProizvoda")
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)")
                         .HasColumnName("NazivProizvoda");
 
-                    b.Property<string>("SlikaProizvoda")
+                    b.Property<string>("slikaProizvoda")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("SlikaProizvoda");
 
-                    b.HasKey("KorpaID", "ProizvodID");
+                    b.HasKey("korpaID", "proizvodID");
+
+                    b.HasIndex("proizvodID");
+
+                    b.ToTable("KORPA_PROIZVOD");
+                });
+
+            modelBuilder.Entity("BackEnd.Models.NaruceniProizvod", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("NaruceniProizvodID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int?>("KlijentID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("NarudzbinaID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("kolicina")
+                        .HasColumnType("int")
+                        .HasColumnName("Kolicina");
+
+                    b.Property<string>("nazivProizvoda")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("NazivProizvoda");
+
+                    b.Property<string>("slikaProizvoda")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("SlikaProizvoda");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("KlijentID");
 
                     b.HasIndex("NarudzbinaID");
 
-                    b.HasIndex("ProizvodID");
-
-                    b.ToTable("KORPA_PROIZVOD");
+                    b.ToTable("NARUCENI_PROIZVOD");
                 });
 
             modelBuilder.Entity("BackEnd.Models.Narudzbina", b =>
                 {
                     b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("NarudzbinaID");
 
-                    b.Property<DateTime>("Datum")
-                        .HasColumnType("datetime")
-                        .HasColumnName("Datum");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<int?>("KlijentID")
                         .HasColumnType("int");
 
-                    b.Property<string>("KomentarSalona")
+                    b.Property<int?>("KorpaID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SalonID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("datum")
+                        .HasColumnType("datetime")
+                        .HasColumnName("Datum");
+
+                    b.Property<string>("komentarSalona")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)")
                         .HasColumnName("KomentarSalona");
 
-                    b.Property<int?>("SalonID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
+                    b.Property<string>("status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Status");
 
-                    b.Property<float>("UkupnaCena")
+                    b.Property<float>("ukupnaCena")
                         .HasColumnType("real")
                         .HasColumnName("UkupnaCena");
 
                     b.HasKey("ID");
 
                     b.HasIndex("KlijentID");
+
+                    b.HasIndex("KorpaID");
 
                     b.HasIndex("SalonID");
 
@@ -264,23 +308,26 @@ namespace Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<DateTime>("Datum")
-                        .HasColumnType("datetime")
-                        .HasColumnName("Datum");
-
                     b.Property<int?>("KlijentID")
                         .HasColumnType("int");
 
                     b.Property<int?>("SalonID")
                         .HasColumnType("int");
 
-                    b.Property<string>("TekstO")
-                        .IsRequired()
+                    b.Property<DateTime?>("datumOdgovaranja")
+                        .HasColumnType("datetime")
+                        .HasColumnName("DatumOdgovaranja");
+
+                    b.Property<DateTime>("datumPostavljanja")
+                        .HasColumnType("datetime")
+                        .HasColumnName("DatumPostavljanja");
+
+                    b.Property<string>("tekstO")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("TekstO");
 
-                    b.Property<string>("TekstP")
+                    b.Property<string>("tekstP")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
@@ -304,27 +351,27 @@ namespace Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<float>("Cena")
-                        .HasColumnType("real")
-                        .HasColumnName("Cena");
-
-                    b.Property<bool>("Dostupnost")
-                        .HasColumnType("bit")
-                        .HasColumnName("Dostupnost");
-
                     b.Property<int?>("KategorijaID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Naziv")
+                    b.Property<int?>("SalonID")
+                        .HasColumnType("int");
+
+                    b.Property<float>("cena")
+                        .HasColumnType("real")
+                        .HasColumnName("Cena");
+
+                    b.Property<bool>("dostupnost")
+                        .HasColumnType("bit")
+                        .HasColumnName("Dostupnost");
+
+                    b.Property<string>("naziv")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("Naziv");
 
-                    b.Property<int?>("SalonID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Slika")
+                    b.Property<string>("slika")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Slika");
@@ -347,21 +394,21 @@ namespace Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<DateTime>("Datum")
-                        .HasColumnType("datetime")
-                        .HasColumnName("Datum");
-
                     b.Property<int?>("KlijentID")
                         .HasColumnType("int");
-
-                    b.Property<float>("Ocena")
-                        .HasColumnType("real")
-                        .HasColumnName("Ocena");
 
                     b.Property<int?>("SalonID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Tekst")
+                    b.Property<DateTime>("datum")
+                        .HasColumnType("datetime")
+                        .HasColumnName("Datum");
+
+                    b.Property<float>("ocena")
+                        .HasColumnType("real")
+                        .HasColumnName("Ocena");
+
+                    b.Property<string>("tekst")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
@@ -385,36 +432,32 @@ namespace Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("Adresa")
+                    b.Property<int?>("KorisnikID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("adresa")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("Adresa");
 
-                    b.Property<string>("BrojTelefona")
+                    b.Property<string>("brojTelefona")
                         .IsRequired()
                         .HasMaxLength(13)
                         .HasColumnType("nvarchar(13)")
                         .HasColumnName("BrojTelefona");
 
-                    b.Property<string>("Grad")
+                    b.Property<string>("grad")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("Grad");
 
-                    b.Property<int?>("KorisnikID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Naziv")
+                    b.Property<string>("naziv")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("Naziv");
-
-                    b.Property<float>("ProsecnaOcena")
-                        .HasColumnType("real")
-                        .HasColumnName("ProsecnaOcena");
 
                     b.HasKey("ID");
 
@@ -432,28 +475,28 @@ namespace Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<float>("Cena")
-                        .HasColumnType("real")
-                        .HasColumnName("Cena");
-
-                    b.Property<bool>("Dostupnost")
-                        .HasColumnType("bit")
-                        .HasColumnName("Dostupnost");
-
                     b.Property<string>("Naziv")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("Naziv");
 
-                    b.Property<string>("Opis")
+                    b.Property<int?>("SalonID")
+                        .HasColumnType("int");
+
+                    b.Property<float>("cena")
+                        .HasColumnType("real")
+                        .HasColumnName("Cena");
+
+                    b.Property<bool>("dostupnost")
+                        .HasColumnType("bit")
+                        .HasColumnName("Dostupnost");
+
+                    b.Property<string>("opis")
                         .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)")
                         .HasColumnName("Opis");
-
-                    b.Property<int?>("SalonID")
-                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
@@ -471,41 +514,40 @@ namespace Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<float>("Cena")
+                    b.Property<int?>("KlijentID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SalonID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UslugaID")
+                        .HasColumnType("int");
+
+                    b.Property<float>("cena")
                         .HasColumnType("real")
                         .HasColumnName("Cena");
 
-                    b.Property<DateTime>("DatumVreme")
+                    b.Property<DateTime>("datumVreme")
                         .HasColumnType("datetime2")
                         .HasColumnName("DatumVreme");
 
-                    b.Property<string>("ImeLjubimca")
+                    b.Property<string>("imeLjubimca")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("ImeLjubimca");
 
-                    b.Property<int?>("KlijentID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("KomentarSalona")
-                        .IsRequired()
+                    b.Property<string>("komentarSalona")
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)")
                         .HasColumnName("KomentarSalona");
 
-                    b.Property<int?>("SalonID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
+                    b.Property<string>("status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Status");
 
-                    b.Property<int?>("UslugaID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Zivotinja")
+                    b.Property<string>("zivotinja")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
@@ -555,17 +597,13 @@ namespace Backend.Migrations
                 {
                     b.HasOne("BackEnd.Models.Korpa", "Korpa")
                         .WithMany("Proizvodi")
-                        .HasForeignKey("KorpaID")
+                        .HasForeignKey("korpaID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BackEnd.Models.Narudzbina", null)
-                        .WithMany("Proizvodi")
-                        .HasForeignKey("NarudzbinaID");
-
                     b.HasOne("BackEnd.Models.Proizvod", "Proizvod")
                         .WithMany("Korpe")
-                        .HasForeignKey("ProizvodID")
+                        .HasForeignKey("proizvodID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -574,17 +612,30 @@ namespace Backend.Migrations
                     b.Navigation("Proizvod");
                 });
 
+            modelBuilder.Entity("BackEnd.Models.NaruceniProizvod", b =>
+                {
+                    b.HasOne("BackEnd.Models.Klijent", "Klijent")
+                        .WithMany()
+                        .HasForeignKey("KlijentID");
+
+                    b.HasOne("BackEnd.Models.Narudzbina", "Narudzbina")
+                        .WithMany("NaruceniProizvodi")
+                        .HasForeignKey("NarudzbinaID");
+
+                    b.Navigation("Klijent");
+
+                    b.Navigation("Narudzbina");
+                });
+
             modelBuilder.Entity("BackEnd.Models.Narudzbina", b =>
                 {
-                    b.HasOne("BackEnd.Models.Korpa", "Korpa")
-                        .WithOne("Narudzbina")
-                        .HasForeignKey("BackEnd.Models.Narudzbina", "ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BackEnd.Models.Klijent", "Klijent")
                         .WithMany("Narudzbine")
                         .HasForeignKey("KlijentID");
+
+                    b.HasOne("BackEnd.Models.Korpa", "Korpa")
+                        .WithMany("Narudzbina")
+                        .HasForeignKey("KorpaID");
 
                     b.HasOne("BackEnd.Models.Salon", "Salon")
                         .WithMany("Narudzbine")
@@ -708,7 +759,7 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("BackEnd.Models.Narudzbina", b =>
                 {
-                    b.Navigation("Proizvodi");
+                    b.Navigation("NaruceniProizvodi");
                 });
 
             modelBuilder.Entity("BackEnd.Models.Proizvod", b =>

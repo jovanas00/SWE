@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './index.css';
 import Header from './components/Pocetna/Header';
@@ -7,9 +7,16 @@ import Pocetna from './components/Pocetna/Pocetna';
 import Saloni from './components/Saloni/Saloni';
 import Prijava from './components/Prijava/Prijava';
 import Registracija from './components/Registracija/Registracija';
+import axios, { Axios } from 'axios';
 
 
 function App() {
+  // useEffect(()=>{
+  //   axios.get('http://localhost:5169/ProizvodUsluga/VratiSveProizvode')
+  //   .then((response)=>{
+  //     console.log(response.data);
+  //   })
+  // })
   return (
     <Router>
       <div>

@@ -1,5 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,7 +34,11 @@ builder.Services.AddCors(options=>
         policy.AllowAnyHeader()
         .AllowAnyMethod()
         .WithOrigins("https://localhost:5555/",
-                     "http://localhost:5555");
+                     "http://localhost:5555",
+                     "http://127.0.0.1:3000",
+                     "http://localhost:3000",
+                     "https://127.0.0.1:3000",
+                     "https://localhost:3000");
     });
 });
 
@@ -49,6 +55,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+    RequestPath = new PathString("/Resources")
+});
 app.UseAuthentication();
 
 app.UseHttpsRedirection();

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
+using System.Net.Http.Headers;
 
 namespace BackEnd.Controllers;
 
@@ -20,25 +21,25 @@ public class KorisnikController : ControllerBase
         _config=config;
     }
 
-    private string Generate(Korisnik korisnik) // Generisanje tokena
-        {
-            var Kljuc = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var Podaci = new SigningCredentials(Kljuc, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
+        private string Generate(Korisnik korisnik) // Generisanje tokena
             {
-                new Claim(ClaimTypes.GivenName, korisnik.korisnickoIme),
-                new Claim(ClaimTypes.Email ,korisnik.email),
-                new Claim(ClaimTypes.Role, korisnik.tip)
-            };
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-               _config["Jwt:Audience"],
-               claims,
-               expires:DateTime.Now.AddMinutes(60),
-               signingCredentials: Podaci);
+                var Kljuc = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+                var Podaci = new SigningCredentials(Kljuc, SecurityAlgorithms.HmacSha256);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+                var claims = new[]
+                {
+                    new Claim(ClaimTypes.GivenName, korisnik.korisnickoIme),
+                    new Claim(ClaimTypes.Email ,korisnik.email),
+                    new Claim(ClaimTypes.Role, korisnik.tip)
+                };
+                var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+                _config["Jwt:Audience"],
+                claims,
+                expires:DateTime.Now.AddMinutes(60),
+                signingCredentials: Podaci);
+
+                return new JwtSecurityTokenHandler().WriteToken(token);
+            }
 
         private Korisnik Authenticate(string korisnicko_ime, string lozinka) // Autentifikacija
         {
@@ -60,6 +61,22 @@ public class KorisnikController : ControllerBase
                 return Current;
             else
                 return null;
+        }
+
+        private Korisnik VratiKorisnika()
+        {
+            //front
+            var Identitet = HttpContext.User.Identity as ClaimsIdentity;
+            if(Identitet != null)
+            {
+                var Tvrdnja = Identitet.Claims;
+                return new Korisnik{
+                    korisnickoIme = Tvrdnja.FirstOrDefault(p => p.Type == ClaimTypes.GivenName)?.Value,
+                    email = Tvrdnja.FirstOrDefault(p => p.Type == ClaimTypes.Email)?.Value,
+                    tip = Tvrdnja.FirstOrDefault(p => p.Type == ClaimTypes.Role)?.Value
+                };
+            }
+            return null;
         }
 
         [Route("RegistracijaKlijent/{korisnicko_ime}/{lozinka}/{email}/{ime}/{prezime}/{adresa}/{broj}/{grad}")]
@@ -258,5 +275,45 @@ public class KorisnikController : ControllerBase
             }
             else return Ok();
         }
+
+        [HttpPost]
+        [Route("Upload/{korisnicko_ime}")]
+        public async Task<IActionResult> Upload(string korisnicko_ime)
+        {   
+            //forma na forntendu mora da bi se testiralo!
+            try
+            {
+                Korisnik obj = VratiKorisnika();
+                Korisnik retVal = Context.Korisnici.Where(p=>p.korisnickoIme==korisnicko_ime).FirstOrDefault();
+                var formCollection = await Request.ReadFormAsync();
+                var file = formCollection.Files.First();
+                var folderName = Path.Combine("Resources","Images");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(),folderName);
+
+                if(file.Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fullPath = Path.Combine(pathToSave,fileName);
+                    var dbPath = Path.Combine(folderName,fileName);
+                    using(var stream = new FileStream(fullPath,FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                    retVal.slika=dbPath;
+                    await Context.SaveChangesAsync();
+                    return Ok(new {dbPath});
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch(Exception e)
+            {
+                return StatusCode(500, $"Internal server error: {e}");
+            }
+        }
+
+        
 
 }

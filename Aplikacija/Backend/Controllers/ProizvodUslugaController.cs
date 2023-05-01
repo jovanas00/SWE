@@ -1,3 +1,5 @@
+using System.Net.Http.Headers;
+
 namespace BackEnd.Controllers;
 
 [ApiController]
@@ -10,26 +12,12 @@ public class ProizvodUslugaController : ControllerBase
         Context = context;
     }
 
-    //Proizvodi
-
-    //vrati sve proizvode
-    // [Route("VratiSveProizvode")]
-    // [HttpGet]
-    // public async Task<ActionResult<IEnumerable<Proizvod>>> VratiSveProizvode()
-    // {
-    //     return await Context.Proizvodi.ToListAsync();
-    // }
-
-    // //vrati jedan proizvod
-    // [Route("VratiProizvod/{id_proizvod}")]
-    // [HttpGet]
-    // public async Task<ActionResult<Proizvod>> VratiProizvod(int id_proizvod)
-    // {
-    //     var p = await Context.Proizvodi.FindAsync(id_proizvod);
-    //     if(p==null)
-    //         return NotFound();
-    //     return p;
-    // }
+    [Route("VratiSveProizvode")]
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Proizvod>>> VratiSveProizvode()
+    {
+        return await Context.Proizvodi.ToListAsync();
+    }
 
     [Route("DodajProizvod/{naziv}/{cena}/{dostupnost}/{slika}/{id_kategorija}/{id_salon}")] 
     [HttpPost]
@@ -60,6 +48,44 @@ public class ProizvodUslugaController : ControllerBase
             {
                 return BadRequest(e.Message);
             }
+    }
+
+    [Route("UploadProizvodSlika/{id_proizvod}")]
+    [HttpPost]
+    public async Task<ActionResult> UploadProizvodSlika(int id_proizvod)
+    {
+        //forma na frontendu
+         try
+            {
+                Proizvod retVal = Context.Proizvodi.Where(p=>p.ID==id_proizvod).FirstOrDefault();
+                var formCollection = await Request.ReadFormAsync();
+                var file = formCollection.Files.First();
+                var folderName = Path.Combine("Resources","Images");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(),folderName);
+
+                if(file.Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fullPath = Path.Combine(pathToSave,fileName);
+                    var dbPath = Path.Combine(folderName,fileName);
+                    using(var stream = new FileStream(fullPath,FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                    retVal.slika=dbPath;
+                    await Context.SaveChangesAsync();
+                    return Ok(new {dbPath});
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch(Exception e)
+            {
+                return StatusCode(500, $"Internal server error: {e}");
+            }
+
     }
 
     [Route("ObrisiProizvod/{id_proizvod}")]
@@ -105,27 +131,6 @@ public class ProizvodUslugaController : ControllerBase
             return BadRequest(e.Message);
         }    
     } 
-
-    //Usluge
-
-    // //vrati sve usluge
-    // [Route("VratiSveUsluge")]
-    // [HttpGet]
-    // public async Task<ActionResult<IEnumerable<Usluga>>> VratiSveUsluge()
-    // {
-    //     return await Context.Usluge.ToListAsync();
-    // }
-
-    // //vrati jednu uslugu
-    // [Route("VratiUslugu/{id_usluga}")]
-    // [HttpGet]
-    // public async Task<ActionResult<Usluga>> VratiUslugu(int id_usluga)
-    // {
-    //     Usluga u = await Context.Usluge.FindAsync(id_usluga);
-    //     if(u==null)
-    //         return NotFound();
-    //     return u;
-    // }
 
     [Route("DodajUslugu/{naziv}/{cena}/{opis}/{kapacitet}/{dostupnost}/{id_salon}")]
     [HttpPost]
