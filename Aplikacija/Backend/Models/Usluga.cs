@@ -9,7 +9,7 @@ namespace BackEnd.Models
         public int ID { get; set; }
 
         [Column("Naziv")]
-        [MaxLength(20)]
+        [MaxLength(30)]
         [Required()]
         public string Naziv {get; set;}
 

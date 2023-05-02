@@ -22,7 +22,6 @@ namespace BackEnd.Models
         public bool dostupnost {get; set;}
 
         [Column("Slika")]
-        [Required()]
         public string slika {get; set;}
 
         #region ReferenceNaDrugeKlase

@@ -25,6 +25,16 @@ namespace BackEnd.Models
         [Required()]
         public DateTime datum {get; set;}
 
+        [Column("KorisnickoIme")]
+        [Required()]
+        public string korisnickoIme { get; set; }
+
+        [Column("Grad")]
+        public string grad { get; set; }
+        
+        [Column("Adresa")]
+        public string adresa { get; set; }
+        
         #region ReferenceNaDrugeKlase
         [JsonIgnore]
         public virtual List<NaruceniProizvod> NaruceniProizvodi {get;set;} 

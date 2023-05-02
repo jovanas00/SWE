@@ -9,12 +9,12 @@ namespace BackEnd.Models
         public int ID { get; set; }
 
         [Column("TekstP")]
-        [MaxLength(50)]
+        [MaxLength(100)]
         [Required()]
         public string tekstP {get; set;}
 
         [Column("TekstO")]
-        [MaxLength(50)]
+        [MaxLength(100)]
         public string tekstO {get; set;}
 
         [Column("DatumPostavljanja")]

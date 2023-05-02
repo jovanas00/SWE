@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(PPContext))]
-    [Migration("20230424130958_V1")]
+    [Migration("20230502135700_V1")]
     partial class V1
     {
         /// <inheritdoc />
@@ -90,8 +90,8 @@ namespace Backend.Migrations
 
                     b.Property<string>("adresa")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
                         .HasColumnName("Adresa");
 
                     b.Property<string>("brojTelefona")
@@ -102,8 +102,8 @@ namespace Backend.Migrations
 
                     b.Property<string>("grad")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
                         .HasColumnName("Grad");
 
                     b.Property<string>("ime")
@@ -140,8 +140,8 @@ namespace Backend.Migrations
 
                     b.Property<string>("korisnickoIme")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
                         .HasColumnName("KorisnickoIme");
 
                     b.Property<byte[]>("salt_value")
@@ -150,8 +150,8 @@ namespace Backend.Migrations
 
                     b.Property<string>("sifra")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("Sifra");
 
                     b.Property<string>("slika")
@@ -269,15 +269,28 @@ namespace Backend.Migrations
                     b.Property<int?>("SalonID")
                         .HasColumnType("int");
 
+                    b.Property<string>("adresa")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Adresa");
+
                     b.Property<DateTime>("datum")
                         .HasColumnType("datetime")
                         .HasColumnName("Datum");
+
+                    b.Property<string>("grad")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Grad");
 
                     b.Property<string>("komentarSalona")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)")
                         .HasColumnName("KomentarSalona");
+
+                    b.Property<string>("korisnickoIme")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("KorisnickoIme");
 
                     b.Property<string>("status")
                         .IsRequired()
@@ -323,14 +336,14 @@ namespace Backend.Migrations
                         .HasColumnName("DatumPostavljanja");
 
                     b.Property<string>("tekstO")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("TekstO");
 
                     b.Property<string>("tekstP")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
                         .HasColumnName("TekstP");
 
                     b.HasKey("ID");
@@ -372,7 +385,6 @@ namespace Backend.Migrations
                         .HasColumnName("Naziv");
 
                     b.Property<string>("slika")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Slika");
 
@@ -437,8 +449,8 @@ namespace Backend.Migrations
 
                     b.Property<string>("adresa")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
                         .HasColumnName("Adresa");
 
                     b.Property<string>("brojTelefona")
@@ -449,14 +461,14 @@ namespace Backend.Migrations
 
                     b.Property<string>("grad")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
                         .HasColumnName("Grad");
 
                     b.Property<string>("naziv")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
                         .HasColumnName("Naziv");
 
                     b.HasKey("ID");
@@ -477,8 +489,8 @@ namespace Backend.Migrations
 
                     b.Property<string>("Naziv")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
                         .HasColumnName("Naziv");
 
                     b.Property<int?>("SalonID")

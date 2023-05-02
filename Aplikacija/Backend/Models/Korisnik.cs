@@ -13,12 +13,12 @@ namespace BackEnd.Models
         public string email { get; set; }
 
         [Column("KorisnickoIme")]
-        [MaxLength(20)]
+        [MaxLength(30)]
         [Required()]
         public string korisnickoIme {get; set;}
 
         [Column("Sifra")]
-        [MaxLength(150)]
+        [MaxLength(50)]
         [Required()]
         public string sifra { get; set; }
 

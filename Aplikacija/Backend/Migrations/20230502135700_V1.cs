@@ -31,8 +31,8 @@ namespace Backend.Migrations
                     KorisnikID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    KorisnickoIme = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Sifra = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    KorisnickoIme = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Sifra = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Salt_value = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     Tip = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Slika = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -70,8 +70,8 @@ namespace Backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Ime = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Prezime = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Adresa = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Grad = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Adresa = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    Grad = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     BrojTelefona = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
                     KorisnikID = table.Column<int>(type: "int", nullable: true)
                 },
@@ -91,9 +91,9 @@ namespace Backend.Migrations
                 {
                     SalonID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Naziv = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Adresa = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Grad = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Naziv = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Adresa = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    Grad = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     BrojTelefona = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
                     KorisnikID = table.Column<int>(type: "int", nullable: true)
                 },
@@ -131,8 +131,8 @@ namespace Backend.Migrations
                 {
                     PitanjeID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TekstP = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    TekstO = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    TekstP = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    TekstO = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     DatumPostavljanja = table.Column<DateTime>(type: "datetime", nullable: false),
                     DatumOdgovaranja = table.Column<DateTime>(type: "datetime", nullable: true),
                     SalonID = table.Column<int>(type: "int", nullable: true),
@@ -162,7 +162,7 @@ namespace Backend.Migrations
                     Naziv = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Cena = table.Column<float>(type: "real", nullable: false),
                     Dostupnost = table.Column<bool>(type: "bit", nullable: false),
-                    Slika = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Slika = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     KategorijaID = table.Column<int>(type: "int", nullable: true),
                     SalonID = table.Column<int>(type: "int", nullable: true)
                 },
@@ -214,7 +214,7 @@ namespace Backend.Migrations
                 {
                     UslugaID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Naziv = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Naziv = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Cena = table.Column<float>(type: "real", nullable: false),
                     Opis = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     Dostupnost = table.Column<bool>(type: "bit", nullable: false),
@@ -240,6 +240,9 @@ namespace Backend.Migrations
                     KomentarSalona = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     UkupnaCena = table.Column<float>(type: "real", nullable: false),
                     Datum = table.Column<DateTime>(type: "datetime", nullable: false),
+                    KorisnickoIme = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Grad = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Adresa = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     KorpaID = table.Column<int>(type: "int", nullable: true),
                     KlijentID = table.Column<int>(type: "int", nullable: true),
                     SalonID = table.Column<int>(type: "int", nullable: true)

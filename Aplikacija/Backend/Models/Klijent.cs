@@ -19,12 +19,12 @@ namespace BackEnd.Models
         public string prezime {get; set;}
 
         [Column("Adresa")]
-        [MaxLength(20)]
+        [MaxLength(40)]
         [Required()]
         public string adresa { get; set; }
 
         [Column("Grad")]
-        [MaxLength(20)]
+        [MaxLength(30)]
         [Required()]
         public string grad { get; set; }
 
