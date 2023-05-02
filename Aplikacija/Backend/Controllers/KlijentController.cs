@@ -154,53 +154,42 @@ public class KlijentController : ControllerBase
         }       
     }
 
-    [HttpPut("DodajUKorpu/{proizvodID}/{korpaID}/{kolicina}")]
-    public async Task<ActionResult<Korpa>> DodajUKorpu(int proizvodID, int korpaID, int kolicina)
+    [HttpPut("DodajUKorpu/{proizvodID}/{korpaID}")]
+    public async Task<ActionResult<Korpa>> DodajUKorpu(int proizvodID, int korpaID)
     {
         try
         {
             var proizvod = await Context.Proizvodi.FindAsync(proizvodID);
             var korpa = await Context.Korpe.FindAsync(korpaID);
 
-            var kp = new KorpaProizvod{
-                proizvodID = proizvodID,
-                nazivProizvoda = proizvod.naziv,
-                slikaProizvoda = proizvod.slika,
-                korpaID = korpaID,
-                kolicina = kolicina
-            };
-            if (korpa != null && proizvod != null)
+            var kp2 = Context.KorpeProizvodi.Where(kp=>kp.korpaID==korpaID && kp.proizvodID==proizvodID).FirstOrDefault();
+            if(kp2!=null)
             {
-                korpa.ukupnaCena = korpa.ukupnaCena + proizvod.cena*kp.kolicina; 
+                kp2.kolicina+=1;
+                Context.KorpeProizvodi.Update(kp2);
+                korpa.ukupnaCena+=proizvod.cena;
                 Context.Korpe.Update(korpa);
+                await Context.SaveChangesAsync();
+                return Ok($"ID  ponovno dodatog proizvoda je: {proizvod.ID}");
             }
-            Context.KorpeProizvodi.Add(kp);
-            await Context.SaveChangesAsync();
-            return Ok($"ID dodatog proizvoda je: {proizvod.ID}");
-        }
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }
-    }
-    [HttpPut("PromeniKolicinu/{id_proizvod}/{id_korpa}/{kolicina}")]
-    public async Task<ActionResult<Korpa>> PromeniKolicinu(int id_proizvod,int id_korpa,int kolicina)
-    {
-        try
-        {
-            var proizvod_korpa = Context.KorpeProizvodi.Where(kp=>kp.proizvodID==id_proizvod && kp.korpaID==id_korpa).FirstOrDefault();
-            Proizvod proizvod = await Context.Proizvodi.FindAsync(id_proizvod);
-            Korpa korpa = await Context.Korpe.FindAsync(id_korpa);
-
-            korpa.ukupnaCena-=proizvod.cena*proizvod_korpa.kolicina;
-            korpa.ukupnaCena+=proizvod.cena*kolicina;
-
-            proizvod_korpa.kolicina=kolicina;
-
-            Context.KorpeProizvodi.Update(proizvod_korpa);
-            Context.Korpe.Update(korpa);
-            await Context.SaveChangesAsync();
-            return Ok(korpa);
+            else
+            {
+                var kp = new KorpaProizvod{
+                    proizvodID = proizvodID,
+                    nazivProizvoda = proizvod.naziv,
+                    slikaProizvoda = proizvod.slika,
+                    korpaID = korpaID,
+                    kolicina = 1
+                };
+                if (korpa != null && proizvod != null)
+                {
+                    korpa.ukupnaCena = korpa.ukupnaCena + proizvod.cena*kp.kolicina; 
+                    Context.Korpe.Update(korpa);
+                }
+                Context.KorpeProizvodi.Add(kp);
+                await Context.SaveChangesAsync();
+                return Ok($"ID dodatog proizvoda je: {proizvod.ID}");
+            }
         }
         catch (Exception e)
         {
