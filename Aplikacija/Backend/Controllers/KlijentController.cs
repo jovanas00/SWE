@@ -102,6 +102,8 @@ public class KlijentController : ControllerBase
         try
         {
             var zahtev = await Context.Zahtevi.FindAsync(idZahteva);
+            if(zahtev.status=="Potvrdjen")
+                return BadRequest("Zahtev je vec potvrdjen!");
             
             if (zahtev != null)
             {
@@ -163,7 +165,7 @@ public class KlijentController : ControllerBase
             var kp = new KorpaProizvod{
                 proizvodID = proizvodID,
                 nazivProizvoda = proizvod.naziv,
-                slikaProizvoda = "Nema trenutno",
+                slikaProizvoda = proizvod.slika,
                 korpaID = korpaID,
                 kolicina = kolicina
             };
@@ -246,8 +248,8 @@ public class KlijentController : ControllerBase
             Korpa k = await Context.Korpe
                     .Include(k => k.Proizvodi)
                     .FirstOrDefaultAsync(k => k.ID == korpaID);
-            Klijent klijent = Context.Klijenti.Where(k=>k.Korpa.ID==korpaID).FirstOrDefault();
-            Console.WriteLine(klijent.ID);
+            Klijent klijent = Context.Klijenti.Include(k=>k.Korisnik).Where(k=>k.Korpa.ID==korpaID).FirstOrDefault();
+            //Console.WriteLine(klijent.ID);
             var salon = await Context.Saloni.FindAsync(salonID);
 
             if (k == null || salon==null)
@@ -262,6 +264,9 @@ public class KlijentController : ControllerBase
                     datum = DateTime.Now,
                     Korpa=k,
                     Klijent=klijent,
+                    korisnickoIme=klijent.Korisnik.korisnickoIme,
+                    adresa=klijent.adresa,
+                    grad=klijent.grad,
                     Salon=salon,
                     NaruceniProizvodi=new List<NaruceniProizvod>()
                 };

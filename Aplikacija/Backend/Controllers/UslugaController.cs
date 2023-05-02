@@ -89,7 +89,7 @@ public class UslugaController : ControllerBase
                 u.dostupnost=false;
             }
             else
-                u.dostupnost=false;
+                u.dostupnost=true;
             await Context.SaveChangesAsync();
             return Ok(u);
         }

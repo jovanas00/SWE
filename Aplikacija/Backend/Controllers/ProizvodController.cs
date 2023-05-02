@@ -20,7 +20,7 @@ public class ProizvodController : ControllerBase
     //     return await Context.Proizvodi.ToListAsync();
     // }
 
-    [Route("DodajProizvod/{naziv}/{cena}/{dostupnost}/{slika}/{id_kategorija}/{id_salon}")] 
+    [Route("DodajProizvod/{naziv}/{cena}/{id_kategorija}/{id_salon}")] 
     [HttpPost]
     public async Task<ActionResult<Proizvod>> DodajProizvod(string naziv, float cena,int id_kategorija, int id_salon)
     {

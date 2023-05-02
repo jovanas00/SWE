@@ -41,7 +41,10 @@ public class SalonController : ControllerBase
             Pitanje p = await Context.Pitanja.FindAsync(id_pitanje);
             if(p==null)
                 return NotFound();
-            p.tekstO = tekst;
+            if(p.tekstO==null)
+                p.tekstO = tekst;
+            else
+                return BadRequest("Odgovoreno pitanje!");
             p.datumOdgovaranja = DateTime.Now;
             await Context.SaveChangesAsync();
             return Ok(p);
@@ -58,6 +61,8 @@ public class SalonController : ControllerBase
         try
         {
             var zahtev = await Context.Zahtevi.FindAsync(id_zahtev);
+            if(zahtev.status!="Neobrađen")
+                return BadRequest("Zahtev je obradjen!");
             if (zahtev != null)
             {
                 zahtev.status = status; 
@@ -80,6 +85,8 @@ public class SalonController : ControllerBase
         try
         {
             var narudzbina = await Context.Narudzbine.FindAsync(id_narudzbina);
+            if(narudzbina.status!="Neobrađena")
+                return BadRequest("Narudzbina je vec obradjena!");
             if (narudzbina != null)
             {
                 narudzbina.status = status;
@@ -87,7 +94,7 @@ public class SalonController : ControllerBase
                 Context.Narudzbine.Update(narudzbina);
             }
             await Context.SaveChangesAsync();
-            return Ok("ID obrađene narudžbine je: {id_narudzbina}");
+            return Ok($"ID obrađene narudžbine je: {id_narudzbina}");
         }
         catch (Exception e)
         {

@@ -240,13 +240,14 @@ public class AdminController : ControllerBase
                     {
                         foreach(Narudzbina n in narudzbine)
                         {
+                            n.Klijent=null;
                             List<NaruceniProizvod> proizvodi = await Context.NaruceniProizvodi.Include(k=>k.Klijent).Where(k=>k.Klijent.ID==klijent.ID && k.Narudzbina.ID==n.ID).ToListAsync();
                             foreach(NaruceniProizvod p in proizvodi)
                             {
-                                Context.NaruceniProizvodi.Remove(p);
+                                //Context.NaruceniProizvodi.Remove(p);
                                 //Console.WriteLine(p.nazivProizvoda);
                             }
-                            Context.Narudzbine.Remove(n);
+                            //Context.Narudzbine.Remove(n);
                             //Console.WriteLine(n.ID);
                         }
                     }
@@ -282,7 +283,8 @@ public class AdminController : ControllerBase
                     {
                         foreach(Zahtev z in zahtevi)
                         {
-                            Context.Zahtevi.Remove(z);
+                            z.Klijent=null;
+                            //Context.Zahtevi.Remove(z);
                             //Console.WriteLine(z.ID);
                         }
                     }
