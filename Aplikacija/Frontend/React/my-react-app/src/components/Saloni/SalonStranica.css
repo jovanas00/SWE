@@ -1,0 +1,53 @@
+.salon-info {
+    display: flex;
+    /* flex-wrap: wrap; */
+    /* flex-direction: column; */
+    /* justify-content: space-between; */
+    /* align-items: flex-start; */
+    position: relative;
+
+}
+
+.salon-card__div {
+    width: 600px;
+    flex: 0 0 auto;
+    order: 1;
+    /* position: relative; */
+    top: 0;
+    left: 0;
+}
+
+.salon-info__items{
+    display: flex;
+    flex-wrap: wrap;
+    /* width: 50%; */
+    margin: 10px 10px 10px 10px;
+    /* align-items: end; */
+
+    flex: 1 1 100%;
+    align-items: flex-start;
+    justify-content: flex-end;
+    /* order: 2; */
+    /* top: calc(100%+10px); */
+    /* position:absolute; */
+    /* top: 400px; */
+    /* left: 1200px; */
+}
+/* .info h1{
+    align-items: center;
+} */
+
+@media screen and (max-width: 1820px) {
+    .salon-info {
+        flex-direction: column;
+    }
+    .salon-card__div {
+        position: relative;
+        /* width: 100%; */
+    }
+    .salon-info__items {
+        order: 2;
+        /* align-items: center; */
+        /* justify-content: flex-start; */
+    }
+}
