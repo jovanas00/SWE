@@ -101,4 +101,40 @@ public class SalonController : ControllerBase
             return BadRequest(e.Message);
         }
     }
+
+    [Route("VratiPitanjaSalona/{id_salon}")]
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<object>>> VratiPitanjaSalona(int id_salon)
+    {
+        var pitanja = await Context.Pitanje
+        .Where(p => p.Salon.ID == id_salon)
+        .Include(p => p.Klijent)
+        .Select(p => new {
+            SalonNaziv = p.Salon.Naziv,
+            KlijentImePrezime = p.Klijent.Ime + " " + p.Klijent.Prezime,
+            tekstP = p.TekstP,
+            tekstO = p.TekstO,
+            datumPostavljanja = p.DatumPostavljanja,
+            datumOdgovaranja = p.DatumOdgovaranja
+        })
+        .ToListAsync();
+        return pitanja;
+    }
+
+    [Route("VratiRecenzijeSalona/{id_salon}")]
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<object>>> VratiRecenzijeSalona(int id_salon)
+    {
+        var recenzije = await Context.Recenzija
+        .Where(r => r.Salon.ID == id_salon)
+        .Include(r => r.Klijent)
+        .Select(r => new {
+            SalonNaziv = r.Salon.Naziv,
+            KlijentImePrezime = r.Klijent.Ime + " " + r.Klijent.Prezime,
+            tekst = r.Tekst,
+            datumPostavljanja = r.Datum
+        })
+        .ToListAsync();
+        return recenzije;
+    }
 }
