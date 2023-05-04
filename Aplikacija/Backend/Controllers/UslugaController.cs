@@ -98,4 +98,12 @@ public class UslugaController : ControllerBase
             return BadRequest(e.Message);
         }    
     } 
+
+    [Route("VratiUslugeSalona/{id_salon}")]
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Usluga>>> VratiUslugeSalona(int id_salon)
+    {
+        var usluge = await Context.Usluga.Where(u => u.Salon.ID == id_salon).ToListAsync();
+        return usluge;
+    }
 }
