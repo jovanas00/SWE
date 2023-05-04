@@ -1,5 +1,5 @@
 import React from 'react';
-import Footer from '../Saloni/Footer';
+import Body from '../Saloni/Body';
 import Header from '../Pocetna/Header';
 
 const Salon = () => {
@@ -10,7 +10,7 @@ const Salon = () => {
         <h1>Dobrodošli na stranicu za salone!</h1>
         <p>Ovde ćete pronaći sve informacije o salonima za vaše ljubimce.</p>
       </div>
-      <Footer />
+      <Body />
     </div>
   );
 };
