@@ -155,7 +155,7 @@ public class ProizvodController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Proizvod>>> VratiProizvodeSalona(int id_salon)
     {
-        var proizvodi = await Context.Proizvod.Where(p => p.Salon.ID == id_salon).ToListAsync();
+        var proizvodi = await Context.Proizvodi.Where(p => p.Salon.ID == id_salon).ToListAsync();
         return proizvodi;
     }
 }

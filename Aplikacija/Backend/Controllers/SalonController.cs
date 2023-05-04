@@ -106,16 +106,16 @@ public class SalonController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<object>>> VratiPitanjaSalona(int id_salon)
     {
-        var pitanja = await Context.Pitanje
+        var pitanja = await Context.Pitanja
         .Where(p => p.Salon.ID == id_salon)
         .Include(p => p.Klijent)
         .Select(p => new {
-            SalonNaziv = p.Salon.Naziv,
-            KlijentImePrezime = p.Klijent.Ime + " " + p.Klijent.Prezime,
-            tekstP = p.TekstP,
-            tekstO = p.TekstO,
-            datumPostavljanja = p.DatumPostavljanja,
-            datumOdgovaranja = p.DatumOdgovaranja
+            SalonNaziv = p.Salon.naziv,
+            KlijentImePrezime = p.Klijent.ime + " " + p.Klijent.prezime,
+            tekstP = p.tekstP,
+            tekstO = p.tekstO,
+            datumPostavljanja = p.datumPostavljanja,
+            datumOdgovaranja = p.datumOdgovaranja
         })
         .ToListAsync();
         return pitanja;
@@ -125,14 +125,14 @@ public class SalonController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<object>>> VratiRecenzijeSalona(int id_salon)
     {
-        var recenzije = await Context.Recenzija
+        var recenzije = await Context.Recenzije
         .Where(r => r.Salon.ID == id_salon)
         .Include(r => r.Klijent)
         .Select(r => new {
-            SalonNaziv = r.Salon.Naziv,
-            KlijentImePrezime = r.Klijent.Ime + " " + r.Klijent.Prezime,
-            tekst = r.Tekst,
-            datumPostavljanja = r.Datum
+            SalonNaziv = r.Salon.naziv,
+            KlijentImePrezime = r.Klijent.ime + " " + r.Klijent.prezime,
+            tekst = r.tekst,
+            datumPostavljanja = r.datum
         })
         .ToListAsync();
         return recenzije;

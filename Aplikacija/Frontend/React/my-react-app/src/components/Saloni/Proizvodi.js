@@ -8,7 +8,7 @@ const Proizvodi = ({ id }) => {
     const [kategorije, setKategorije] = useState([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:5079/ProizvodUsluga/VratiProizvodeSalona/${id}`)
+        axios.get(`http://localhost:5169/Proizvod/VratiProizvodeSalona/${id}`)
             .then((response) => {
                 setProizvodi(response.data);
             })

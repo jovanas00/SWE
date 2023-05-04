@@ -103,7 +103,7 @@ public class UslugaController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Usluga>>> VratiUslugeSalona(int id_salon)
     {
-        var usluge = await Context.Usluga.Where(u => u.Salon.ID == id_salon).ToListAsync();
+        var usluge = await Context.Usluge.Where(u => u.Salon.ID == id_salon).ToListAsync();
         return usluge;
     }
 }

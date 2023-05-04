@@ -7,7 +7,7 @@ const Usluge = ({id}) => {
     const [usluge, setUsluge] = useState([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:5079/ProizvodUsluga/VratiUslugeSalona/${id}`)
+        axios.get(`http://localhost:5169/Usluga/VratiUslugeSalona/${id}`)
             .then((response) => {
                 setUsluge(response.data);
             })
