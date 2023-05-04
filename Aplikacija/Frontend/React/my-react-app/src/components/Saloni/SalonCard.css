@@ -1,0 +1,39 @@
+/*ovako je lakse da bude flex*/
+.salon-card {
+    display: flex;
+    align-items: center;
+}
+
+.salon-card__text {
+    flex: 1;
+    color: black;
+    background-color: #ccf5ff;
+}
+
+/*da mi ne vraca underline*/
+a {
+    text-decoration: none;
+}
+
+/*razmak izmedju informacije da bude manji*/
+p {
+    margin-bottom: 0em;
+  }
+
+/*treba jos da se sredjuje za flex*/
+/*.salon-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* background-color: #fff; */
+    /* border-radius: 10px; */
+    /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); */
+/*}
+
+.salon-card__image {
+    margin-right: 20px;
+}
+
+.salon-card__text {
+    flex: 1;
+}*/  
