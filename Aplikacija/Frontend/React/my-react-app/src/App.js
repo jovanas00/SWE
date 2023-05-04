@@ -7,6 +7,7 @@ import Pocetna from './components/Pocetna/Pocetna';
 import Saloni from './components/Saloni/Saloni';
 import Prijava from './components/Prijava/Prijava';
 import Registracija from './components/Registracija/Registracija';
+import SalonStranica from './components/Saloni/SalonStranica';
 import axios, { Axios } from 'axios';
 
 
@@ -25,6 +26,7 @@ function App() {
           <Route path="/saloni" element={<Saloni />} />
           <Route path="/prijava" element={<Prijava />} />
           <Route path="/registracija" element={<Registracija />} />
+          <Route path="/saloni/:id" element={<SalonStranica />} />
         </Routes>
       </div>
     </Router>
