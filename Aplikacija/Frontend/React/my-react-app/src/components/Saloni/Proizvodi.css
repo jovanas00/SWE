@@ -1,0 +1,20 @@
+/* .proizvodi {
+    /* position: absolute; */
+    /* top: ; */
+    /* left:400px  ; */
+    /* right: 0; */
+    /* bottom: 0; */
+    /* display: flex; */
+    /* flex-wrap: wrap; */
+    /* width: 300px;  */
+    /* min-width: 200px; */
+    
+/*}*/
+
+td, th {
+    text-align: center;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #ea99a2;
+}
