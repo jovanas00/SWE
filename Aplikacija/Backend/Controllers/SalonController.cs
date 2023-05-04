@@ -9,6 +9,19 @@ public class SalonController : ControllerBase
     {
         Context = context;
     }
+    [Route("VratiSalon/{id}")]
+    [HttpGet]
+    public async Task<ActionResult<Salon>> VratiSveSalone(int id)
+    {
+        return await Context.Saloni.Where(s=>s.ID==id).FirstOrDefaultAsync();
+    }
+
+    [Route("VratiSveSalone")]
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Salon>>> VratiSveSalone()
+    {
+        return await Context.Saloni.ToListAsync();
+    }
 
     [Route("IzmeniProfilSalona/{korisnicko_ime}/{naziv}/{adresa}/{grad}/{brojTelefona}")]
     [HttpPut]
