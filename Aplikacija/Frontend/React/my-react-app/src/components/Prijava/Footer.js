@@ -1,43 +1,58 @@
 import React, { useState } from 'react';
 import './Footer.css';
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 
 const Footer = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [prijava, setPrijava] = useState({
+    korisnickoIme: '',
+    lozinka: ''
+  });
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setPrijava(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    if (username === 'admin' && password === 'password') {
-      alert('Uspešno ste se prijavili!');
-    } else {
-      setError('Pogrešno korisničko ime ili lozinka!');
-    }
+    axios.get(`http://localhost:5169/Korisnik/Login/${prijava.korisnickoIme}/${prijava.lozinka}`)
+      .then(response => {
+        const token = response.data;
+        console.log(token);
+        localStorage.setItem('token', token); // čuvamo token u local storage
+        console.log(localStorage.getItem('token')); // <--- dodajte ovo
+        const decodedToken = jwt_decode(token);
+        if (decodedToken.Role === 'Klijent') {
+          window.location.href = '/klijent'; // redirektujemo na klijentsku stranicu
+        } else if (decodedToken.Role === 'Salon') {
+          window.location.href = '/salon'; // redirektujemo na salonsku stranicu
+        } else {
+          console.log('Unknown user role');
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
+  
+  
 
   return (
     <div className="login-container">
       <form onSubmit={handleSubmit} className="login-form">
         <h2>Prijavi se</h2>
         <div className="form-group">
-          <label htmlFor="username">Korisničko ime:</label>
-          <input type="text" id="username" value={username} onChange={handleUsernameChange} />
+          <label htmlFor="korisnickoIme">Korisničko ime:</label>
+          <input type="text" id="korisnickoIme" name="korisnickoIme" value={prijava.korisnickoIme} onChange={handleChange} required />
         </div>
         <div className="form-group">
-          <label htmlFor="password">Lozinka:</label>
-          <input type="password" id="password" value={password} onChange={handlePasswordChange} />
+          <label htmlFor="lozinka">Lozinka:</label>
+          <input type="password" id="lozinka" name="lozinka" value={prijava.lozinka} onChange={handleChange} required />
         </div>
-        {error && <div className="error">{error}</div>}
         <button type="submit">Prijavi se</button>
       </form>
     </div>
