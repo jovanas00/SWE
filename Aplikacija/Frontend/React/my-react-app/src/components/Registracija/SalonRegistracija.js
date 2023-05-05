@@ -24,11 +24,14 @@ const SalonRegistracija = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    axios.post('http://localhost:3000/salon', salon)
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
+    axios.post(`http://localhost:5169/Korisnik/RegistracijaSalon/${salon.korisnickoIme}/${salon.lozinka}/${salon.email}/${salon.naziv}/${salon.grad}/${salon.adresa}/${salon.broj}`)
+
+      .then(response => {
+        console.log(response);
       })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   return (
@@ -37,20 +40,20 @@ const SalonRegistracija = () => {
         <p>Registrujete se kao salon</p>
       </div>
       <form onSubmit={handleSubmit} className="registration-form">
-        <label htmlFor="username">Korisničko ime:</label>
-        <input type="text" id="username" name="username" onChange={handleChange} value={salon.username} required />
-        <label htmlFor="password">Lozinka:</label>
-        <input type="password" id="password" name="password" onChange={handleChange} value={salon.password} required />
+        <label htmlFor="korisnickoIme">Korisničko ime:</label>
+        <input type="text" id="korisnickoIme" name="korisnickoIme" onChange={handleChange} value={salon.korisnickoIme} required />
+        <label htmlFor="lozinka">Lozinka:</label>
+        <input type="password" id="lozinka" name="lozinka" onChange={handleChange} value={salon.lozinka} required />
         <label htmlFor="email">Email:</label>
         <input type="email" id="email" name="email" onChange={handleChange} value={salon.email} required />
-        <label htmlFor="name">Naziv:</label>
-        <input type="text" id="name" name="name" onChange={handleChange} value={salon.name} required />
-        <label htmlFor="city">Grad:</label>
-        <input type="text" id="city" name="city" onChange={handleChange} value={salon.city} required />
-        <label htmlFor="address">Adresa:</label>
-        <input type="text" id="address" name="address" onChange={handleChange} value={salon.address} required />
-        <label htmlFor="phone">Broj:</label>
-        <input type="text" id="phone" name="phone" onChange={handleChange} value={salon.phone} required />
+        <label htmlFor="naziv">Naziv:</label>
+        <input type="text" id="naziv" name="naziv" onChange={handleChange} value={salon.naziv} required />
+        <label htmlFor="grad">Grad:</label>
+        <input type="text" id="grad" name="grad" onChange={handleChange} value={salon.grad} required />
+        <label htmlFor="adresa">Adresa:</label>
+        <input type="text" id="adresa" name="adresa" onChange={handleChange} value={salon.adresa} required />
+        <label htmlFor="broj">Broj:</label>
+        <input type="text" id="broj" name="broj" onChange={handleChange} value={salon.broj} required />
         <button type="submit">Registruj se</button>
       </form>
       <p className="registration-login">Već imaš nalog? <Link to="/prijava">Prijavi se</Link></p>
