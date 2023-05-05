@@ -9,18 +9,49 @@ public class SalonController : ControllerBase
     {
         Context = context;
     }
-    [Route("VratiSalon/{id}")]
-    [HttpGet]
-    public async Task<ActionResult<Salon>> VratiSveSalone(int id)
-    {
-        return await Context.Saloni.Where(s=>s.ID==id).FirstOrDefaultAsync();
-    }
+    // [Route("VratiSalon/{id}")]
+    // [HttpGet]
+    // public async Task<ActionResult<Salon>> VratiSveSalone(int id)
+    // {
+    //     return await Context.Saloni.Where(s=>s.ID==id).FirstOrDefaultAsync();
+    // }
 
-    [Route("VratiSveSalone")]
+    // [Route("VratiSveSalone")]
+    // [HttpGet]
+    // public async Task<ActionResult<IEnumerable<Salon>>> VratiSveSalone()
+    // {
+    //     return await Context.Saloni.ToListAsync();
+    // }
+
+        [Route("VratiSveSalone")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Salon>>> VratiSveSalone()
+    public async Task<ActionResult<IEnumerable<object>>> VratiSveSalone()
     {
-        return await Context.Saloni.ToListAsync();
+        var saloni = await Context.Saloni.ToListAsync();
+
+        var result = saloni.Select(s => new
+        {
+            id = s.ID,
+            naziv = s.naziv,
+            adresa = s.adresa,
+            grad = s.grad,
+            // prosecnaOcena = s.ProsecnaOcena,
+            brojTelefona = s.brojTelefona
+        });
+
+        return Ok(result);
+    }   
+
+
+    [Route("VratiSalon/{id_salon}")]
+    [HttpGet]
+    public async Task<ActionResult<Salon>> VratiSalon(int id_salon)
+    {
+        var s = await Context.Saloni.FindAsync(id_salon);
+        s.ID = id_salon;
+        if(s==null)
+            return NotFound();
+        return s;
     }
 
     [Route("IzmeniProfilSalona/{korisnicko_ime}/{naziv}/{adresa}/{grad}/{brojTelefona}")]
