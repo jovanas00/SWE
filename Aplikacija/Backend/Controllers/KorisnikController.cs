@@ -256,6 +256,7 @@ public async Task<IActionResult> Login(string korisnicko_ime, string lozinka)
             var response = new { Token = token, User = user }; // token and user information
             return Ok(response);
         }
+        
         else
         {
             return Unauthorized();
