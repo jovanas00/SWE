@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import '../Registracija/Footer.css';
 
 const KlijentRegistracija = () => {
   const [client, setClient] = useState({
-    username: '',
-    password: '',
+    korisnickoIme: '',
+    sifra: '',
     email: '',
-    name: '',
-    surname: '',
-    address: '',
-    phone: '',
-    city: ''
+    ime: '',
+    prezime: '',
+    adresa: '',
+    brojTelefona: '',
+    grad: ''
   });
 
   const handleChange = e => {
@@ -25,11 +25,14 @@ const KlijentRegistracija = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    axios.post('http://localhost:3000/client', client)
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
+    axios.post(`http://localhost:5169/Korisnik/RegistracijaKlijent/${client.korisnickoIme}/${client.sifra}/${client.email}/${client.ime}/${client.prezime}/${client.adresa}/${client.brojTelefona}/${client.grad}`)
+
+      .then(response => {
+        console.log(response);
       })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   return (
@@ -38,22 +41,22 @@ const KlijentRegistracija = () => {
         <p>Registrujete se kao klijent</p>
       </div>
       <form onSubmit={handleSubmit} className="registration-form">
-        <label htmlFor="username">Korisničko ime:</label>
-        <input type="text" id="username" name="username" onChange={handleChange} value={client.username} required />
-        <label htmlFor="password">Lozinka:</label>
-        <input type="password" id="password" name="password" onChange={handleChange} value={client.password} required />
+        <label htmlFor="korisnickoIme">Korisničko ime:</label>
+        <input type="text" id="korisnickoIme" name="korisnickoIme" onChange={handleChange} value={client.korisnickoIme} required />
+        <label htmlFor="sifra">Lozinka:</label>
+        <input type="password" id="sifra" name="sifra" onChange={handleChange} value={client.sifra} required />
         <label htmlFor="email">Email:</label>
         <input type="email" id="email" name="email" onChange={handleChange} value={client.email} required />
-        <label htmlFor="name">Ime:</label>
-        <input type="text" id="name" name="name" onChange={handleChange} value={client.name} required />
-        <label htmlFor="surname">Prezime:</label>
-        <input type="text" id="surname" name="surname" onChange={handleChange} value={client.surname} required />
-        <label htmlFor="address">Adresa:</label>
-        <input type="text" id="address" name="address" onChange={handleChange} value={client.address} required />
-        <label htmlFor="phone">Broj:</label>
-        <input type="text" id="phone" name="phone" onChange={handleChange} value={client.phone} required />
-        <label htmlFor="city">Grad:</label>
-        <input type="text" id="city" name="city" onChange={handleChange} value={client.city} required />
+        <label htmlFor="ime">Ime:</label>
+        <input type="text" id="ime" name="ime" onChange={handleChange} value={client.ime} required />
+        <label htmlFor="prezime">Prezime:</label>
+        <input type="text" id="prezime" name="prezime" onChange={handleChange} value={client.prezime} required />
+        <label htmlFor="adresa">Adresa:</label>
+        <input type="text" id="adresa" name="adresa" onChange={handleChange} value={client.adresa} required />
+        <label htmlFor="brojTelefona">Broj:</label>
+        <input type="text" id="brojTelefona" name="brojTelefona" onChange={handleChange} value={client.brojTelefona} required />
+        <label htmlFor="grad">Grad:</label>
+        <input type="text" id="grad" name="grad" onChange={handleChange} value={client.grad} required />
         <button type="submit">Registruj se</button>
       </form>
       <p className="registration-login">Već imaš nalog? <Link to="/prijava">Prijavi se</Link></p>
