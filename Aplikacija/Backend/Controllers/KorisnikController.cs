@@ -217,28 +217,56 @@ public class KorisnikController : ControllerBase
                 }
         }
 
+        // [Route("Login/{korisnicko_ime}/{lozinka}")]      
+        // [HttpGet]
+        // [AllowAnonymous]
+        // public async Task<string> Login(string korisnicko_ime, string lozinka)
+        // {
+        //     try
+        //     {
+        //         lozinka = lozinka.Replace("01abfc750a0c942167651c40d088531d","#");
+        //         Korisnik Korisnik = Authenticate(korisnicko_ime, lozinka);
+        //         if(Korisnik != null)
+        //         {
+        //             var token = Generate(Korisnik);
+        //             return token;
+        //         }
+        //         else
+        //         return null;
+        //     }
+        //     catch (Exception)
+        // {
+        //         return null;
+        //     }
+        // }
+
         [Route("Login/{korisnicko_ime}/{lozinka}")]      
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<string> Login(string korisnicko_ime, string lozinka)
+    [HttpGet]
+[AllowAnonymous]
+public async Task<IActionResult> Login(string korisnicko_ime, string lozinka)
+{
+    try
+    {
+        lozinka = lozinka.Replace("01abfc750a0c942167651c40d088531d", "#");
+        Korisnik korisnik = Authenticate(korisnicko_ime, lozinka);
+        if (korisnik != null)
         {
-            try
-            {
-                lozinka = lozinka.Replace("01abfc750a0c942167651c40d088531d","#");
-                Korisnik Korisnik = Authenticate(korisnicko_ime, lozinka);
-                if(Korisnik != null)
-                {
-                    var token = Generate(Korisnik);
-                    return token;
-                }
-                else
-                return null;
-            }
-            catch (Exception)
-        {
-                return null;
-            }
+            var token = Generate(korisnik);
+            var user = new { Id = korisnik.ID, Username = korisnik.korisnickoIme, Role = korisnik.tip }; // user information
+            var response = new { Token = token, User = user }; // token and user information
+            return Ok(response);
         }
+        else
+        {
+            return Unauthorized();
+        }
+    }
+    catch (Exception)
+    {
+        return StatusCode(StatusCodes.Status500InternalServerError);
+    }
+}
+
 
         [Route("IzmeniLozinku/{email}/{lozinka}/{NovaLozinka}")]
         [HttpPut]
