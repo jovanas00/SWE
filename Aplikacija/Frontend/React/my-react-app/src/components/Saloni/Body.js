@@ -55,7 +55,7 @@ const Body = () => {
   const [selektovaniGrad, setSelektovaniGrad] = useState("");
 
   useEffect(() => { //pravimo http get zahtev na navedenu adresu 
-    axios.get('http://localhost:5079/Salon/VratiSveSalone') //axios je bibilioteka koja se koristi da se odradi taj zahtev
+    axios.get('http://localhost:5169/Salon/VratiSveSalone') //axios je bibilioteka koja se koristi da se odradi taj zahtev
       .then(response => { //kad se dobije odgovor setujemo novu vrednost saloni promenljive
         setSaloni(response.data);
       })

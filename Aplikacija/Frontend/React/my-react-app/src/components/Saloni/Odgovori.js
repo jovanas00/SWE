@@ -8,7 +8,7 @@ const Odgovori = ({ id }) => {
     const [odgovori, setOdgovori] = useState([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:5079/Salon/VratiPitanjaSalona/${id}`)
+        axios.get(`http://localhost:5169/Salon/VratiPitanjaSalona/${id}`)
             .then((response) => {
                 setOdgovori(response.data);
             })

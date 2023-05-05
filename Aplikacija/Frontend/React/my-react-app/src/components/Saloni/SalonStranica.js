@@ -14,7 +14,7 @@ const SalonStranica = () => {
 
     useEffect(() => {
         // uzima se salon iz baze
-        axios.get(`http://localhost:5079/Salon/VratiSalon/${id}`)
+        axios.get(`http://localhost:5169/Salon/VratiSalon/${id}`)
             .then(response => {
                 console.log(response.data);
                 setSalon(response.data); // setujemo novi state salon na dobijene podatke
