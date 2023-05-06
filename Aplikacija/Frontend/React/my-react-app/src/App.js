@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './index.css';
 import Header from './components/Pocetna/Header';
@@ -10,14 +10,12 @@ import Registracija from './components/Registracija/Registracija';
 import SalonStranica from './components/Saloni/SalonStranica';
 import axios, { Axios } from 'axios';
 
+// Importujte komponente za administratora, salon i klijenta
+import AdminPage from './components/AdminPage';
+import SalonPage from './components/SalonPage';
+import KlijentPage from './components/KlijentPage';
 
 function App() {
-  // useEffect(()=>{
-  //   axios.get('http://localhost:5169/Proizvod/VratiSveProizvode')
-  //   .then((response)=>{
-  //     console.log(response.data);
-  //   })
-  // })
   return (
     <Router>
       <div>
@@ -27,6 +25,11 @@ function App() {
           <Route path="/prijava" element={<Prijava />} />
           <Route path="/registracija" element={<Registracija />} />
           <Route path="/saloni/:id" element={<SalonStranica />} />
+
+          {/* Dodajte rute za administratora, salon i klijenta */}
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/salon" element={<SalonPage />} />
+          <Route path="/klijent" element={<KlijentPage />} />
         </Routes>
       </div>
     </Router>
