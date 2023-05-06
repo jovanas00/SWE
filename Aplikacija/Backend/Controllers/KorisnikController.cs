@@ -241,32 +241,32 @@ public class KorisnikController : ControllerBase
         // }
 
         [Route("Login/{korisnicko_ime}/{lozinka}")]      
-    [HttpGet]
-[AllowAnonymous]
-public async Task<IActionResult> Login(string korisnicko_ime, string lozinka)
-{
-    try
-    {
-        lozinka = lozinka.Replace("01abfc750a0c942167651c40d088531d", "#");
-        Korisnik korisnik = Authenticate(korisnicko_ime, lozinka);
-        if (korisnik != null)
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(string korisnicko_ime, string lozinka)
         {
-            var token = Generate(korisnik);
-            var user = new { Id = korisnik.ID, Username = korisnik.korisnickoIme, Role = korisnik.tip }; // user information
-            var response = new { Token = token, User = user }; // token and user information
-            return Ok(response);
-        }
+            try
+            {
+                lozinka = lozinka.Replace("01abfc750a0c942167651c40d088531d", "#");
+                Korisnik korisnik = Authenticate(korisnicko_ime, lozinka);
+                if (korisnik != null)
+                {
+                    var token = Generate(korisnik);
+                    var user = new { Id = korisnik.ID, Username = korisnik.korisnickoIme, Role = korisnik.tip }; // user information
+                    var response = new { Token = token, User = user }; // token and user information
+                    return Ok(response);
+                }
         
-        else
-        {
-            return Unauthorized();
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
-    }
-    catch (Exception)
-    {
-        return StatusCode(StatusCodes.Status500InternalServerError);
-    }
-}
 
 
         [Route("IzmeniLozinku/{email}/{lozinka}/{NovaLozinka}")]
