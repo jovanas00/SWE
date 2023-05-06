@@ -40,6 +40,7 @@ const Footer = () => {
       })
       .catch(error => {
         console.log(error);
+        window.alert('Pogrešno korisničko ime ili lozinka!');
       });
   };
   
