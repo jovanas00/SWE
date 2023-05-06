@@ -28,9 +28,11 @@ const SalonRegistracija = () => {
 
       .then(response => {
         console.log(response);
+        window.alert('Uspešno ste se registrovali!');
       })
       .catch(error => {
         console.log(error);
+        window.alert('Greška pri registraciji, proverite sva polja ili možda već imate nalog.');
       });
   };
 
