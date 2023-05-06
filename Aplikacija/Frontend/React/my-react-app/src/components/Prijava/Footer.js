@@ -21,17 +21,21 @@ const Footer = () => {
     event.preventDefault();
     axios.get(`http://localhost:5169/Korisnik/Login/${prijava.korisnickoIme}/${prijava.lozinka}`)
       .then(response => {
-        const token = response.data;
+        const { token } = response.data;
         console.log(token);
-        localStorage.setItem('token', token); // čuvamo token u local storage
-        console.log(localStorage.getItem('token')); // <--- dodajte ovo
+        localStorage.setItem('token', token);
+        console.log(localStorage.getItem('token'));
         const decodedToken = jwt_decode(token);
-        if (decodedToken.Role === 'Klijent') {
-          window.location.href = '/klijent'; // redirektujemo na klijentsku stranicu
-        } else if (decodedToken.Role === 'Salon') {
-          window.location.href = '/salon'; // redirektujemo na salonsku stranicu
+        const userRole = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+        console.log(userRole); // pristupanje ulozi korisnika
+        if (userRole === 'Klijent') {
+          window.location.href = '/klijent';
+        } else if (userRole === 'Salon') {
+          window.location.href = '/salon';
+        } else if (userRole === 'Admin') {
+          window.location.href = '/admin';
         } else {
-          console.log('Unknown user role');
+          console.log('Ne znam koji je tip korisnika!');
         }
       })
       .catch(error => {
@@ -39,8 +43,6 @@ const Footer = () => {
       });
   };
   
-  
-
   return (
     <div className="login-container">
       <form onSubmit={handleSubmit} className="login-form">
