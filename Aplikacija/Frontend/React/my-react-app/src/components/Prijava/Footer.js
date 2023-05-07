@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Footer.css';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
+import Cookies from 'js-cookie';
 
 const Footer = () => {
   const [prijava, setPrijava] = useState({
@@ -23,8 +24,8 @@ const Footer = () => {
       .then(response => {
         const { token } = response.data;
         console.log(token);
-        localStorage.setItem('token', token);
-        console.log(localStorage.getItem('token'));
+        Cookies.set('token', token, { expires: 10 / (24 * 60 * 60) }); //postavlja cookie i vreme kad ističe 10s
+        console.log(Cookies.get('token'));
         const decodedToken = jwt_decode(token);
         const userRole = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
         console.log(userRole); // pristupanje ulozi korisnika
