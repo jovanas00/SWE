@@ -20,26 +20,66 @@ public class KorisnikController : ControllerBase
         Context = context;
         _config=config;
     }
+    private string Generate(Korisnik korisnik) // Generisanje tokena
+{
+    var Kljuc = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+    var Podaci = new SigningCredentials(Kljuc, SecurityAlgorithms.HmacSha256);
 
-        private string Generate(Korisnik korisnik) // Generisanje tokena
-            {
-                var Kljuc = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-                var Podaci = new SigningCredentials(Kljuc, SecurityAlgorithms.HmacSha256);
+    var claims = new List<Claim>
+    {
+        new Claim(ClaimTypes.GivenName, korisnik.korisnickoIme),
+        new Claim(ClaimTypes.Email ,korisnik.email),
+        new Claim(ClaimTypes.Role, korisnik.tip),
+    };
 
-                var claims = new[]
-                {
-                    new Claim(ClaimTypes.GivenName, korisnik.korisnickoIme),
-                    new Claim(ClaimTypes.Email ,korisnik.email),
-                    new Claim(ClaimTypes.Role, korisnik.tip)
-                };
-                var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-                _config["Jwt:Audience"],
-                claims,
-                expires:DateTime.Now.AddMinutes(60),
-                signingCredentials: Podaci);
+    if (korisnik.tip == "Klijent")
+    {
+        var klijent = Context.Klijenti.FirstOrDefault(k => k.Korisnik.ID == korisnik.ID);
+        var korpa = Context.Korpe.FirstOrDefault(k=>k.Klijent.ID==klijent.ID);
+        if (klijent != null)
+        {
+            claims.Add(new Claim("KlijentID", klijent.ID.ToString()));
+            claims.Add(new Claim("KorpaID", korpa.ID.ToString()));
+        }
+    }
+    else if (korisnik.tip == "Salon")
+    {
+        var salon = Context.Saloni.FirstOrDefault(s => s.Korisnik.ID == korisnik.ID);
+        if (salon != null)
+        {
+            claims.Add(new Claim("SalonID", salon.ID.ToString()));
+        }
+    }
 
-                return new JwtSecurityTokenHandler().WriteToken(token);
-            }
+    var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+    _config["Jwt:Audience"],
+    claims,
+    expires:DateTime.Now.AddMinutes(60),
+    signingCredentials: Podaci);
+
+    return new JwtSecurityTokenHandler().WriteToken(token);
+}
+
+        // private string Generate(Korisnik korisnik) // Generisanje tokena
+        //     {
+        //         var Kljuc = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+        //         var Podaci = new SigningCredentials(Kljuc, SecurityAlgorithms.HmacSha256);
+
+        //         var claims = new[]
+        //         {
+        //             new Claim(ClaimTypes.GivenName, korisnik.korisnickoIme),
+        //             new Claim(ClaimTypes.Email ,korisnik.email),
+        //             new Claim(ClaimTypes.Role, korisnik.tip),
+        //             //new Claim(ClaimTypes.NameIdentifier, korisnik.ID.ToString())
+        //         };
+        //         var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+        //         _config["Jwt:Audience"],
+        //         claims,
+        //         expires:DateTime.Now.AddMinutes(60),
+        //         signingCredentials: Podaci);
+
+        //         return new JwtSecurityTokenHandler().WriteToken(token);
+        //     }
 
         private Korisnik Authenticate(string korisnicko_ime, string lozinka) // Autentifikacija
         {
