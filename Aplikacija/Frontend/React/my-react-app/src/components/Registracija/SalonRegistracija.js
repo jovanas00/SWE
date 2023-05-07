@@ -5,13 +5,13 @@ import '../Registracija/Footer.css';
 
 const SalonRegistracija = () => {
   const [salon, setSalon] = useState({
-    username: '',
-    password: '',
+    korisnickoIme: '',
+    lozinka: '',
     email: '',
-    name: '',
-    city: '',
-    address: '',
-    phone: ''
+    naziv: '',
+    grad: '',
+    adresa: '',
+    broj: ''
   });
 
   const handleChange = e => {
@@ -29,11 +29,24 @@ const SalonRegistracija = () => {
       .then(response => {
         console.log(response);
         window.alert('Uspešno ste se registrovali!');
+        resetFields(); // Poziv funkcije za resetovanje polja
       })
       .catch(error => {
         console.log(error);
         window.alert('Greška pri registraciji, proverite sva polja ili možda već imate nalog.');
       });
+  };
+
+  const resetFields = () => {
+    setSalon({
+      korisnickoIme: '',
+      lozinka: '',
+      email: '',
+      naziv: '',
+      grad: '',
+      adresa: '',
+      broj: ''
+    });
   };
 
   return (
