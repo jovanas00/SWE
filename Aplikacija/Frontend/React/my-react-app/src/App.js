@@ -11,9 +11,9 @@ import SalonStranica from './components/Saloni/SalonStranica';
 import axios, { Axios } from 'axios';
 
 // Importujte komponente za administratora, salon i klijenta
-import AdminPage from './components/AdminPage';
-import SalonPage from './components/SalonPage';
-import KlijentPage from './components/KlijentPage';
+import AdminPage from './components/AdminPage/AdminPage';
+import SalonPage from './components/SalonPage/SalonPage';
+import KlijentPage from './components/KlijentPage/KlijentPage';
 
 function App() {
   return (

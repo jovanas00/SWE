@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Header from './Pocetna/Header';
+import Header from '../Pocetna/Header';
 import axios from 'axios';
 
 const AdminPage = () => {

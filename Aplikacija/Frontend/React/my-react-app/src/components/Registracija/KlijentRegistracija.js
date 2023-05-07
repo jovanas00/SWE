@@ -67,5 +67,3 @@ const KlijentRegistracija = () => {
 };
 
 export default KlijentRegistracija;
-
-
