@@ -30,11 +30,25 @@ const KlijentRegistracija = () => {
       .then(response => {
         console.log(response);
         window.alert('Uspešno ste se registrovali!');
+        resetFields(); // Poziv funkcije za resetovanje polja
       })
       .catch(error => {
         console.log(error);
         window.alert('Greška pri registraciji, proverite sva polja ili možda već imate nalog.');
       });
+  };
+
+  const resetFields = () => {
+    setClient({
+      korisnickoIme: '',
+      sifra: '',
+      email: '',
+      ime: '',
+      prezime: '',
+      adresa: '',
+      brojTelefona: '',
+      grad: ''
+    });
   };
 
   return (
