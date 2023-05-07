@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
+
 namespace BackEnd.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+//[Authorize(Roles ="Klijent")]
 public class KlijentController : ControllerBase
 {
     public PPContext Context { get; set; }

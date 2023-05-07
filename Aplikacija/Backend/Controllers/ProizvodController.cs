@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BackEnd.Controllers;
 
@@ -12,16 +13,9 @@ public class ProizvodController : ControllerBase
         Context = context;
     }
 
-    //metoda za testiranje povezivanja sa frontom
-    // [Route("VratiSveProizvode")]
-    // [HttpGet]
-    // public async Task<ActionResult<IEnumerable<Proizvod>>> VratiSveProizvode()
-    // {
-    //     return await Context.Proizvodi.ToListAsync();
-    // }
-
     [Route("DodajProizvod/{naziv}/{cena}/{id_kategorija}/{id_salon}")] 
     [HttpPost]
+    //[Authorize(Roles ="Salon")]
     public async Task<ActionResult<Proizvod>> DodajProizvod(string naziv, float cena,int id_kategorija, int id_salon)
     {
         Kategorija k = await Context.Kategorije.FindAsync(id_kategorija);
@@ -52,6 +46,7 @@ public class ProizvodController : ControllerBase
 
     [Route("ObrisiProizvod/{id_proizvod}")]
     [HttpDelete]
+    //[Authorize(Roles ="Salon")]
     public async Task<ActionResult<Proizvod>> ObrisiProizvod(int id_proizvod)
     {
         try
@@ -71,6 +66,7 @@ public class ProizvodController : ControllerBase
 
     [Route("IzmeniProizvod/{id_proizvod}")]
     [HttpPut]
+    //[Authorize(Roles ="Salon")]
     public async Task<ActionResult<Proizvod>> IzmeniProizvod(int id_proizvod,string naziv,float cena,string kategorija)
     {
         var p = await Context.Proizvodi.FindAsync(id_proizvod);
@@ -94,6 +90,7 @@ public class ProizvodController : ControllerBase
 
     [Route("IzmeniDostupnost/{id_proizvod}")]
     [HttpPut]
+    //[Authorize(Roles ="Salon")]
      public async Task<ActionResult<Proizvod>> IzmeniProizvod(int id_proizvod)
     {
         try
@@ -116,6 +113,7 @@ public class ProizvodController : ControllerBase
 
     [Route("UploadProizvodSlika/{id_proizvod}")]
     [HttpPost]
+    //[Authorize(Roles ="Salon")]
     public async Task<ActionResult> UploadProizvodSlika(int id_proizvod)
     {
         //frontend za testiranje
@@ -153,6 +151,7 @@ public class ProizvodController : ControllerBase
 
     [Route("VratiProizvodeSalona/{id_salon}")]
     [HttpGet]
+    //[AllowAnonymous]
     public async Task<ActionResult<IEnumerable<Proizvod>>> VratiProizvodeSalona(int id_salon)
     {
         var proizvodi = await Context.Proizvodi.Where(p => p.Salon.ID == id_salon).ToListAsync();

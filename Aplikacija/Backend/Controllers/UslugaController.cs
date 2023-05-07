@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
+
 namespace BackEnd.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+//[Authorize(Roles ="Salon")]
 public class UslugaController : ControllerBase
 {
     public PPContext Context { get; set; }
@@ -12,6 +15,7 @@ public class UslugaController : ControllerBase
 
     [Route("DodajUslugu/{naziv}/{cena}/{opis}/{kapacitet}/{dostupnost}/{id_salon}")]
     [HttpPost]
+    //[Authorize(Roles ="Salon")]
     public async Task<ActionResult<Usluga>> DodajUslugu(string naziv, float cena, string opis, int kapacitet, bool dostupnost, int id_salon)
     {
         Salon s = await Context.Saloni.FindAsync(id_salon);
@@ -39,6 +43,7 @@ public class UslugaController : ControllerBase
 
     [Route("ObrisiUslugu/{id_usluga}")]
     [HttpPost]
+    //[Authorize(Roles ="Salon")]
     public async Task<ActionResult<Usluga>> ObrisiUslugu(int id_usluga)
     {
         Usluga u = await Context.Usluge.FindAsync(id_usluga);
@@ -58,6 +63,7 @@ public class UslugaController : ControllerBase
 
     [Route("IzmeniUslugu/{id_usluga}")]
     [HttpPut]
+    //[Authorize(Roles ="Salon")]
     public async Task<ActionResult<Usluga>> IzmeniUslugu(int id_usluga,string naziv,float cena,string opis)
     {
         Usluga u = await Context.Usluge.FindAsync(id_usluga);
@@ -78,6 +84,7 @@ public class UslugaController : ControllerBase
 
     [Route("IzmeniDostupnost/{id_usluga}")]
     [HttpPut]
+    //[Authorize(Roles ="Salon")]
     public async Task<ActionResult<Usluga>> IzmeniDostupnost(int id_usluga)
     {
         Usluga u = await Context.Usluge.FindAsync(id_usluga);
@@ -101,6 +108,7 @@ public class UslugaController : ControllerBase
 
     [Route("VratiUslugeSalona/{id_salon}")]
     [HttpGet]
+    //[AllowAnonymous]
     public async Task<ActionResult<IEnumerable<Usluga>>> VratiUslugeSalona(int id_salon)
     {
         var usluge = await Context.Usluge.Where(u => u.Salon.ID == id_salon).ToListAsync();

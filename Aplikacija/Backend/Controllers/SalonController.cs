@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
+
 namespace BackEnd.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+//[Authorize(Roles ="Salon")]
 public class SalonController : ControllerBase
 {
     public PPContext Context { get; set; }
@@ -9,22 +12,10 @@ public class SalonController : ControllerBase
     {
         Context = context;
     }
-    // [Route("VratiSalon/{id}")]
-    // [HttpGet]
-    // public async Task<ActionResult<Salon>> VratiSveSalone(int id)
-    // {
-    //     return await Context.Saloni.Where(s=>s.ID==id).FirstOrDefaultAsync();
-    // }
 
-    // [Route("VratiSveSalone")]
-    // [HttpGet]
-    // public async Task<ActionResult<IEnumerable<Salon>>> VratiSveSalone()
-    // {
-    //     return await Context.Saloni.ToListAsync();
-    // }
-
-        [Route("VratiSveSalone")]
+    [Route("VratiSveSalone")]
     [HttpGet]
+    //[AllowAnonymous]
     public async Task<ActionResult<IEnumerable<object>>> VratiSveSalone()
     {
         var saloni = await Context.Saloni.ToListAsync();
@@ -38,13 +29,12 @@ public class SalonController : ControllerBase
             // prosecnaOcena = s.ProsecnaOcena,
             brojTelefona = s.brojTelefona
         });
-
         return Ok(result);
     }   
 
-
     [Route("VratiSalon/{id_salon}")]
     [HttpGet]
+    //[AllowAnonymous]
     public async Task<ActionResult<Salon>> VratiSalon(int id_salon)
     {
         var s = await Context.Saloni.FindAsync(id_salon);
@@ -56,6 +46,7 @@ public class SalonController : ControllerBase
 
     [Route("IzmeniProfilSalona/{korisnicko_ime}/{naziv}/{adresa}/{grad}/{brojTelefona}")]
     [HttpPut]
+    //[Authorize(Roles ="Salon")]
     public async Task<ActionResult<Salon>> IzmeniProfil(string korisnicko_ime, string naziv, string adresa, string grad, string brojTelefona)
     {
         var k = await Context.Korisnici.Where(p => p.korisnickoIme == korisnicko_ime ).FirstOrDefaultAsync();
@@ -78,6 +69,7 @@ public class SalonController : ControllerBase
 
     [Route("OdgovoriNaPitanje/{id_pitanje}/{tekst}")]
     [HttpPut]
+    //[Authorize(Roles ="Salon")]
     public async Task<ActionResult<Pitanje>> OdgovoriNaPitanje(int id_pitanje, string tekst)
     {
         try
@@ -100,6 +92,7 @@ public class SalonController : ControllerBase
     }
 
     [HttpPut("ObradiZahtev/{id_zahtev}/{status}/{komentarSalona}")]
+    //[Authorize(Roles ="Salon")]
     public async Task<ActionResult<Zahtev>> ObradiZahtev(int id_zahtev, string status, string komentarSalona)
     {
         try
@@ -124,6 +117,7 @@ public class SalonController : ControllerBase
     
 
     [HttpPut("ObradiNarudzbinu/{id_narudzbina}/{status}/{komentar_salona}")]
+    //[Authorize(Roles ="Salon")]
     public async Task<ActionResult<Narudzbina>> ObradiNarudzbinu(int id_narudzbina, string status,string komentar_salona)
     {
         try
@@ -148,6 +142,7 @@ public class SalonController : ControllerBase
 
     [Route("VratiPitanjaSalona/{id_salon}")]
     [HttpGet]
+    //[AllowAnonymous]
     public async Task<ActionResult<IEnumerable<object>>> VratiPitanjaSalona(int id_salon)
     {
         var pitanja = await Context.Pitanja
@@ -167,6 +162,7 @@ public class SalonController : ControllerBase
 
     [Route("VratiRecenzijeSalona/{id_salon}")]
     [HttpGet]
+    //[AllowAnonymous]
     public async Task<ActionResult<IEnumerable<object>>> VratiRecenzijeSalona(int id_salon)
     {
         var recenzije = await Context.Recenzije
