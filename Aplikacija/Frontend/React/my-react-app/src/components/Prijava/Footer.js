@@ -24,7 +24,7 @@ const Footer = () => {
       .then(response => {
         const { token } = response.data;
         console.log(token);
-        Cookies.set('token', token, { expires: 10 / (24 * 60 * 60) }); //postavlja cookie i vreme kad ističe 10s
+        Cookies.set('token', token, { expires: 3600 / (24 * 60 * 60) }); //postavlja cookie i vreme kad ističe (1h)
         console.log(Cookies.get('token'));
         const decodedToken = jwt_decode(token);
         const userRole = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
