@@ -97,7 +97,7 @@ const Header = () => {
           {/* url */}
           <Link to="/klijent/saloni">Saloni</Link>
           <Link to="/klijent/profil">Profil</Link>
-          <Link to="/" className="nav-link" onClick={handleLogout}>Log out</Link>
+          <Link to="/" onClick={handleLogout}>Log out</Link>
           <button className="nav-btn nav-close-btn" onClick={hideNavbar}>
             <FaTimes />
           </button>
