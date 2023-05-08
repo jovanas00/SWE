@@ -33,7 +33,6 @@ function App() {
           <Route path="/klijent" element={<KlijentPage />} />
           <Route path="/klijent/saloni" element={<Registracija />}/>
           <Route path="/klijent/profil" element={<Prijava />}/>
-          {/*</Routes><Route path="/logout" element={<Logout>}/></Logout>*/}
         </Routes>
       </div>
     </Router>

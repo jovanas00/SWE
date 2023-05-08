@@ -4,6 +4,8 @@ import './Header.css';
 import logo from '../../images/logo.png';
 import { Link } from 'react-router-dom';
 import { vratiRole } from '../Auth/VratiRole';
+import Cookies from 'js-cookie';
+import { Navigate } from 'react-router-dom';
 //import { ImCross } from 'react-icons/im';
 
 // const Header = () => {
@@ -53,6 +55,10 @@ const Header = () => {
     setIsNavbarVisible(false);
   };
 
+  const handleLogout = () => {
+    Cookies.remove('token');
+  }
+
   const role = vratiRole();
   if (!role) {
     return (
@@ -91,7 +97,7 @@ const Header = () => {
           {/* url */}
           <Link to="/klijent/saloni">Saloni</Link>
           <Link to="/klijent/profil">Profil</Link>
-          <Link to="/logout" className="nav-link">Log out</Link>
+          <Link to="/" className="nav-link" onClick={handleLogout}>Log out</Link>
           <button className="nav-btn nav-close-btn" onClick={hideNavbar}>
             <FaTimes />
           </button>
@@ -113,7 +119,7 @@ const Header = () => {
           {/* url */}
           <Link to="/salon/upravljanje">Upravljanje</Link>
           <Link to="/salon/profil">Profil</Link>
-          <Link to="/logout" className="nav-link">Log out</Link>
+          <Link to="/" onClick={handleLogout}>Log out</Link>
           <button className="nav-btn nav-close-btn" onClick={hideNavbar}>
             <FaTimes />
           </button>
