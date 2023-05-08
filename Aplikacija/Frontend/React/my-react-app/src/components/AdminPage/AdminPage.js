@@ -2,7 +2,10 @@ import React, { useState, Component } from 'react';
 import Header from '../Pocetna/Header';
 import axios from 'axios';
 import { isAdmin } from '../Auth/AuthAdmin';
+import { vratiRole } from '../Auth/VratiRole';
 import { Navigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import jwt_decode from 'jwt-decode';
 
 const AdminPage = () => {
   const [selectedSection, setSelectedSection] = useState(null);
@@ -123,7 +126,12 @@ const AdminPage = () => {
       </div>
     );
   }
-  else {
+  else{
+    const role = vratiRole();
+    if(role==="Klijent")
+      return <Navigate to={{ pathname: '/klijent' }} />
+    if(role==="Salon")
+      return <Navigate to={{ pathname: '/salon' }} />
     return <Navigate to={{ pathname: '/prijava' }} />
   }
 }

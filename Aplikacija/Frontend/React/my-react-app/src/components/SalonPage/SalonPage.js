@@ -1,6 +1,7 @@
 import React from 'react';
 import { isSalon } from '../Auth/AuthSalon';
 import { Navigate } from 'react-router-dom';
+import { vratiRole } from '../Auth/VratiRole';
 
 const SalonPage = () => {
   if(isSalon())
@@ -15,6 +16,11 @@ const SalonPage = () => {
   }
   else
   {
+    const role = vratiRole();
+    if(role==="Klijent")
+      return <Navigate to={{ pathname: '/klijent' }} />
+    if(role==="Admin")
+      return <Navigate to={{ pathname: '/admin' }} />
     return <Navigate to={{ pathname: '/prijava'}}/>
   }
 };
