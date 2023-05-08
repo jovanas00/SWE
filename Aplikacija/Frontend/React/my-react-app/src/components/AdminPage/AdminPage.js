@@ -4,6 +4,7 @@ import axios from 'axios';
 import { isAdmin } from '../Auth/AuthAdmin';
 import { vratiRole } from '../Auth/VratiRole';
 import { Navigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const AdminPage = () => {
   const [selectedSection, setSelectedSection] = useState(null);
@@ -14,39 +15,46 @@ const AdminPage = () => {
   const [prezime, setLastName] = useState('');
   const [file, setFile] = useState(null);
 
+  //Autorizacija
+  const token = Cookies.get('token');
+  const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    };
+
   const handleSectionChange = (section) => {
     setSelectedSection(section);
   };
 
+  
   // Funkcija za dodavanje kategorije preko Axios
   const addCategory = async (naziv) => {
-    try {
-      const response = await axios.post(`http://localhost:5169/Admin/DodajKategoriju/${naziv}`);
-      console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  try {
+    const response = await axios.post(`http://localhost:5169/Admin/DodajKategoriju/${naziv}`, null, config);
+    console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   // Funkcija za brisanje kategorije preko Axios
   const deleteCategory = async (id_kategorija) => {
-    try {
-      const response = await axios.post(`http://localhost:5169/Admin/ObrisiKategoriju/${id_kategorija}`);
-      console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  try {
+    const response = await axios.post(`http://localhost:5169/Admin/ObrisiKategoriju/${id_kategorija}`, null, config);
+    console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   // Funkcija za brisanje korisnika preko Axios
   const deleteUser = async (korisnicko_ime) => {
-    try {
-      const response = await axios.delete(`http://localhost:5169/Admin/ObrisiKorisnika/${korisnicko_ime}`);
-      console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  try {
+    const response = await axios.delete(`http://localhost:5169/Admin/ObrisiKorisnika/${korisnicko_ime}`, config);
+    console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   // Funkcija za izmenu admina preko Axios
   const updateAdmin = async (korisnicko_ime, ime, prezime) => {
