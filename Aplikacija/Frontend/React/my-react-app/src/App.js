@@ -16,6 +16,7 @@ import SalonPage from './components/SalonPage/SalonPage';
 import KlijentPage from './components/KlijentPage/KlijentPage';
 
 function App() {
+
   return (
     <Router>
       <div>
@@ -30,6 +31,9 @@ function App() {
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/salon" element={<SalonPage />} />
           <Route path="/klijent" element={<KlijentPage />} />
+          <Route path="/klijent/saloni" element={<Registracija />}/>
+          <Route path="/klijent/profil" element={<Prijava />}/>
+          {/*</Routes><Route path="/logout" element={<Logout>}/></Logout>*/}
         </Routes>
       </div>
     </Router>

@@ -3,6 +3,7 @@ import { FaBars, FaTimes } from 'react-icons/fa';
 import './Header.css';
 import logo from '../../images/logo.png';
 import { Link } from 'react-router-dom';
+import { vratiRole } from '../Auth/VratiRole';
 //import { ImCross } from 'react-icons/im';
 
 // const Header = () => {
@@ -52,32 +53,81 @@ const Header = () => {
     setIsNavbarVisible(false);
   };
 
-  return (
-    <header >
-      <div className="logo">
-        <Link to="/">
-          <img src={logo} alt="Logo" />
-        </Link>
-        <h3>Pet Planet</h3>
-      </div>
-      {/* <h3 className="logo"><a href="/#"><img src={logo} alt="Logo" /></a></h3> */}
-      <nav className={isNavbarVisible ? 'responsive_nav' : ''}>
-        {/* url */}
-        <Link to="/">Pocetna</Link>
-        <Link to="/saloni">Saloni</Link>
-        <Link to="/prijava">Prijavi se</Link>
-        <Link to="/registracija">Registruj se</Link>
-        <button className="nav-btn nav-close-btn" onClick={hideNavbar}>
-          <FaTimes />
+  const role = vratiRole();
+  if (!role) {
+    return (
+      <header >
+        <div className="logo">
+          <Link to="/">
+            <img src={logo} alt="Logo" />
+          </Link>
+          <h3>Pet Planet</h3>
+        </div>
+        {/* <h3 className="logo"><a href="/#"><img src={logo} alt="Logo" /></a></h3> */}
+        <nav className={isNavbarVisible ? 'responsive_nav' : ''}>
+          {/* url */}
+          <Link to="/">Pocetna</Link>
+          <Link to="/saloni">Saloni</Link>
+          <Link to="/prijava">Prijavi se</Link>
+          <Link to="/registracija">Registruj se</Link>
+          <button className="nav-btn nav-close-btn" onClick={hideNavbar}>
+            <FaTimes />
+          </button>
+        </nav>
+        {/* za ptvaranje navbara u nav screenu */}
+        <button className="nav-btn" onClick={showNavbar}>
+          <FaBars />
         </button>
-      </nav>
-      {/* za ptvaranje navbara u nav screenu */}
-      <button className="nav-btn" onClick={showNavbar}>
-        <FaBars />
-      </button>
-    </header>
-  );
+      </header>
+    );
+  }
+  else if (role==="Klijent") {
+    return (
+      <header >
+        <div className="logo">
+        </div>
+        {/* <h3 className="logo"><a href="/#"><img src={logo} alt="Logo" /></a></h3> */}
+        <nav className={isNavbarVisible ? 'responsive_nav' : ''}>
+          {/* url */}
+          <Link to="/klijent/saloni">Saloni</Link>
+          <Link to="/klijent/profil">Profil</Link>
+          <Link to="/logout" className="nav-link">Log out</Link>
+          <button className="nav-btn nav-close-btn" onClick={hideNavbar}>
+            <FaTimes />
+          </button>
+        </nav>
+        {/* za ptvaranje navbara u nav screenu */}
+        <button className="nav-btn" onClick={showNavbar}>
+          <FaBars />
+        </button>
+      </header>
+    );
+  }
+  else if (role==="Salon") {
+    return (
+      <header >
+        <div className="logo">
+        </div>
+        {/* <h3 className="logo"><a href="/#"><img src={logo} alt="Logo" /></a></h3> */}
+        <nav className={isNavbarVisible ? 'responsive_nav' : ''}>
+          {/* url */}
+          <Link to="/salon/upravljanje">Upravljanje</Link>
+          <Link to="/salon/profil">Profil</Link>
+          <Link to="/logout" className="nav-link">Log out</Link>
+          <button className="nav-btn nav-close-btn" onClick={hideNavbar}>
+            <FaTimes />
+          </button>
+        </nav>
+        {/* za ptvaranje navbara u nav screenu */}
+        <button className="nav-btn" onClick={showNavbar}>
+          <FaBars />
+        </button>
+      </header>
+    );
+
+  }
 };
+
 
 export default Header;
 
