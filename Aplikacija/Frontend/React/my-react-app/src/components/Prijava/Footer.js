@@ -3,7 +3,7 @@ import './Footer.css';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import Cookies from 'js-cookie';
-
+import { isAdmin } from '../Auth/AuthAdmin';
 const Footer = () => {
   const [prijava, setPrijava] = useState({
     korisnickoIme: '',
@@ -24,10 +24,11 @@ const Footer = () => {
       .then(response => {
         const { token } = response.data;
         console.log(token);
-        Cookies.set('token', token, { expires: 3600 / (24 * 60 * 60) }); //postavlja cookie i vreme kad ističe (1h)
+        Cookies.set('token', token, { expires: 10 / (24 * 60 * 60) }); //postavlja cookie i vreme kad ističe (1h)
         console.log(Cookies.get('token'));
         const decodedToken = jwt_decode(token);
         const userRole = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+
         console.log(userRole); // pristupanje ulozi korisnika
         if (userRole === 'Klijent') {
           window.location.href = '/klijent';
