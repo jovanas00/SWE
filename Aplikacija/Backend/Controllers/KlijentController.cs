@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 
 namespace BackEnd.Controllers;
@@ -13,11 +14,29 @@ public class KlijentController : ControllerBase
         Context = context;
     }
 
+    private Korisnik VratiKorisnika()
+    {
+        var Identitet = HttpContext.User.Identity as ClaimsIdentity;
+        if(Identitet != null)
+        {
+            var Tvrdnja = Identitet.Claims;
+            return new Korisnik{
+                korisnickoIme = Tvrdnja.FirstOrDefault(p => p.Type == ClaimTypes.GivenName)?.Value,
+                email = Tvrdnja.FirstOrDefault(p => p.Type == ClaimTypes.Email)?.Value,
+                tip = Tvrdnja.FirstOrDefault(p => p.Type == ClaimTypes.Role)?.Value,
+                ID = int.Parse(Tvrdnja.FirstOrDefault(p=> p.Type == ClaimTypes.NameIdentifier)?.Value)
+            };
+        }
+        return null;
+    }
+
+
     [Route("IzmeniProfilKlijenta/{korisnicko_ime}/{ime}/{prezime}/{adresa}/{grad}/{brojTelefona}")]
     [HttpPut]
-    public async Task<ActionResult<Klijent>> IzmeniProfil(string korisnicko_ime, string ime, string prezime, string adresa, string grad, string brojTelefona)
+    public async Task<ActionResult<Klijent>> IzmeniProfil(/*bez korisnickog imena*/string korisnicko_ime, string ime, string prezime, string adresa, string grad, string brojTelefona)
     {
-        var k = await Context.Korisnici.Where(p => p.korisnickoIme == korisnicko_ime ).FirstOrDefaultAsync();
+        //Korisnik k = VratiKorisnika()
+        var k = await Context.Korisnici.Where(p => p.korisnickoIme == /*k.*/korisnicko_ime ).FirstOrDefaultAsync();
         if(k == null)
             return NotFound();
         var klijent = await Context.Klijenti.Where(p=>p.Korisnik==k).FirstOrDefaultAsync();
@@ -40,8 +59,9 @@ public class KlijentController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Klijent>> PostaviPitanje(string tekst, int id_salon, int id_klijent)
     {
+        /*Korisnik k = VratiKorisnika()*/
         Salon s = await Context.Saloni.FindAsync(id_salon);
-        Klijent k = await Context.Klijenti.FindAsync(id_klijent);
+        Klijent k = await Context.Klijenti.FindAsync(id_klijent);//.Where(s->s.Korisnik.ID==k.ID).FirstOrDefault();
         if(s==null || k == null)
             return BadRequest("Salon ne postoji.");
         try{
@@ -69,6 +89,7 @@ public class KlijentController : ControllerBase
     {
         try
         {
+            //isto kao gore
             Salon s = await Context.Saloni.FindAsync(id_salon);
             Klijent k = await Context.Klijenti.FindAsync(klijentID);
             Usluga u = await Context.Usluge.FindAsync(uslugaID);
@@ -130,6 +151,7 @@ public class KlijentController : ControllerBase
     {
         try
         {
+            //isto
             var salon = await Context.Saloni.FindAsync(idSalona);
             var klijent = await Context.Klijenti.FindAsync(klijentID);
 
@@ -162,6 +184,9 @@ public class KlijentController : ControllerBase
     {
         try
         {
+            //Korisnik k = VratiKorisnika();
+            //Klijent kl = ...nadjes klijenta
+            //Korpa kor = ...nadjes korpu na osnovu kl.ID
             var proizvod = await Context.Proizvodi.FindAsync(proizvodID);
             var korpa = await Context.Korpe.FindAsync(korpaID);
 
@@ -203,6 +228,7 @@ public class KlijentController : ControllerBase
     [HttpGet("VratiProizvodeIzKorpe/{id_korpa}")]
     public async Task<ActionResult<List<KorpaProizvod>>> VratiProizvodeIzKorpe(int id_korpa)
     {
+        //nadjes korpu isto kao gore
         Korpa k = await Context.Korpe
                     .Include(k => k.Proizvodi)
                     .FirstOrDefaultAsync(k => k.ID == id_korpa);
@@ -212,6 +238,7 @@ public class KlijentController : ControllerBase
     [HttpPut("IzbaciIzKorpe/{proizvodID}/{korpaID}")]
     public async Task<ActionResult<Korpa>> IzbaciIzKorpe(int proizvodID, int korpaID)
     {
+        //isto kao gore
         try
         {
             var proizvod_korpa = Context.KorpeProizvodi.Where(p=>p.korpaID==korpaID && p.proizvodID==proizvodID).FirstOrDefault();
@@ -237,6 +264,7 @@ public class KlijentController : ControllerBase
     {
         try
         {
+            //isto kao gore
             Korpa k = await Context.Korpe
                     .Include(k => k.Proizvodi)
                     .FirstOrDefaultAsync(k => k.ID == korpaID);

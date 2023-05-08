@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.Security.Claims;
 using System.Security.Cryptography;
 
 namespace BackEnd.Controllers;

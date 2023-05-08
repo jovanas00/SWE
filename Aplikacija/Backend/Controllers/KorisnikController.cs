@@ -30,26 +30,8 @@ public class KorisnikController : ControllerBase
             new Claim(ClaimTypes.GivenName, korisnik.korisnickoIme),
             new Claim(ClaimTypes.Email ,korisnik.email),
             new Claim(ClaimTypes.Role, korisnik.tip),
+            new Claim(ClaimTypes.NameIdentifier,korisnik.ID.ToString())
         };
-
-        if (korisnik.tip == "Klijent")
-        {
-            var klijent = Context.Klijenti.FirstOrDefault(k => k.Korisnik.ID == korisnik.ID);
-            var korpa = Context.Korpe.FirstOrDefault(k=>k.Klijent.ID==klijent.ID);
-            if (klijent != null)
-            {
-                claims.Add(new Claim("KlijentID", klijent.ID.ToString()));
-                claims.Add(new Claim("KorpaID", korpa.ID.ToString()));
-            }
-        }
-        else if (korisnik.tip == "Salon")
-        {
-            var salon = Context.Saloni.FirstOrDefault(s => s.Korisnik.ID == korisnik.ID);
-            if (salon != null)
-            {
-                claims.Add(new Claim("SalonID", salon.ID.ToString()));
-            }
-        }
 
         var token = new JwtSecurityToken(_config["Jwt:Issuer"],
         _config["Jwt:Audience"],
@@ -91,7 +73,8 @@ public class KorisnikController : ControllerBase
             return new Korisnik{
                 korisnickoIme = Tvrdnja.FirstOrDefault(p => p.Type == ClaimTypes.GivenName)?.Value,
                 email = Tvrdnja.FirstOrDefault(p => p.Type == ClaimTypes.Email)?.Value,
-                tip = Tvrdnja.FirstOrDefault(p => p.Type == ClaimTypes.Role)?.Value
+                tip = Tvrdnja.FirstOrDefault(p => p.Type == ClaimTypes.Role)?.Value,
+                ID = int.Parse(Tvrdnja.FirstOrDefault(p=> p.Type == ClaimTypes.Name)?.Value)
             };
         }
         return null;

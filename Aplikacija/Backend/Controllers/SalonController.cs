@@ -49,6 +49,7 @@ public class SalonController : ControllerBase
     //[Authorize(Roles ="Salon")]
     public async Task<ActionResult<Salon>> IzmeniProfil(string korisnicko_ime, string naziv, string adresa, string grad, string brojTelefona)
     {
+        //nadjes na osnovu korisnika
         var k = await Context.Korisnici.Where(p => p.korisnickoIme == korisnicko_ime ).FirstOrDefaultAsync();
         if(k == null)
             return NotFound();
@@ -140,6 +141,7 @@ public class SalonController : ControllerBase
         }
     }
 
+    //ovde isti slucaj kao za proizvode
     [Route("VratiPitanjaSalona/{id_salon}")]
     [HttpGet]
     //[AllowAnonymous]
@@ -160,6 +162,7 @@ public class SalonController : ControllerBase
         return pitanja;
     }
 
+    //isto kao gore
     [Route("VratiRecenzijeSalona/{id_salon}")]
     [HttpGet]
     //[AllowAnonymous]

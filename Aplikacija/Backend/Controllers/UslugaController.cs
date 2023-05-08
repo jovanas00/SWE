@@ -18,6 +18,7 @@ public class UslugaController : ControllerBase
     //[Authorize(Roles ="Salon")]
     public async Task<ActionResult<Usluga>> DodajUslugu(string naziv, float cena, string opis, int kapacitet, bool dostupnost, int id_salon)
     {
+        //preko korisnika nalazis salon
         Salon s = await Context.Saloni.FindAsync(id_salon);
         if(s==null)
                 return NotFound();
