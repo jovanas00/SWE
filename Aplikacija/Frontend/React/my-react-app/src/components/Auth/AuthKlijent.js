@@ -1,5 +1,3 @@
-import jwt_decode from 'jwt-decode';
-import Cookies from 'js-cookie';
 import { vratiRole } from './VratiRole';
 
 export function isKlijent() {

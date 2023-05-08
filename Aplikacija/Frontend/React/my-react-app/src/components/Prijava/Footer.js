@@ -25,7 +25,7 @@ const Footer = () => {
       .then(response => {
         const { token } = response.data;
         console.log(token);
-        Cookies.set('token', token, { expires: 10 / (24 * 60 * 60) }); //postavlja cookie i vreme kad ističe (1h)
+        Cookies.set('token', token, { expires: 3600 / (24 * 60 * 60) }); //postavlja cookie i vreme kad ističe (1h)
         const userRole = vratiRole();
 
         console.log(userRole); // pristupanje ulozi korisnika

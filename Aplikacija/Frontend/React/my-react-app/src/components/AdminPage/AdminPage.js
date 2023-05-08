@@ -4,8 +4,6 @@ import axios from 'axios';
 import { isAdmin } from '../Auth/AuthAdmin';
 import { vratiRole } from '../Auth/VratiRole';
 import { Navigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import jwt_decode from 'jwt-decode';
 
 const AdminPage = () => {
   const [selectedSection, setSelectedSection] = useState(null);
