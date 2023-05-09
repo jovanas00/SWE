@@ -5,7 +5,7 @@ namespace BackEnd.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-//[Authorize(Roles ="Klijent")]
+[Authorize(Roles ="Klijent")]
 public class KlijentController : ControllerBase
 {
     public PPContext Context { get; set; }
@@ -179,18 +179,22 @@ public class KlijentController : ControllerBase
         }       
     }
 
-    [HttpPut("DodajUKorpu/{proizvodID}/{korpaID}")]
-    public async Task<ActionResult<Korpa>> DodajUKorpu(int proizvodID, int korpaID)
+    [HttpPut("DodajUKorpu/{proizvodID}")]
+    public async Task<ActionResult<Korpa>> DodajUKorpu(int proizvodID)
     {
         try
         {
-            //Korisnik k = VratiKorisnika();
-            //Klijent kl = ...nadjes klijenta
+            Korisnik korisnik = VratiKorisnika();
+            Console.WriteLine(korisnik.korisnickoIme);
+            Klijent kl = Context.Klijenti.Include(k=>k.Korisnik).Where(k=>k.Korisnik.korisnickoIme==korisnik.korisnickoIme).FirstOrDefault();
+            Console.WriteLine(kl.ID);
+            var korpa = Context.Korpe.Where(k=>k.Klijent.ID==kl.ID).FirstOrDefault();
+            Console.WriteLine(korpa.ID);
             //Korpa kor = ...nadjes korpu na osnovu kl.ID
             var proizvod = await Context.Proizvodi.FindAsync(proizvodID);
-            var korpa = await Context.Korpe.FindAsync(korpaID);
+            //var korpa = await Context.Korpe.FindAsync(korpaID);
 
-            var kp2 = Context.KorpeProizvodi.Where(kp=>kp.korpaID==korpaID && kp.proizvodID==proizvodID).FirstOrDefault();
+            var kp2 = Context.KorpeProizvodi.Where(kp=>kp.korpaID==korpa.ID && kp.proizvodID==proizvodID).FirstOrDefault();
             if(kp2!=null)
             {
                 kp2.kolicina+=1;
@@ -206,7 +210,7 @@ public class KlijentController : ControllerBase
                     proizvodID = proizvodID,
                     nazivProizvoda = proizvod.naziv,
                     slikaProizvoda = proizvod.slika,
-                    korpaID = korpaID,
+                    korpaID = korpa.ID,
                     kolicina = 1
                 };
                 if (korpa != null && proizvod != null)

@@ -154,9 +154,17 @@ public class ProizvodController : ControllerBase
     [Route("VratiProizvodeSalona/{id_salon}")]
     [HttpGet]
     //[AllowAnonymous]
-    public async Task<ActionResult<IEnumerable<Proizvod>>> VratiProizvodeSalona(int id_salon)
+    public async Task<ActionResult<IEnumerable<object>>> VratiProizvodeSalona(int id_salon)
     {
         var proizvodi = await Context.Proizvodi.Where(p => p.Salon.ID == id_salon).ToListAsync();
-        return proizvodi;
+        var result = proizvodi.Select(p=> new
+        {
+            ID = p.ID,
+            slika = p.slika,
+            naziv = p.naziv,
+            cena = p.cena,
+            dostupnost = p.dostupnost
+        });
+        return Ok(result);
     }
 }
