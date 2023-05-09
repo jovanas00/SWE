@@ -25,14 +25,19 @@ const AdminPage = () => {
     setSelectedSection(section);
   };
 
+  const handleError = () => {
+    Cookies.remove('token');
+    window.location.reload();
+    alert("Greska sa autorizacijom,ulogujte se!");
+  }
   
   // Funkcija za dodavanje kategorije preko Axios
   const addCategory = async (naziv) => {
   try {
     const response = await axios.post(`http://localhost:5169/Admin/DodajKategoriju/${naziv}`, null, config);
-    console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
+    //console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
   } catch (error) {
-    console.error(error);
+    handleError();
   }
 };
 
@@ -42,7 +47,7 @@ const AdminPage = () => {
     const response = await axios.post(`http://localhost:5169/Admin/ObrisiKategoriju/${id_kategorija}`, null, config);
     console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
   } catch (error) {
-    console.error(error);
+    handleError();
   }
 };
 
@@ -52,7 +57,7 @@ const AdminPage = () => {
     const response = await axios.delete(`http://localhost:5169/Admin/ObrisiKorisnika/${korisnicko_ime}`, config);
     console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
   } catch (error) {
-    console.error(error);
+    handleError();
   }
 };
 
@@ -62,7 +67,7 @@ const AdminPage = () => {
       const response = await axios.put(`http://localhost:5169/Admin/IzmeniAdmina/${korisnicko_ime}/${ime}/${prezime}`);
       console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
     } catch (error) {
-      console.error(error);
+      handleError();
     }
   };
 
