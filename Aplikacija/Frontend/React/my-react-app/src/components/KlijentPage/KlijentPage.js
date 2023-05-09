@@ -8,13 +8,11 @@ const KlijentPage = () => {
 if(isKlijent())
 {
   return (
-    <Header>
     <div>
-      <h2>Dobrodošli na stranicu Klijenta!</h2>
-      <p>Ovde možete pregledati informacije o klijentu i obavljati odgovarajuće akcije.</p>
-      {/* Dodajte odgovarajući sadržaj za stranicu Klijenta */}
+        <Header/>
+        <h1>Upravljajte profilom i istrazujte salone!</h1>
     </div>
-    </Header>
+    
   );
 }
 else

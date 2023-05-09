@@ -60,6 +60,10 @@ const Header = () => {
   }
 
   const role = vratiRole();
+  const klijent = role === "Klijent" ? "Klijent" : null
+  const salon = role === "Salon" ? "Salon" : null
+  //admin
+  
   if (!role) {
     return (
       <header >
@@ -87,7 +91,7 @@ const Header = () => {
       </header>
     );
   }
-  else if (role==="Klijent") {
+  else {
     return (
       <header >
         <div className="logo">
@@ -95,9 +99,11 @@ const Header = () => {
         {/* <h3 className="logo"><a href="/#"><img src={logo} alt="Logo" /></a></h3> */}
         <nav className={isNavbarVisible ? 'responsive_nav' : ''}>
           {/* url */}
-          <Link to="/klijent/saloni">Saloni</Link>
-          <Link to="/klijent/profil">Profil</Link>
-          <Link to="/" onClick={handleLogout}>Log out</Link>
+          {klijent && <Link to="/klijent/saloni">Saloni</Link>}
+          {klijent && <Link to="/klijent/profil">Profil</Link>}
+          {salon && <Link to="/salon/upravljanje">Upravljanje</Link>}
+          {salon && <Link to="/salon/profil">Profil</Link>}
+          {(klijent || salon) && <Link to="/" onClick={handleLogout}>Log out</Link>}
           <button className="nav-btn nav-close-btn" onClick={hideNavbar}>
             <FaTimes />
           </button>
@@ -108,29 +114,6 @@ const Header = () => {
         </button>
       </header>
     );
-  }
-  else if (role==="Salon") {
-    return (
-      <header >
-        <div className="logo">
-        </div>
-        {/* <h3 className="logo"><a href="/#"><img src={logo} alt="Logo" /></a></h3> */}
-        <nav className={isNavbarVisible ? 'responsive_nav' : ''}>
-          {/* url */}
-          <Link to="/salon/upravljanje">Upravljanje</Link>
-          <Link to="/salon/profil">Profil</Link>
-          <Link to="/" onClick={handleLogout}>Log out</Link>
-          <button className="nav-btn nav-close-btn" onClick={hideNavbar}>
-            <FaTimes />
-          </button>
-        </nav>
-        {/* za ptvaranje navbara u nav screenu */}
-        <button className="nav-btn" onClick={showNavbar}>
-          <FaBars />
-        </button>
-      </header>
-    );
-
   }
 };
 

@@ -14,6 +14,8 @@ import axios, { Axios } from 'axios';
 import AdminPage from './components/AdminPage/AdminPage';
 import SalonPage from './components/SalonPage/SalonPage';
 import KlijentPage from './components/KlijentPage/KlijentPage';
+import SaloniKlijent from './components/KlijentPage/SaloniKlijent';
+import ProfilKlijent from './components/KlijentPage/ProfilKlijent';
 
 function App() {
 
@@ -31,8 +33,8 @@ function App() {
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/salon" element={<SalonPage />} />
           <Route path="/klijent" element={<KlijentPage />} />
-          <Route path="/klijent/saloni" element={<Registracija />}/>
-          <Route path="/klijent/profil" element={<Prijava />}/>
+          <Route path="/klijent/saloni" element={<SaloniKlijent />}/>
+          <Route path="/klijent/profil" element={<ProfilKlijent />}/>
         </Routes>
       </div>
     </Router>
