@@ -159,6 +159,7 @@ public class SalonController : ControllerBase
             datumOdgovaranja = p.datumOdgovaranja
         })
         .ToListAsync();
+
         return pitanja;
     }
 
@@ -174,6 +175,7 @@ public class SalonController : ControllerBase
         .Select(r => new {
             SalonNaziv = r.Salon.naziv,
             KlijentImePrezime = r.Klijent.ime + " " + r.Klijent.prezime,
+            ocena = r.ocena,
             tekst = r.tekst,
             datumPostavljanja = r.datum
         })

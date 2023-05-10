@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import './Header.css';
 import logo from '../../images/logo.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { vratiRole } from '../Auth/VratiRole';
 import Cookies from 'js-cookie';
 import { Navigate } from 'react-router-dom';
@@ -92,7 +92,7 @@ const Header = () => {
   } else {
     return (
       <header>
-        {admin && (
+        {(admin || klijent || salon) && (
           <div className="logo">
             <img src={logo} alt="Logo" />
             <h3>Pet Planet</h3>
@@ -101,15 +101,15 @@ const Header = () => {
         <nav className={isNavbarVisible ? 'responsive_nav' : ''}>
           {/* url */}
           {klijent && <Link to="/klijent/saloni">Saloni</Link>}
+          {admin && <Link to="/saloni">Saloni</Link>}
           {klijent && <Link to="/klijent/profil">Profil</Link>}
-          {admin && <Link to="/saloni">Saloni</Link>} /*ovo za salon kod admina može i da se izbaci*/
           {salon && <Link to="/salon/upravljanje">Upravljanje</Link>}
           {salon && <Link to="/salon/profil">Profil</Link>}
-          {(klijent || salon || admin) && (
+          {(klijent || salon || admin) &&
             <Link to="/" onClick={handleLogout}>
               Log out
             </Link>
-          )}
+          }
           <button className="nav-btn nav-close-btn" onClick={hideNavbar}>
             <FaTimes />
           </button>

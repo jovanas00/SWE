@@ -79,10 +79,10 @@ const Proizvodi = ({ id }) => {
                             <p>Cena: {proizvod.cena}</p>
                             {console.log(proizvod.dostupnost)}
                             <p>Dostupnost: {proizvod.dostupnost ? "NA STANJU" : "NEMA NA STANJU"}</p>
-                            <button className="btn-cart" onClick={() => handleButtonClick(proizvod.id)}>
+                            {klijent && <button className="btn-cart" onClick={() => handleButtonClick(proizvod.id)}>
                                 <BsCart className="btn-cart__icon" />
                                 Dodaj u korpu
-                            </button>
+                            </button>}
                         </div>
                     </Card>
                 ))}

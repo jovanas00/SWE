@@ -146,15 +146,20 @@ public class KlijentController : ControllerBase
         }
     }
 
-    [HttpPost("OceniSalon/{idSalona}/{tekst}/{ocena}/{klijentID}")]
-    public async Task<ActionResult<Recenzija>> OceniSalon(int idSalona, string tekst, float ocena, int klijentID) 
+    [HttpPost("OceniSalon/{tekst}/{ocena}/{idSalona}")]
+    public async Task<ActionResult<Recenzija>> OceniSalon(string tekst, float ocena, int idSalona) 
     {
         try
         {
-            //isto
+            Korisnik k = VratiKorisnika();
             var salon = await Context.Saloni.FindAsync(idSalona);
-            var klijent = await Context.Klijenti.FindAsync(klijentID);
+            var klijent = await Context.Klijenti.Include(k=>k.Korisnik).Where(kl=>kl.Korisnik.korisnickoIme==k.korisnickoIme).FirstOrDefaultAsync();
 
+            // var postojeca = await Context.Recenzije.Where(k=>k.Salon.ID==idSalona && k.Klijent.ID==klijent.ID).FirstOrDefaultAsync();
+            // if(postojeca!=null)
+            // {
+            //     return BadRequest("Vec ste ocenili salon!");
+            // }
             if (salon != null)
             {   
                 Recenzija r = new Recenzija{

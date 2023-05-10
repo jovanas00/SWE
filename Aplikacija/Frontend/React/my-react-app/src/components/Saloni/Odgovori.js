@@ -13,7 +13,7 @@ const Odgovori = ({ id }) => {
     const [odgovori, setOdgovori] = useState([]);
     const [inputText, setInputText] = useState("");
     const navigate = useNavigate();
-
+    
     const handleSubmit = (event) => {
         event.preventDefault();
         axios.post('http://localhost:5169/Klijent/PostaviPitanje/' + encodeURIComponent(inputText) + '/' + id, {

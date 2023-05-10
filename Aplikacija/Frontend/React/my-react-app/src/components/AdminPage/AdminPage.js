@@ -24,7 +24,7 @@ const AdminPage = () => {
   const [editIme, setEditIme] = useState(false);
   const [editPrezime, setEditPrezime] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  
+
 
 
 
@@ -42,7 +42,7 @@ const AdminPage = () => {
     window.location.reload();
     alert('Greška sa autorizacijom, ulogujte se!');
   };
-  
+
   // Funkcija za dohvatanje informacija o adminu
   const fetchAdminInfo = async () => {
     try {
@@ -68,7 +68,7 @@ const AdminPage = () => {
     }
   };
 
-  
+
   //deo za polja za izmenu profila admina
   /*const handleEdit = (field) => {
     const newValue = prompt(`Unesite novu vrednost za ${field}:`);
@@ -109,15 +109,15 @@ const AdminPage = () => {
     setEditIme(false);
     setEditPrezime(false);
   };*/
-  
+
   const handleSave = () => {
     // Pozovite funkciju updateAdmin sa ažuriranim podacima
     updateAdmin(korisnickoIme, ime, prezime);
-  
+
     // Vratite režim izmena na početnu vrednost
     setEditMode(false);
   };
-  
+
   const handleCancel = () => {
     //osvežava stranicu..
     window.location.reload()
@@ -127,7 +127,7 @@ const AdminPage = () => {
 
 
   };
-  
+
 
   //Funkcija za prikaz svih kategorija preko Axios
   const fetchCategories = async () => {
@@ -138,7 +138,7 @@ const AdminPage = () => {
       handleError();
     }
   };
-  
+
 
 
   // Funkcija za dodavanje kategorije preko Axios
@@ -169,12 +169,10 @@ const AdminPage = () => {
       const response = await axios.delete(`http://localhost:5169/Admin/ObrisiKorisnika/${unosKorisnickogImena}`, config);
       console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
 
-  
-      if (response.data == true) 
-      {
+
+      if (response.data == true) {
         alert('Korisnik je uspešno obrisan.');
-      } else 
-      {
+      } else {
         alert('Korisnik nije pronađen. Navedite pravilno korisničko ime.');
       }
       fetchUsers(); // Ažuriranje liste korisnika nakon brisanja
