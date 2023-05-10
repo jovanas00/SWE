@@ -160,12 +160,12 @@ public class KlijentController : ControllerBase
             var salon = await Context.Saloni.FindAsync(idSalona);
             var klijent = await Context.Klijenti.Include(k => k.Korisnik).Where(kl => kl.Korisnik.korisnickoIme == k.korisnickoIme).FirstOrDefaultAsync();
 
-            Recenzija postojeca = await Context.Recenzije.Where(k => k.Salon.ID == idSalona && k.Klijent.ID == klijent.ID).FirstOrDefaultAsync();
-            Console.WriteLine(postojeca.tekst);
-            if (postojeca != null)
-            {
-                return BadRequest("Vec ste ocenili salon!");
-            }
+            // Recenzija postojeca = await Context.Recenzije.Where(k => k.Salon.ID == idSalona && k.Klijent.ID == klijent.ID).FirstOrDefaultAsync();
+            // Console.WriteLine(postojeca.tekst);
+            // if (postojeca != null)
+            // {
+            //     return BadRequest("Vec ste ocenili salon!");
+            // }
 
             if (salon != null)
             {

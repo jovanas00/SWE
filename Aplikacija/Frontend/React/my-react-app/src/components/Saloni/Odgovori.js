@@ -6,16 +6,19 @@ import clientChat from '../../images/clientChatIcon.png';
 import { vratiRole } from '../Auth/VratiRole';
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import { BsQuestionSquare } from 'react-icons/bs';
 
 
 const Odgovori = ({ id }) => {
     const [odgovori, setOdgovori] = useState([]);
     const [inputText, setInputText] = useState("");
     const navigate = useNavigate();
-    
+
     const handleSubmit = (event) => {
         event.preventDefault();
+        if (inputText === "") {
+            alert("Niste postavili pitanje!")
+            return;
+        }
         axios.post('http://localhost:5169/Klijent/PostaviPitanje/' + encodeURIComponent(inputText) + '/' + id, {
         }, {
             headers: {
@@ -27,9 +30,7 @@ const Odgovori = ({ id }) => {
                 window.location.reload();
             })
             .catch((error) => {
-                Cookies.remove('token');
-                alert("Ne mozete da postavite pitanje,niste autorizovani!")
-                navigate(`/prijava`)
+                console.log(error.data);
             });
     };
 
