@@ -55,13 +55,13 @@ public class KlijentController : ControllerBase
         }
     }
 
-    [Route("PostaviPitanje/{tekst}/{id_salon}/{id_klijent}")]
+    [Route("PostaviPitanje/{tekst}/{id_salon}")]
     [HttpPost]
     public async Task<ActionResult<Klijent>> PostaviPitanje(string tekst, int id_salon, int id_klijent)
     {
-        /*Korisnik k = VratiKorisnika()*/
+        Korisnik k = VratiKorisnika();
         Salon s = await Context.Saloni.FindAsync(id_salon);
-        Klijent k = await Context.Klijenti.FindAsync(id_klijent);//.Where(s->s.Korisnik.ID==k.ID).FirstOrDefault();
+        Klijent kl = Context.Klijenti.Where(kl=>kl.Korisnik.ID==k.ID).FirstOrDefault();
         if(s==null || k == null)
             return BadRequest("Salon ne postoji.");
         try{
@@ -71,7 +71,7 @@ public class KlijentController : ControllerBase
                 datumPostavljanja = DateTime.Now,
                 datumOdgovaranja = null,
                 Salon = s,
-                Klijent = k
+                Klijent = kl
             };
             Context.Pitanja.Add(p);
             await Context.SaveChangesAsync();
