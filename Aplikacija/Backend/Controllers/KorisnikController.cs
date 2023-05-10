@@ -346,4 +346,20 @@ public class KorisnikController : ControllerBase
             return StatusCode(500, $"Internal server error: {e}");
         }
     }
+    
+    [HttpGet]
+    [Route("PrikaziKorisnike")]
+    public IActionResult PrikaziKorisnike()
+    {
+        try
+        {
+            var korisnici = Context.Korisnici.ToList();
+            return Ok(korisnici);
+        }
+        catch (Exception)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    }
+
 }
