@@ -18,6 +18,7 @@ public class AdminController : ControllerBase
         _config=config;
     }
 
+    [AllowAnonymous]
     [Route("DodajAdmina/{korisnicko_ime}/{lozinka}/{email}/{ime}/{prezime}")]
     [HttpPost]
     public async Task<ActionResult> AddAdmin(string korisnicko_ime,string lozinka, string email,string ime, string prezime)
@@ -61,6 +62,7 @@ public class AdminController : ControllerBase
             }
     }
 
+    [AllowAnonymous]
     [Route("IzmeniAdmina/{korisnicko_ime}/{ime}/{prezime}")]
     [HttpPut]
      public async Task<ActionResult> IzmeniAdmina(string korisnicko_ime,string ime, string prezime)
@@ -306,4 +308,79 @@ public class AdminController : ControllerBase
                return Ok(e.ToString());
         }
     }
+    /*[AllowAnonymous]
+    [Route("SviAdmini/{korisnickoIme}")]
+    [HttpGet]
+    public async Task<ActionResult<Admin>> SviAdmini(string korisnickoIme)
+    {
+        try
+        {
+            Admin admin = await Context.Admini.Include(a => a.Korisnik)
+                                            .FirstOrDefaultAsync(a => a.Korisnik.korisnickoIme == korisnickoIme);
+
+            if (admin == null)
+            {
+                return NotFound(); // Admin sa datim korisničkim imenom nije pronađen
+            }
+
+            return Ok(admin);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }   
+    }*/
+
+    [AllowAnonymous]
+    [HttpGet]
+    [Route("SviAdmini")]
+    public async Task<ActionResult<List<Admin>>> SviAdmini()
+    {
+        try
+        {
+            List<Admin> admini = await Context.Admini.Include(a => a.Korisnik).ToListAsync();
+
+            return Ok(admini);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+
+
+    [AllowAnonymous]
+    [HttpGet("SveKategorije")]
+    public async Task<ActionResult<List<object>>> GetKategorije()
+    {
+        try
+        {
+            List<int> kategorijeIds = await Context.Kategorije.Select(k => k.ID).ToListAsync();
+            
+            List<object> kategorije = new List<object>();
+            foreach (int id in kategorijeIds)
+            {
+                Kategorija kategorija = await Context.Kategorije.FindAsync(id);
+                if (kategorija != null)
+                {
+                    var kategorijaData = new { Id = kategorija.ID, Naziv = kategorija.naziv };
+                    kategorije.Add(kategorijaData);
+                }
+            }
+
+            return kategorije;
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+
+
+
+
+
+
 }
