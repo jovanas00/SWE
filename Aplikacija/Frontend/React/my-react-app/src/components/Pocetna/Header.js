@@ -57,23 +57,22 @@ const Header = () => {
 
   const handleLogout = () => {
     Cookies.remove('token');
-  }
+  };
 
   const role = vratiRole();
-  const klijent = role === "Klijent" ? "Klijent" : null
-  const salon = role === "Salon" ? "Salon" : null
-  //admin
-  
+  const klijent = role === "Klijent" ? "Klijent" : null;
+  const salon = role === "Salon" ? "Salon" : null;
+  const admin = role === "Admin" ? "Admin" : null;
+
   if (!role) {
     return (
-      <header >
+      <header>
         <div className="logo">
           <Link to="/">
             <img src={logo} alt="Logo" />
           </Link>
           <h3>Pet Planet</h3>
         </div>
-        {/* <h3 className="logo"><a href="/#"><img src={logo} alt="Logo" /></a></h3> */}
         <nav className={isNavbarVisible ? 'responsive_nav' : ''}>
           {/* url */}
           <Link to="/">Pocetna</Link>
@@ -90,20 +89,27 @@ const Header = () => {
         </button>
       </header>
     );
-  }
-  else {
+  } else {
     return (
-      <header >
-        <div className="logo">
-        </div>
-        {/* <h3 className="logo"><a href="/#"><img src={logo} alt="Logo" /></a></h3> */}
+      <header>
+        {admin && (
+          <div className="logo">
+            <img src={logo} alt="Logo" />
+            <h3>Pet Planet</h3>
+          </div>
+        )}
         <nav className={isNavbarVisible ? 'responsive_nav' : ''}>
           {/* url */}
           {klijent && <Link to="/klijent/saloni">Saloni</Link>}
           {klijent && <Link to="/klijent/profil">Profil</Link>}
+          {admin && <Link to="/saloni">Saloni</Link>} /*ovo za salon kod admina može i da se izbaci*/
           {salon && <Link to="/salon/upravljanje">Upravljanje</Link>}
           {salon && <Link to="/salon/profil">Profil</Link>}
-          {(klijent || salon) && <Link to="/" onClick={handleLogout}>Log out</Link>}
+          {(klijent || salon || admin) && (
+            <Link to="/" onClick={handleLogout}>
+              Log out
+            </Link>
+          )}
           <button className="nav-btn nav-close-btn" onClick={hideNavbar}>
             <FaTimes />
           </button>
@@ -116,6 +122,7 @@ const Header = () => {
     );
   }
 };
+
 
 
 export default Header;
