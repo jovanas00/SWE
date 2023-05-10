@@ -1,0 +1,233 @@
+/* Stilizacija admin stranice */
+.admin-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.admin-content {
+  display: flex;
+  flex-grow: 1;
+}
+
+.admin-sidebar {
+  width: 200px;
+  background-color: #a9ebfc;
+  overflow-y: auto;
+}
+
+.admin-main {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.admin-sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 0;
+}
+
+.admin-sidebar li {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #338fa5;
+}
+
+.admin-sidebar li:hover {
+  background-color: #fc6c6c;
+}
+
+.admin-sidebar li.selected {
+  background-color: #338fa5;
+}
+
+.user-list {
+  max-height: 400px; /* Maksimalna visina prozora sa skrolom */
+  overflow-y: auto;
+  border: 1px solid #338fa5;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.user-list div {
+  margin-bottom: 10px;
+}
+
+.input-container select {
+  padding: 6px 10px;
+  font-size: 15px;
+  /* Dodajte ostale stilove po potrebi */
+}
+
+.delete-user-button {
+  padding: 6px 10px;
+  font-size: 15px;
+  /* Dodajte ostale stilove po potrebi */
+  border: 1px solid black;
+  border-radius: 4px;
+  cursor: pointer;
+  /* Dodajte ostale stilove po potrebi */
+  transition: background-color 0.3s ease; /* Dodajemo tranziciju za glatku promenu boje */
+}
+
+.delete-user-button:hover {
+  background-color: #fc6c6c; /* Promenite boju po želji */
+}
+
+/* Responsivnost */
+@media (max-width: 768px) {
+  .admin-content {
+    flex-direction: column;
+  }
+
+  .admin-sidebar {
+    width: 100%;
+  }
+}
+
+.scrollable-window {
+  max-height: 200px; /* Maksimalna visina prozora za prikaz kategorija */
+  overflow-y: auto;
+}
+
+.category-list {
+  list-style: none;
+  padding: 0;
+}
+
+.category-list li {
+  display: grid; /* Koristimo CSS Grid */
+  grid-template-columns: 1fr 1fr; /* Podela na dva dela */
+  align-items: center; /* Centriranje sadržaja */
+  padding: 5px;
+  border-bottom: 1px solid #cccccc;
+  border: none; /* Uklanja okvir oko celog elementa */
+}
+
+.category-list li:last-child {
+  border-bottom: none;
+}
+
+.category-list li span {
+  background-color: #ccf5ff; /* Menja boju pozadine okvira */
+  color: #000000; /* Menja boju teksta */
+  padding: 5px 10px; /* Podesite veličinu paddinga prema potrebi */
+  margin-right: 10px;
+  flex-grow: 1; /* Spaja okvire oko ID i naziva */
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1); /* Dodaje blagu liniju između redova */
+}
+
+
+
+.input-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+
+.input-container input {
+  margin-right: 10px;
+}
+
+.input-container button {
+  padding: 6px 10px; /* Podesite veličinu paddinga prema potrebi */
+  font-size: 15px; /* Podesite veličinu fonta prema potrebi */
+  border: 1px solid black;
+  border-radius: 4px;
+  transition: background-color 0.3s ease; /* Dodajemo tranziciju za glatku promenu boje */
+}
+
+
+.input-container button:hover
+{
+  background-color: #fc6c6c; /* Promenite boju po želji */
+}
+
+
+.admin-info {
+  margin-top: 20px;
+}
+
+.admin-info h2 {
+  font-size: 24px;
+}
+
+.admin-info-details {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.admin-info-edit {
+  display: flex;
+  align-items: center;
+}
+
+.admin-info-label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.admin-info-edit input {
+  margin-right: 10px;
+  padding: 5px;
+}
+
+.admin-info-details p {
+  margin: 0;
+  margin-top: -8px; /* Podiže elemente malo gore */
+}
+
+.admin-info-details button {
+  margin-left: 10px;
+  padding: 4px 5px;
+  background-color: #daeef3;
+  border: 1px solid black; /* Dodato uokvirivanje crnom linijom */
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.admin-info-details button:hover {
+  background-color: #fc6c6c;
+  color: #fff;
+}
+
+.admin-info-save-cancel {
+  margin-top: 10px;
+}
+
+.admin-info-save-cancel button {
+  margin-right: 10px;
+  padding: 5px 8px;
+  background-color: #daeef3;
+  border: 1px solid black; /* Dodato uokvirivanje crnom linijom */
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.admin-info-dimensions {
+  margin-top: 20px;
+}
+
+.admin-info-dimensions input {
+  margin-right: 10px;
+  padding: 5px;
+  width: 40px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
