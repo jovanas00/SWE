@@ -24,7 +24,7 @@ const Recenzije = ({ id }) => {
 
     const [recenzija, setRecenzija] = useState({
         tekst: '',
-        ocena: 0
+        ocena: 1
       });
     
 
@@ -38,6 +38,12 @@ const Recenzije = ({ id }) => {
       };
 
     const handleSubmit = (event) => {
+        event.preventDefault()
+        if(inputText==="")
+            {
+            alert("Niste uneli tekst recenzije!")
+            return;
+            }
         event.preventDefault();
         const selectedValue = document.querySelector('input[name="ocena"]:checked').value;
         axios.post('http://localhost:5169/Klijent/OceniSalon/' + encodeURIComponent(inputText) + '/' + selectedValue + '/' + id, {
@@ -47,11 +53,13 @@ const Recenzije = ({ id }) => {
             }
         })
             .then((response) => {
-                console.log(response.data);
+                alert(response.data);
                 window.location.reload();
             })
             .catch((error) => {
-                alert(error)
+                const status = error.response.status;
+                if(status===400)
+                    alert("Vec postoji vasa recenzija")
             });
     };
     const role = vratiRole();
