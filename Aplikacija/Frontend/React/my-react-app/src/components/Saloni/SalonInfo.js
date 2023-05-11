@@ -5,6 +5,7 @@ import Usluge from "./Usluge";
 import Odgovori from "./Odgovori";
 import Recenzije from "./Recenzije";
 import { vratiRole } from "../Auth/VratiRole";
+import Zahtev from "./Zahtev";
 
 const SalonInfo = ({ salon, id }) => {
     const [selektovanaVr, setSelektovanaVr] = useState("Proizvodi");
@@ -48,7 +49,7 @@ const SalonInfo = ({ salon, id }) => {
 
                 {selektovanaVr === "Recenzije" && <Recenzije id={id} />}
 
-                {selektovanaVr === "Zahtev"}
+                {selektovanaVr === "Zahtev" && <Zahtev id={id}/>}
             </div>
 
         </div>

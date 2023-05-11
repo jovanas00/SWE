@@ -3,14 +3,16 @@ import { isKlijent } from '../Auth/AuthKlijent';
 import { Navigate } from 'react-router-dom';
 import { vratiRole } from '../Auth/VratiRole';
 import Header from '../Pocetna/Header';
+import Informacije from './Informacije';
 
 
-const ProfilKlijent = () => {
+const Profil = () => {
     if (isKlijent()) {
         return (
             <div>
                 <Header />
-                <h1>Detalji o profilu</h1>
+                <Informacije/>
+                <h1>Detalji o narudzbinama i zahtevima</h1>
             </div>
 
         );
@@ -25,4 +27,4 @@ const ProfilKlijent = () => {
     }
 };
 
-export default ProfilKlijent;
+export default Profil;

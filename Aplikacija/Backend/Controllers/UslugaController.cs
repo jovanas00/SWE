@@ -115,4 +115,17 @@ public class UslugaController : ControllerBase
         var usluge = await Context.Usluge.Where(u => u.Salon.ID == id_salon).ToListAsync();
         return usluge;
     }
+
+    [Route("VratiUsluge/{id_salon}")]
+    [HttpGet]
+    //[AllowAnonymous]
+    public async Task<ActionResult<IEnumerable<object>>> VratiUsluge(int id_salon)
+    {
+        var usluge = await Context.Usluge.Where(u => u.Salon.ID == id_salon).ToListAsync();
+        var p = usluge.Select(p=>new{
+            naziv=p.Naziv,
+            ID=p.ID
+        });
+        return Ok(p);
+    }
 }

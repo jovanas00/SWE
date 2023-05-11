@@ -144,7 +144,7 @@ public class SalonController : ControllerBase
     //ovde isti slucaj kao za proizvode
     [Route("VratiPitanjaSalona/{id_salon}")]
     [HttpGet]
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<object>>> VratiPitanjaSalona(int id_salon)
     {
         var pitanja = await Context.Pitanja
@@ -166,7 +166,7 @@ public class SalonController : ControllerBase
     //isto kao gore
     [Route("VratiRecenzijeSalona/{id_salon}")]
     [HttpGet]
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<object>>> VratiRecenzijeSalona(int id_salon)
     {
         var recenzije = await Context.Recenzije

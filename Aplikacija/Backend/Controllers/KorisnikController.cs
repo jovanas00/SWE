@@ -220,7 +220,7 @@ public class KorisnikController : ControllerBase
 
     [Route("Login/{korisnicko_ime}/{lozinka}")]      
     [HttpGet]
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public async Task<IActionResult> Login(string korisnicko_ime, string lozinka)
     {
         try
@@ -246,13 +246,12 @@ public class KorisnikController : ControllerBase
     }
 
 
-    [Route("IzmeniLozinku/{email}/{lozinka}/{NovaLozinka}")]
+    [Route("IzmeniLozinku/{korisnicko_ime}/{lozinka}/{NovaLozinka}")]
     [HttpPut]
-    //[AllowAnonymous]
-    public async Task<ActionResult> IzmeniLozinku(string email, string lozinka, string NovaLozinka)
+    [AllowAnonymous]
+    public async Task<ActionResult> IzmeniLozinku(string korisnicko_ime,string lozinka, string NovaLozinka)
     {
-        
-            if(string.IsNullOrWhiteSpace(email) || email.Length > 60)
+            if(string.IsNullOrWhiteSpace(korisnicko_ime) || korisnicko_ime.Length > 60)
             return BadRequest("Email nije validan");
 
             if(string.IsNullOrWhiteSpace(lozinka))
@@ -262,7 +261,7 @@ public class KorisnikController : ControllerBase
             return BadRequest("Lozinka nije validna");  
             
 
-        Korisnik Current = Context.Korisnici.FirstOrDefault(p => p.email.ToLower() == email.ToLower());
+        Korisnik Current = Context.Korisnici.FirstOrDefault(p => p.korisnickoIme.ToLower() == korisnicko_ime.ToLower());
         lozinka=lozinka.Replace("01abfc750a0c942167651c40d088531d","#");
 
         string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
@@ -294,22 +293,22 @@ public class KorisnikController : ControllerBase
             numBytesRequested: 256 / 8));
             try
             {
-                var p = await Context.Korisnici.Where(p => p.email.ToLower() == email.ToLower() ).FirstOrDefaultAsync();
+                var p = await Context.Korisnici.Where(p => p.korisnickoIme.ToLower() == korisnicko_ime.ToLower() ).FirstOrDefaultAsync();
                 if(p==null) return Ok("Ne postoji taj korisnik");
-                    p.sifra=hashed;
-                    p.salt_value = salt;
+                    Current.sifra=hashed;
+                    Current.salt_value = salt;
                 await Context.SaveChangesAsync();
                 return Ok(true);   
             } 
             catch (Exception)
-        {
+            {
                 return Ok(false);
             }
         }
         else return Ok();
     }
 
-    [HttpPost]
+    [HttpPut]
     [Route("Upload/{korisnicko_ime}")]
     public async Task<IActionResult> Upload(string korisnicko_ime)
     {   

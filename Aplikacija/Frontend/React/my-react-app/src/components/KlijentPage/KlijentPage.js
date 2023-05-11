@@ -3,6 +3,8 @@ import { isKlijent } from '../Auth/AuthKlijent';
 import { Navigate } from 'react-router-dom';
 import { vratiRole } from '../Auth/VratiRole';
 import Header from '../Pocetna/Header';
+import Informacije from './Informacije';
+
 
 const KlijentPage = () => {
 if(isKlijent())

@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 
@@ -88,28 +89,33 @@ public class KlijentController : ControllerBase
         }
     }
 
-    [HttpPost("PosaljiZahtev/{imeLjubimca}/{zivotinja}/{id_salon}/{klijentID}/{uslugaID}")]
-    public async Task<ActionResult<Zahtev>> PosaljiZahtev(string imeLjubimca, string zivotinja, int id_salon, int klijentID, int uslugaID)
+    [HttpPost("PosaljiZahtev/{imeLjubimca}/{zivotinja}/{id_salon}/{usluga}/{dan}/{mesec}/{godina}/{vreme}")]
+    public async Task<ActionResult<Zahtev>> PosaljiZahtev(string imeLjubimca, string zivotinja, int id_salon, string usluga,string dan,string mesec,string godina,string vreme)
     {
         try
         {
-            //isto kao gore
+            Korisnik k = VratiKorisnika();
             Salon s = await Context.Saloni.FindAsync(id_salon);
-            Klijent k = await Context.Klijenti.FindAsync(klijentID);
-            Usluga u = await Context.Usluge.FindAsync(uslugaID);
+            Klijent kl = Context.Klijenti.Where(kl => kl.Korisnik.ID == k.ID).FirstOrDefault();
+            Usluga u = Context.Usluge.Where(u=>u.Naziv==usluga && u.Salon.ID==s.ID).FirstOrDefault();
             if (s == null || k == null || u == null)
                 return BadRequest("Salon ne postoji.");
             else
             {
+                string dateString = $"{dan}-{mesec}-{godina}";
+                string timeString = vreme;
+                string dateTimeString = $"{dateString} {timeString}";
+
+                DateTime termin = DateTime.ParseExact(dateTimeString, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
                 Zahtev z = new Zahtev
                 {
                     Salon = s,
-                    Klijent = k,
+                    Klijent = kl,
                     Usluga = u,
                     imeLjubimca = imeLjubimca,
                     zivotinja = zivotinja,
                     cena = u.cena,
-                    datumVreme = DateTime.Now,
+                    datumVreme = termin,
                     status = "Neobrađen",
                     komentarSalona = "Sačekajte odgovor salona."
                 };
@@ -344,6 +350,14 @@ public class KlijentController : ControllerBase
                     .Include(n => n.NaruceniProizvodi)
                     .FirstOrDefaultAsync(n => n.ID == id_narudzbine);
         return n.NaruceniProizvodi;
+    }
+    [Route("VratiKlijenta/{korisnicko_ime}")]
+    [HttpGet]
+    public async Task<ActionResult<object>> VratiKlijenta(string korisnicko_ime)
+    {
+        Korisnik kor = Context.Korisnici.Where(k => k.korisnickoIme == korisnicko_ime).FirstOrDefault();
+        Klijent kl = await Context.Klijenti.Include(k => k.Korisnik).Where(k => k.Korisnik.ID == kor.ID).FirstOrDefaultAsync();
+        return kl;
     }
 
 
