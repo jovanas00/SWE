@@ -158,7 +158,7 @@ public class KlijentController : ControllerBase
     }
 
     [HttpPost("OceniSalon/{tekst}/{ocena}/{idSalona}")]
-    public async Task<ActionResult<Recenzija>> OceniSalon(string tekst, float ocena, int idSalona)
+    public async Task<ActionResult<string>> OceniSalon(string tekst, float ocena, int idSalona)
     {
         try
         {
@@ -166,12 +166,12 @@ public class KlijentController : ControllerBase
             var salon = await Context.Saloni.FindAsync(idSalona);
             var klijent = await Context.Klijenti.Include(k => k.Korisnik).Where(kl => kl.Korisnik.korisnickoIme == k.korisnickoIme).FirstOrDefaultAsync();
 
-            // Recenzija postojeca = await Context.Recenzije.Where(k => k.Salon.ID == idSalona && k.Klijent.ID == klijent.ID).FirstOrDefaultAsync();
-            // Console.WriteLine(postojeca.tekst);
-            // if (postojeca != null)
-            // {
-            //     return BadRequest("Vec ste ocenili salon!");
-            // }
+            Recenzija postojeca = await Context.Recenzije.Include(k=>k.Klijent).Include(s=>s.Salon).Where(k => k.Salon.ID == idSalona && k.Klijent.ID == klijent.ID).FirstOrDefaultAsync();
+            if (postojeca != null)
+            {
+                Console.WriteLine(postojeca.tekst);
+                return "Vec ste ocenili salon!";
+            }
 
             if (salon != null)
             {
@@ -189,7 +189,7 @@ public class KlijentController : ControllerBase
             }
             else
             {
-                return Ok("Nema takvog salona.");
+                return "Ne postoji salon!";
             }
         }
         catch (Exception e)

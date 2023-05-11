@@ -262,7 +262,6 @@ public class KorisnikController : ControllerBase
             
 
         Korisnik Current = Context.Korisnici.FirstOrDefault(p => p.korisnickoIme.ToLower() == korisnicko_ime.ToLower());
-        lozinka=lozinka.Replace("01abfc750a0c942167651c40d088531d","#");
 
         string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
 
@@ -298,14 +297,14 @@ public class KorisnikController : ControllerBase
                     Current.sifra=hashed;
                     Current.salt_value = salt;
                 await Context.SaveChangesAsync();
-                return Ok(true);   
+                return Ok("Promenjena lozinka!");   
             } 
             catch (Exception)
             {
                 return Ok(false);
             }
         }
-        else return Ok();
+        else return Ok("Nisu unete dobre lozinke!");
     }
 
     [HttpPut]

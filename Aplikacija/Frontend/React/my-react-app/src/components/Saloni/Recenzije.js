@@ -55,7 +55,9 @@ const Recenzije = ({ id }) => {
                 window.location.reload();
             })
             .catch((error) => {
-                console.log(error.data);
+                if (error.response && error.response.data === false) {
+                    alert("Vec ste ocenili salon!");
+                }
             });
     };
     const role = vratiRole();
