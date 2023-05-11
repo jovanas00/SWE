@@ -121,7 +121,7 @@ public class KlijentController : ControllerBase
                 };
                 Context.Zahtevi.Add(z);
                 await Context.SaveChangesAsync();
-                return Ok($"ID dodatog zahteva je: {z.ID}");
+                return Ok("Uspesno dodat zahtev,sacekajte odgovor salona!");
             }
         }
         catch (Exception e)

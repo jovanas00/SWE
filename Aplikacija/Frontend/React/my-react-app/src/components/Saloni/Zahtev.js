@@ -5,7 +5,6 @@ import Cookies from 'js-cookie';
 const Zahtev = ({ id }) => {
     const [imeLjubimca, setImeLjubimca] = useState('');
     const [zivotinja, setZivotinja] = useState('');
-    const [usluga, setUsluga] = useState([]);
     const [selectedDate, setSelectedDate] = useState('');
     const [selectedTime, setSelectedTime] = useState('');
     const [uslugaList, setUslugaList] = useState([]);
@@ -45,10 +44,11 @@ const Zahtev = ({ id }) => {
             );
 
             // Handle the response
-            console.log(response.data);
+            alert(response.data);
 
             // Reset form inputs
             setImeLjubimca('');
+            setSelectedUslugaId('')
             setZivotinja('');
             setSelectedDate('');
             setSelectedTime('');
