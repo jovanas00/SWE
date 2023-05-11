@@ -66,7 +66,7 @@ const Informacije = () => {
 
 
   return (
-    <Card className="container">
+    <Card className="container-i">
       <img src={picture} alt="User" className="image" />
       <div className="user-details">
         {/* Display user details */}
