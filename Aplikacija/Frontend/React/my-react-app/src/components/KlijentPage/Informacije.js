@@ -87,23 +87,23 @@ const Informacije = () => {
           onClick={() => setShowModal(true)}
           className="button-primary"
         >
-          Change Password
+          Promeni lozinku
         </button>
       </div>
       {/* Modal */}
       {showModal && (
         <div className="modal">
           <div className="modal-content">
-            <h3>Change Password</h3>
+            <h3>Promena lozinke</h3>
             <input
               type="password"
-              placeholder="Current Password"
+              placeholder="Trenutna lozinka"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
             />
             <input
               type="password"
-              placeholder="New Password"
+              placeholder="Nova lozinka"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
             />
