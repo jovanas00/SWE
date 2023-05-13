@@ -90,14 +90,14 @@ public class KlijentController : ControllerBase
     }
 
     [HttpPost("PosaljiZahtev/{imeLjubimca}/{zivotinja}/{id_salon}/{usluga}/{dan}/{mesec}/{godina}/{vreme}")]
-    public async Task<ActionResult<Zahtev>> PosaljiZahtev(string imeLjubimca, string zivotinja, int id_salon, string usluga,string dan,string mesec,string godina,string vreme)
+    public async Task<ActionResult<Zahtev>> PosaljiZahtev(string imeLjubimca, string zivotinja, int id_salon, string usluga, string dan, string mesec, string godina, string vreme)
     {
         try
         {
             Korisnik k = VratiKorisnika();
             Salon s = await Context.Saloni.FindAsync(id_salon);
             Klijent kl = Context.Klijenti.Where(kl => kl.Korisnik.ID == k.ID).FirstOrDefault();
-            Usluga u = Context.Usluge.Where(u=>u.Naziv==usluga && u.Salon.ID==s.ID).FirstOrDefault();
+            Usluga u = Context.Usluge.Where(u => u.Naziv == usluga && u.Salon.ID == s.ID).FirstOrDefault();
             if (s == null || k == null || u == null)
                 return BadRequest("Salon ne postoji.");
             else
@@ -107,8 +107,8 @@ public class KlijentController : ControllerBase
                 string dateTimeString = $"{dateString} {timeString}";
 
                 DateTime termin = DateTime.ParseExact(dateTimeString, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
-                var zauzet = Context.Zahtevi.Include(s=>s.Salon).Include(u=>u.Usluga).Where(z=>z.datumVreme==termin && z.Usluga.Naziv==usluga && z.Salon.ID==id_salon).Any();
-                if(zauzet)
+                var zauzet = Context.Zahtevi.Include(s => s.Salon).Include(u => u.Usluga).Where(z => z.datumVreme == termin && z.Usluga.Naziv == usluga && z.Salon.ID == id_salon).Any();
+                if (zauzet)
                     return BadRequest("Termin je zauzet,pokusajte drugi!");
                 Zahtev z = new Zahtev
                 {
@@ -132,7 +132,7 @@ public class KlijentController : ControllerBase
             return BadRequest(e.Message);
         }
 
-    }   
+    }
 
     [HttpDelete("ObrisiZahtev/{idZahteva}")]
     public async Task<ActionResult> ObrišiZahtev(int idZahteva)
@@ -169,7 +169,7 @@ public class KlijentController : ControllerBase
             var salon = await Context.Saloni.FindAsync(idSalona);
             var klijent = await Context.Klijenti.Include(k => k.Korisnik).Where(kl => kl.Korisnik.korisnickoIme == k.korisnickoIme).FirstOrDefaultAsync();
 
-            Recenzija postojeca = await Context.Recenzije.Include(k=>k.Klijent).Include(s=>s.Salon).Where(k => k.Salon.ID == idSalona && k.Klijent.ID == klijent.ID).FirstOrDefaultAsync();
+            Recenzija postojeca = await Context.Recenzije.Include(k => k.Klijent).Include(s => s.Salon).Where(k => k.Salon.ID == idSalona && k.Klijent.ID == klijent.ID).FirstOrDefaultAsync();
             if (postojeca != null)
             {
                 return "Vec ste ocenili salon!";
@@ -203,33 +203,38 @@ public class KlijentController : ControllerBase
     [Route("VratiKorpuID/{korisnicko_ime}")]
     [HttpGet]
     public async Task<ActionResult<int>> VratiKorpuID(string korisnicko_ime)
-    {   
+    {
         //Korisnik k = VratiKorisnika();
-        Klijent kl = await Context.Klijenti.Include(k=>k.Korisnik).Where(k=>k.Korisnik.korisnickoIme==korisnicko_ime).FirstOrDefaultAsync();
-        Korpa korpa = Context.Korpe.Include(k=>k.Klijent).Where(k=>k.Klijent.ID==kl.ID).FirstOrDefault();
+        Klijent kl = await Context.Klijenti.Include(k => k.Korisnik).Where(k => k.Korisnik.korisnickoIme == korisnicko_ime).FirstOrDefaultAsync();
+        Korpa korpa = Context.Korpe.Include(k => k.Klijent).Where(k => k.Klijent.ID == kl.ID).FirstOrDefault();
         return korpa.ID;
     }
 
     [Route("IsprazniKorpu/{id_salona}")]
     [HttpDelete]
     public async Task<ActionResult<int>> IsprazniKorpu(int id_salona)
-    {   
+    {
         Salon s = await Context.Saloni.FindAsync(id_salona);
         Korisnik kor = VratiKorisnika();
         //Klijent kl = await Context.Klijenti.FindAsync(klijentID);
-        Klijent kl = await Context.Klijenti.Include(k=>k.Korisnik).Where(k=>k.Korisnik.korisnickoIme==kor.korisnickoIme).FirstOrDefaultAsync();
-        Korpa korpa = Context.Korpe.Include(k=>k.Klijent).Where(k=>k.Klijent.ID==kl.ID).FirstOrDefault();
-        List<KorpaProizvod> kps = Context.KorpeProizvodi.Include(p=>p.Proizvod).ThenInclude(s=>s.Salon).Where(kp=>kp.korpaID==korpa.ID).ToList();
+        Klijent kl = await Context.Klijenti.Include(k => k.Korisnik).Where(k => k.Korisnik.korisnickoIme == kor.korisnickoIme).FirstOrDefaultAsync();
+        Korpa korpa = Context.Korpe.Include(k => k.Klijent).Where(k => k.Klijent.ID == kl.ID).FirstOrDefault();
+        List<KorpaProizvod> kps = Context.KorpeProizvodi.Include(p => p.Proizvod).ThenInclude(s => s.Salon).Where(kp => kp.korpaID == korpa.ID).ToList();
         KorpaProizvod prvi = kps.FirstOrDefault();
-        if(prvi.Proizvod.Salon.ID==id_salona)
+        if(prvi==null)
+            return Ok("Prazna korpa");
+        if (prvi.Proizvod.Salon.ID == id_salona)
         {
-            return Ok();
+            return Ok("ISta korpa,ne brisi");
         }
-        foreach(KorpaProizvod kp in kps)
+        if (prvi != null)
         {
-            Context.KorpeProizvodi.Remove(kp);
+            foreach (KorpaProizvod kp in kps)
+            {
+                Context.KorpeProizvodi.Remove(kp);
+            }
         }
-        korpa.ukupnaCena=0;
+        korpa.ukupnaCena = 0;
         Context.SaveChanges();
         return korpa.ID;
     }
@@ -332,7 +337,7 @@ public class KlijentController : ControllerBase
             {
                 return Ok("Neuspesno narucivanje!");
             }
-            if(k.ukupnaCena==0)
+            if (k.ukupnaCena == 0)
             {
                 return Ok("Nemate nista u korpi!");
             }

@@ -30,7 +30,7 @@ const SalonStranica = () => {
                 });
 
             }
-        if(id && klijent)
+        if(klijent)
         {
             axios.delete(`http://localhost:5169/Klijent/IsprazniKorpu/${id}`, {
                 headers: {
