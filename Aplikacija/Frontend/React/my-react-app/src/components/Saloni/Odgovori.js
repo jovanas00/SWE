@@ -27,6 +27,8 @@ const Odgovori = ({ id }) => {
         })
             .then((response) => {
                 console.log(response.data);
+                alert(response.data)
+                window.location.reload()
 
             })
             .catch((error) => {

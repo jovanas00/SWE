@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef,setError } from "react";
+import { useState, useEffect, useRef, setError } from "react";
 import icon from '../../images/user.webp';
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -16,6 +16,12 @@ const Informacije = () => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [ime, setIme] = useState('');
+  const [prezime, setPrezime] = useState('');
+  const [adresa, setAdresa] = useState('');
+  const [grad, setGrad] = useState('');
+  const [brojTelefona, setBrojTelefona] = useState('');
+  const [showInfoModal, setShowInfoModal] = useState(false);
 
   useEffect(() => {
     fetchUserInfo();
@@ -60,9 +66,39 @@ const Informacije = () => {
     }
   };
 
-  const handleChangeUserInfo = (newInfo) => {
-    console.log('New Info:', newInfo);
+  const handleChangeUserInfo = async () => {
+    if(ime=="" || prezime=="" || adresa=="" || grad=="" || brojTelefona=="")
+    {
+      alert("Niste popunili sva polja!")
+      return;
+    }
+    try {
+      const response = await axios.put(
+        `http://localhost:5169/Klijent/IzmeniProfilKlijenta/${korisnicko_ime}/${ime}/${prezime}/${adresa}/${grad}/${brojTelefona}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
+        }
+      );
+      setShowInfoModal(false);
+      setIme("");
+      setPrezime("");
+      setAdresa("");
+      setGrad("");
+      setBrojTelefona("");
+      setUserInfo(response.data);
+      alert("Izmenjene informacije!"); // Display success message
+      window.location.reload()
+    } catch (error) {
+      console.error("Error changing user info:", error);
+      setError(
+        "An error occurred while changing the user information. Please try again."
+      );
+    }
   };
+
 
 
   return (
@@ -118,6 +154,55 @@ const Informacije = () => {
                 onClick={() => setShowModal(false)}
                 className="cancel"
               >
+                Odustani
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      <button onClick={() => setShowInfoModal(true)} className="button-primary">
+        Izmeni informacije
+      </button>
+      {/* Modal for changing user information */}
+      {showInfoModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h3>Izmena informacija</h3>
+            <input
+              type="text"
+              placeholder="Ime"
+              value={ime}
+              onChange={(e) => setIme(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Prezime"
+              value={prezime}
+              onChange={(e) => setPrezime(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Adresa"
+              value={adresa}
+              onChange={(e) => setAdresa(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Grad"
+              value={grad}
+              onChange={(e) => setGrad(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Broj telefona"
+              value={brojTelefona}
+              onChange={(e) => setBrojTelefona(e.target.value)}
+            />
+            <div>
+              <button onClick={handleChangeUserInfo} className="confirm">
+                Potvrdi
+              </button>
+              <button onClick={() => setShowInfoModal(false)} className="cancel">
                 Odustani
               </button>
             </div>

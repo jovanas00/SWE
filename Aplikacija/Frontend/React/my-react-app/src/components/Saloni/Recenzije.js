@@ -51,6 +51,7 @@ const Recenzije = ({ id }) => {
         })
             .then((response) => {
                 alert(response.data);
+                window.location.reload();
             })
             .catch((error) => {
                 if (error.response && error.response.data === false) {

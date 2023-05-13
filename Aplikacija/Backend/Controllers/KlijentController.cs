@@ -34,7 +34,7 @@ public class KlijentController : ControllerBase
 
 
     [Route("IzmeniProfilKlijenta/{korisnicko_ime}/{ime}/{prezime}/{adresa}/{grad}/{brojTelefona}")]
-    [HttpDelete]
+    [HttpPut]
     public async Task<ActionResult<Klijent>> IzmeniProfil(/*bez korisnickog imena*/string korisnicko_ime, string ime, string prezime, string adresa, string grad, string brojTelefona)
     {
         //Korisnik k = VratiKorisnika()
