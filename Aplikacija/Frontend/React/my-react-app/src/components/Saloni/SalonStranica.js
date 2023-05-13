@@ -9,11 +9,14 @@ import "./SalonStranica.css";
 import Korpa from './Korpa';
 import Cookies from 'js-cookie';
 import { isKlijent } from '../Auth/AuthKlijent';
+import { vratiRole } from '../Auth/VratiRole';
 
 const SalonStranica = () => {
     const { id } = useParams(); // uzima se id iz Route(prosledjuje se u App.js)
     const [salon, setSalon] = useState(null); // inicijalizuje se state salon na null
-
+    const role = vratiRole();
+    const klijent = role === "Klijent" ? "Klijent" : null;
+    
     useEffect(() => {
         // uzima se salon iz baze
         if (id) {
@@ -27,6 +30,8 @@ const SalonStranica = () => {
                 });
 
             }
+        if(id && klijent)
+        {
             axios.delete(`http://localhost:5169/Klijent/IsprazniKorpu/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${Cookies.get('token')}`
@@ -38,6 +43,7 @@ const SalonStranica = () => {
                 .catch(error => {
                     console.error(error);
                 });
+        }
     }, [id]); // ova se funkcija zove kad se promeni id
 
     if (!salon) {
