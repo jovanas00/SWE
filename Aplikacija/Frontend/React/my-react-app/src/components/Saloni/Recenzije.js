@@ -11,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 const Recenzije = ({ id }) => {
     const [recenzije, setRecenzije] = useState([]);
     const [inputText, setInputText] = useState("");
-    const navigate = useNavigate();
     useEffect(() => {
         axios.get(`http://localhost:5169/Salon/VratiRecenzijeSalona/${id}`)
             .then((response) => {
@@ -20,7 +19,7 @@ const Recenzije = ({ id }) => {
             .catch((error) => {
                 console.log(error);
             });
-    }, [id,recenzije]);
+    }, [id]);
 
     const [recenzija, setRecenzija] = useState({
         tekst: '',

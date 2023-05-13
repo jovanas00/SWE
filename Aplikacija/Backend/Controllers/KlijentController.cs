@@ -219,7 +219,12 @@ public class KlijentController : ControllerBase
         //Klijent kl = await Context.Klijenti.FindAsync(klijentID);
         Klijent kl = await Context.Klijenti.Include(k=>k.Korisnik).Where(k=>k.Korisnik.korisnickoIme==kor.korisnickoIme).FirstOrDefaultAsync();
         Korpa korpa = Context.Korpe.Include(k=>k.Klijent).Where(k=>k.Klijent.ID==kl.ID).FirstOrDefault();
-        List<KorpaProizvod> kps = Context.KorpeProizvodi.Where(kp=>kp.korpaID==korpa.ID).ToList();
+        List<KorpaProizvod> kps = Context.KorpeProizvodi.Include(p=>p.Proizvod).ThenInclude(s=>s.Salon).Where(kp=>kp.korpaID==korpa.ID).ToList();
+        KorpaProizvod prvi = kps.FirstOrDefault();
+        if(prvi.Proizvod.Salon.ID==id_salona)
+        {
+            return Ok();
+        }
         foreach(KorpaProizvod kp in kps)
         {
             Context.KorpeProizvodi.Remove(kp);

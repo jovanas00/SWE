@@ -27,6 +27,7 @@ const Odgovori = ({ id }) => {
         })
             .then((response) => {
                 console.log(response.data);
+
             })
             .catch((error) => {
                 console.log(error.data);
@@ -41,7 +42,7 @@ const Odgovori = ({ id }) => {
           .catch((error) => {
             console.log(error);
           });
-      }, [id, odgovori]);
+      }, [id]);
 
     const role = vratiRole();
     return (
