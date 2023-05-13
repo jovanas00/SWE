@@ -6,6 +6,7 @@ import Odgovori from "./Odgovori";
 import Recenzije from "./Recenzije";
 import { vratiRole } from "../Auth/VratiRole";
 import Zahtev from "./Zahtev";
+import Korpa from "./Korpa"
 
 const SalonInfo = ({ salon, id }) => {
     const [selektovanaVr, setSelektovanaVr] = useState("Proizvodi");
@@ -14,7 +15,7 @@ const SalonInfo = ({ salon, id }) => {
         setSelektovanaVr(vrednost);
     };
     const role = vratiRole();
-    const zahtev = role === "Klijent" ? "Zahtev" : null
+    const klijent = role === "Klijent" ? "Klijent" : null
     return (
         <div className="salon-items">
             <div className="span-header">
@@ -34,10 +35,14 @@ const SalonInfo = ({ salon, id }) => {
                     onClick={() => handleVrClick("Recenzije")}
                     className={selektovanaVr === "Recenzije" ? "selected" : ""}
                 >Recenzije</span>
-                {zahtev && <span
+                {klijent && <span
                     onClick={() => handleVrClick("Zahtev")}
                     className={selektovanaVr === "Zahtev" ? "selected" : ""}
                 >Zahtev</span>}
+                {klijent && <span
+                    onClick={() => handleVrClick("Korpa")}
+                    className={selektovanaVr === "Korpa" ? "selected" : ""}
+                >Korpa</span>}
             </div>
 
             <div className="items">
@@ -50,6 +55,8 @@ const SalonInfo = ({ salon, id }) => {
                 {selektovanaVr === "Recenzije" && <Recenzije id={id} />}
 
                 {selektovanaVr === "Zahtev" && <Zahtev id={id}/>}
+
+                {selektovanaVr === "Korpa" && <Korpa id={id}/>}
             </div>
 
         </div>

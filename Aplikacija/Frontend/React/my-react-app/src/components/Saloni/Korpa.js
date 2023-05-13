@@ -5,8 +5,10 @@ import { vratiKorisnickoIme } from '../Auth/VratIKorisnickoIme';
 import { isKlijent } from '../Auth/AuthKlijent';
 import { vratiRole } from '../Auth/VratiRole';
 
-const Korpa = ({ setKorpaId }) => {
-    const [korpaId, setKorpaIdState] = useState(null);
+const Korpa = ({ id }) => {
+    const [korpaId, setKorpaId] = useState(null);
+    const [proizvodi, setProizvodi] = useState([]);
+    const [showNaruciButton, setShowNaruciButton] = useState(false);
     const korisnicko_ime = vratiKorisnickoIme();
     const uloga = vratiRole()
     const klijent = uloga === "Klijent" ? "Klijent" : null;
@@ -15,7 +17,7 @@ const Korpa = ({ setKorpaId }) => {
         const fetchKorpaId = async () => {
             try {
                 const token = Cookies.get('token'); // Retrieve the token from the cookie
-                
+
                 if (klijent) {
                     const response = await axios.get(
                         `http://localhost:5169/Klijent/VratiKorpuID/${korisnicko_ime}`,
@@ -27,19 +29,85 @@ const Korpa = ({ setKorpaId }) => {
                     );
 
                     const korpaId = response.data;
-                    setKorpaIdState(korpaId);
+                    VratiProizvodeIzKorpe(korpaId)
                     setKorpaId(korpaId); // Pass the korpaId to the parent component
                 }
             } catch (error) {
                 console.error('Error retrieving Korpa ID:', error);
             }
         };
-
         fetchKorpaId();
+        const VratiProizvodeIzKorpe = async (korpaId) => {
+            try {
+                const response = await axios.get(`http://localhost:5169/Klijent/VratiProizvodeIzKorpe/${korpaId}`, {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('token')}`,
+                    },
+                });
+
+                console.log(response.data); // Log the response data
+                setProizvodi(response.data);
+                setShowNaruciButton(true);
+            } catch (error) {
+                console.error('Error retrieving data from server:', error);
+            }
+        };
     }, [korisnicko_ime, setKorpaId]);
 
-    return <div>
-    </div>;
+    const handleDeleteClick = async (proizvodID) => {
+        try {
+            const response = await axios.delete(`http://localhost:5169/Klijent/IzbaciIzKorpe/${proizvodID}/${korpaId}`, {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('token')}`,
+                },
+            });
+            console.log('Product removed from cart successfully!');
+            alert(response.data);
+            setProizvodi(prevProizvodi => prevProizvodi.filter(proizvod => proizvod.proizvodID !== proizvodID));
+            // Optionally, you can update the local state or perform any other necessary actions after successfully removing the product
+        } catch (error) {
+            console.error('Error removing product from cart:', error);
+            // Handle error case if the product could not be removed from the cart
+        }
+    };
+
+    const handleNaruciClick = async (proizvodID) => {
+        try {
+            const response = await axios.post(`http://localhost:5169/Klijent/Naruci/${korpaId}/${id}`, null, {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('token')}`,
+                },
+            });
+            alert(response.data);
+            setProizvodi([]);
+            // Optionally, you can perform any necessary actions after placing the order
+        } catch (error) {
+            console.error('Error placing the order:', error);
+            // Handle error case if the order could not be placed
+        }
+    };
+    return (
+        <div className="korpa-container">
+            {/* Render div for each product */}
+            {proizvodi.map((proizvod) => (
+                <div key={proizvod.proizvodID} className="proizvod">
+                    <img src={proizvod.slikaProizvoda} alt={proizvod.naziv} />
+                    <p className="proizvod-naziv">Naziv: {proizvod.nazivProizvoda}</p>
+                    <p className="proizvod-kolicina">Kolicina: {proizvod.kolicina}</p>
+                    <button className="obrisi-button" onClick={() => handleDeleteClick(proizvod.proizvodID)}>Obrisi</button>
+                </div>
+            ))}
+            {/* Show "Nemate ništa u korpi" if there are no proizvodi in the cart */}
+            {proizvodi.length === 0 && <p className="empty-cart-message">Ovde ce biti prikazani dodati proizvodi kada ih dodate u korpu!</p>}
+            {/* Naruci button */}
+            {proizvodi.length > 0 && (
+                <button className="naruci-button" onClick={handleNaruciClick}>Naruci</button>
+            )}
+        </div>
+    );
+
+
+
 };
 
 export default Korpa;
