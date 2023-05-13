@@ -67,8 +67,7 @@ const Informacije = () => {
   };
 
   const handleChangeUserInfo = async () => {
-    if(ime=="" || prezime=="" || adresa=="" || grad=="" || brojTelefona=="")
-    {
+    if (ime == "" || prezime == "" || adresa == "" || grad == "" || brojTelefona == "") {
       alert("Niste popunili sva polja!")
       return;
     }
@@ -97,6 +96,21 @@ const Informacije = () => {
         "An error occurred while changing the user information. Please try again."
       );
     }
+  };
+
+  const handleCancelPasswordChange = () => {
+    setShowModal(false);
+    setCurrentPassword('');
+    setNewPassword('');
+  };
+
+  const handleCancelUserInfoChange = () => {
+    setShowInfoModal(false);
+    setIme('');
+    setPrezime('');
+    setAdresa('');
+    setGrad('');
+    setBrojTelefona('');
   };
 
 
@@ -150,10 +164,7 @@ const Informacije = () => {
               >
                 Potvrdi
               </button>
-              <button
-                onClick={() => setShowModal(false)}
-                className="cancel"
-              >
+              <button onClick={handleCancelPasswordChange} className="cancel">
                 Odustani
               </button>
             </div>
@@ -202,7 +213,7 @@ const Informacije = () => {
               <button onClick={handleChangeUserInfo} className="confirm">
                 Potvrdi
               </button>
-              <button onClick={() => setShowInfoModal(false)} className="cancel">
+              <button onClick={handleCancelUserInfoChange} className="cancel">
                 Odustani
               </button>
             </div>

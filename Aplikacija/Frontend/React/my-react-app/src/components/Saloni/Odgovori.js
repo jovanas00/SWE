@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Card from "../UI/Card";
+//import Card from "../UI/Card";
+import { Card } from "react-bootstrap";
 import salonChat from '../../images/salon.png';
 import clientChat from '../../images/clientChatIcon.png';
 import { vratiRole } from '../Auth/VratiRole';
