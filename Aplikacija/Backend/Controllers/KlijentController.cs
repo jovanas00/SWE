@@ -34,7 +34,7 @@ public class KlijentController : ControllerBase
 
 
     [Route("IzmeniProfilKlijenta/{korisnicko_ime}/{ime}/{prezime}/{adresa}/{grad}/{brojTelefona}")]
-    [HttpPut]
+    [HttpDelete]
     public async Task<ActionResult<Klijent>> IzmeniProfil(/*bez korisnickog imena*/string korisnicko_ime, string ime, string prezime, string adresa, string grad, string brojTelefona)
     {
         //Korisnik k = VratiKorisnika()
@@ -207,6 +207,25 @@ public class KlijentController : ControllerBase
         //Korisnik k = VratiKorisnika();
         Klijent kl = await Context.Klijenti.Include(k=>k.Korisnik).Where(k=>k.Korisnik.korisnickoIme==korisnicko_ime).FirstOrDefaultAsync();
         Korpa korpa = Context.Korpe.Include(k=>k.Klijent).Where(k=>k.Klijent.ID==kl.ID).FirstOrDefault();
+        return korpa.ID;
+    }
+
+    [Route("IsprazniKorpu/{id_salona}")]
+    [HttpDelete]
+    public async Task<ActionResult<int>> IsprazniKorpu(int id_salona)
+    {   
+        Salon s = await Context.Saloni.FindAsync(id_salona);
+        Korisnik kor = VratiKorisnika();
+        //Klijent kl = await Context.Klijenti.FindAsync(klijentID);
+        Klijent kl = await Context.Klijenti.Include(k=>k.Korisnik).Where(k=>k.Korisnik.korisnickoIme==kor.korisnickoIme).FirstOrDefaultAsync();
+        Korpa korpa = Context.Korpe.Include(k=>k.Klijent).Where(k=>k.Klijent.ID==kl.ID).FirstOrDefault();
+        List<KorpaProizvod> kps = Context.KorpeProizvodi.Where(kp=>kp.korpaID==korpa.ID).ToList();
+        foreach(KorpaProizvod kp in kps)
+        {
+            Context.KorpeProizvodi.Remove(kp);
+        }
+        korpa.ukupnaCena=0;
+        Context.SaveChanges();
         return korpa.ID;
     }
 
