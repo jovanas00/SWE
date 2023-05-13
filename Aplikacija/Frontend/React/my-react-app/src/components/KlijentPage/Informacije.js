@@ -112,13 +112,13 @@ const Informacije = () => {
                 onClick={handlePasswordChange}
                 className="confirm"
               >
-                Confirm
+                Potvrdi
               </button>
               <button
                 onClick={() => setShowModal(false)}
                 className="cancel"
               >
-                Cancel
+                Odustani
               </button>
             </div>
           </div>

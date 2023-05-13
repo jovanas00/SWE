@@ -3,17 +3,20 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { vratiKorisnickoIme } from '../Auth/VratIKorisnickoIme';
 import { isKlijent } from '../Auth/AuthKlijent';
+import { vratiRole } from '../Auth/VratiRole';
 
 const Korpa = ({ setKorpaId }) => {
     const [korpaId, setKorpaIdState] = useState(null);
     const korisnicko_ime = vratiKorisnickoIme();
+    const uloga = vratiRole()
+    const klijent = uloga === "Klijent" ? "Klijent" : null;
 
     useEffect(() => {
         const fetchKorpaId = async () => {
             try {
                 const token = Cookies.get('token'); // Retrieve the token from the cookie
-
-                if (token) {
+                
+                if (klijent) {
                     const response = await axios.get(
                         `http://localhost:5169/Klijent/VratiKorpuID/${korisnicko_ime}`,
                         {

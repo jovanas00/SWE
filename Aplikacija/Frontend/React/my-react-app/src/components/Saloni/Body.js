@@ -48,6 +48,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import SalonCard from './SalonCard';
+import { vratiRole } from '../Auth/VratiRole';
 
 const Body = () => {
   const [saloni, setSaloni] = useState([]); //saloni se inicijalizuje se na prazan niz
@@ -69,6 +70,8 @@ const Body = () => {
   const filtriraniSaloni = selektovaniGrad ? saloni.filter(salon => salon.grad === selektovaniGrad) : saloni;
   const gradovi = [...new Set(saloni.map(salon => salon.grad))];//uzimamo sve gradove koje postoje, ali necemo da se ponavljaju pa koristimo set
 
+  const role = vratiRole();
+  const klijent = role === "Klijent" ? "Klijent" : null;
   return (
     <div className="container">
       {/* za filter */}
@@ -88,9 +91,12 @@ const Body = () => {
           <div className="col-md-4 mb-3">  {/*treba jos da se cacka ovaj prikaz nije flex*/}
             {/* {console.error(salon.id)} */}
             {/*Link sluzi da svaka Salon kartica moze da se otvori na novu stranu gde ce se detaljno citati o salonima*/}
-            <Link to={`/saloni/${salon.id}`} key={salon.id} >
+            {!klijent && <Link to={`/saloni/${salon.id}`} key={salon.id} >
               <SalonCard salon={salon} />
-            </Link>
+            </Link>}
+            {klijent && <Link to={`/klijent/saloni/${salon.id}`} key={salon.id} >
+              <SalonCard salon={salon} />
+            </Link>}
           </div>
         ))}
       </div>

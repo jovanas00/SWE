@@ -38,7 +38,8 @@ function App() {
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/salon" element={<SalonPage />} />
             <Route path="/klijent" element={<KlijentPage />} />
-            <Route path="/klijent/saloni" element={<SaloniKlijent />} />
+            <Route path="/klijent/saloni" element={<Saloni />} />
+            <Route path="/klijent/saloni/:id" element={<SalonStranica korpaId={korpaId} />} />
             <Route path="/klijent/profil" element={<Profil />} />
           </Routes>
         </div>

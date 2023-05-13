@@ -107,6 +107,9 @@ public class KlijentController : ControllerBase
                 string dateTimeString = $"{dateString} {timeString}";
 
                 DateTime termin = DateTime.ParseExact(dateTimeString, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
+                var zauzet = Context.Zahtevi.Include(s=>s.Salon).Include(u=>u.Usluga).Where(z=>z.datumVreme==termin && z.Usluga.Naziv==usluga && z.Salon.ID==id_salon);
+                if(zauzet!=null)
+                    return Ok("Termin je zauzet,pokusajte drugi!");
                 Zahtev z = new Zahtev
                 {
                     Salon = s,
@@ -227,7 +230,7 @@ public class KlijentController : ControllerBase
                 korpa.ukupnaCena += proizvod.cena;
                 Context.Korpe.Update(korpa);
                 await Context.SaveChangesAsync();
-                return Ok($"ID  ponovno dodatog proizvoda je: {proizvod.ID}");
+                return Ok("Uspesno dodat proizvod!");
             }
             else
             {

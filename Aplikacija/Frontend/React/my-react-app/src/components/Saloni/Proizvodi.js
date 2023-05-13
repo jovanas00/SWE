@@ -31,7 +31,8 @@ const Proizvodi = ({ id }) => {
         async (proizvodID) => {
             try {
                 const response = await axios.put(`http://localhost:5169/Klijent/DodajUKorpu/${proizvodID}`, {}, config);
-                console.log(response.data); // response message
+                console.log(response.data); // response message\
+                alert(response.data)
             } catch (error) {
                 console.error('There was a problem with the PUT request:', error);
             }
