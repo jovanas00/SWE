@@ -92,12 +92,18 @@ const Header = () => {
   } else {
     return (
       <header>
-        {(admin || klijent || salon) && (
+        {(admin || salon) && (
           <div className="logo">
             <img src={logo} alt="Logo" />
             <h3>Pet Planet</h3>
           </div>
         )}
+        {klijent && (<div className="logo">
+          <Link to="/klijent/saloni">
+            <img src={logo} alt="Logo" />
+          </Link>
+          <h3>Pet Planet</h3>
+        </div>)}
         <nav className={isNavbarVisible ? 'responsive_nav' : ''}>
           {/* url */}
           {klijent && <Link to="/klijent/saloni">Saloni</Link>}

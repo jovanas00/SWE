@@ -25,7 +25,19 @@ const SalonStranica = () => {
                 .catch(error => {
                     console.error(error);
                 });
-        }
+
+            }
+            axios.delete(`http://localhost:5169/Klijent/IsprazniKorpu/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${Cookies.get('token')}`
+                }
+            })
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
     }, [id]); // ova se funkcija zove kad se promeni id
 
     if (!salon) {
