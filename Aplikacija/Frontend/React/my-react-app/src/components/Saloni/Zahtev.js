@@ -30,7 +30,7 @@ const Zahtev = ({ id }) => {
         if (!imeLjubimca || !zivotinja || !selectedUslugaId || !selectedDate || !selectedTime) {
             alert('Popunite sva polja!');
             return;
-          }
+        }
 
         try {
             const response = await axios.post(
@@ -54,6 +54,10 @@ const Zahtev = ({ id }) => {
             setSelectedTime('');
         } catch (error) {
             console.error('Error submitting the form:', error);
+            if (error.response) {
+                console.log('Error response:', error.response.data);
+                alert(error.response.data);
+            }
         }
     };
 
@@ -70,12 +74,19 @@ const Zahtev = ({ id }) => {
 
             <label>
                 Zivotinja:
-                <input
-                    type="text"
+                <select
                     value={zivotinja}
                     onChange={(e) => setZivotinja(e.target.value)}
-                />
+                >
+                    <option value="">-- Odaberite zivotinju --</option>
+                    <option value="Pas">Pas</option>
+                    <option value="Macka">Macka</option>
+                    <option value="Kornjaca">Kornjaca</option>
+                    <option value="Hrcak">Hrcak</option>
+                    <option value="Kapibara">Kapibara</option>
+                </select>
             </label>
+
 
             <label>
                 Usluga:
@@ -83,7 +94,7 @@ const Zahtev = ({ id }) => {
                     value={selectedUslugaId}
                     onChange={(e) => setSelectedUslugaId(e.target.value)}
                 >
-                    <option value="">-- Select usluga --</option>
+                    <option value="">-- Odaberite uslugu --</option>
                     {uslugaList.map((usluga) => (
                         <option value={usluga.id} key={usluga.id}>
                             {usluga.naziv}
@@ -98,7 +109,7 @@ const Zahtev = ({ id }) => {
                     value={selectedDate}
                     onChange={(e) => setSelectedDate(e.target.value)}
                 >
-                    <option value="">-- Select date --</option>
+                    <option value="">-- Odaberite datum --</option>
                     {/* Generate date options */}
                     {generateDateOptions().map((date) => (
                         <option value={date} key={date}>
@@ -114,7 +125,7 @@ const Zahtev = ({ id }) => {
                     value={selectedTime}
                     onChange={(e) => setSelectedTime(e.target.value)}
                 >
-                    <option value="">-- Select time --</option>
+                    <option value="">-- Odaberite vreme --</option>
                     {/* Generate time options */}
                     {generateTimeOptions().map((time) => (
                         <option value={time} key={time}>

@@ -20,7 +20,7 @@ const Recenzije = ({ id }) => {
             .catch((error) => {
                 console.log(error);
             });
-    }, [id]);
+    }, [id,recenzije]);
 
     const [recenzija, setRecenzija] = useState({
         tekst: '',
@@ -52,7 +52,6 @@ const Recenzije = ({ id }) => {
         })
             .then((response) => {
                 alert(response.data);
-                window.location.reload();
             })
             .catch((error) => {
                 if (error.response && error.response.data === false) {

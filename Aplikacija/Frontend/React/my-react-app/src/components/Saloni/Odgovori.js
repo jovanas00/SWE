@@ -27,7 +27,6 @@ const Odgovori = ({ id }) => {
         })
             .then((response) => {
                 console.log(response.data);
-                window.location.reload();
             })
             .catch((error) => {
                 console.log(error.data);
@@ -36,13 +35,13 @@ const Odgovori = ({ id }) => {
 
     useEffect(() => {
         axios.get(`http://localhost:5169/Salon/VratiPitanjaSalona/${id}`)
-            .then((response) => {
-                setOdgovori(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }, [id]);
+          .then((response) => {
+            setOdgovori(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }, [id, odgovori]);
 
     const role = vratiRole();
     return (

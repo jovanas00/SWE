@@ -46,6 +46,7 @@ import { Navigate } from 'react-router-dom';
 
 const Header = () => {
   const [isNavbarVisible, setIsNavbarVisible] = useState(false);
+  const navigate = useNavigate()
 
   const showNavbar = () => {
     setIsNavbarVisible(true);
@@ -57,6 +58,7 @@ const Header = () => {
 
   const handleLogout = () => {
     Cookies.remove('token');
+    navigate('/')
   };
 
   const role = vratiRole();

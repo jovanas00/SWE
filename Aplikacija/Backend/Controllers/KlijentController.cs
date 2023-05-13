@@ -107,9 +107,9 @@ public class KlijentController : ControllerBase
                 string dateTimeString = $"{dateString} {timeString}";
 
                 DateTime termin = DateTime.ParseExact(dateTimeString, "dd-MM-yyyy HH:mm", CultureInfo.InvariantCulture);
-                var zauzet = Context.Zahtevi.Include(s=>s.Salon).Include(u=>u.Usluga).Where(z=>z.datumVreme==termin && z.Usluga.Naziv==usluga && z.Salon.ID==id_salon);
-                if(zauzet!=null)
-                    return Ok("Termin je zauzet,pokusajte drugi!");
+                var zauzet = Context.Zahtevi.Include(s=>s.Salon).Include(u=>u.Usluga).Where(z=>z.datumVreme==termin && z.Usluga.Naziv==usluga && z.Salon.ID==id_salon).Any();
+                if(zauzet)
+                    return BadRequest("Termin je zauzet,pokusajte drugi!");
                 Zahtev z = new Zahtev
                 {
                     Salon = s,
