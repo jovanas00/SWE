@@ -81,7 +81,7 @@ public class KlijentController : ControllerBase
             Context.Pitanja.Add(p);
             await Context.SaveChangesAsync();
 
-            return Ok(p);
+            return Ok("Uspesno postavljeno pitanje!");
         }
         catch (Exception e)
         {
@@ -187,7 +187,7 @@ public class KlijentController : ControllerBase
                 };
                 Context.Recenzije.Add(r);
                 await Context.SaveChangesAsync();
-                return Ok($"ID dodate recenzije je: {r.ID}");
+                return Ok("Usepesno dodata recenzija");
             }
             else
             {
