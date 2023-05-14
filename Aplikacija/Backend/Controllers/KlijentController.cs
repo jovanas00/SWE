@@ -134,6 +134,7 @@ public class KlijentController : ControllerBase
 
     }
 
+    [AllowAnonymous]
     [HttpDelete("ObrisiZahtev/{idZahteva}")]
     public async Task<ActionResult> ObrišiZahtev(int idZahteva)
     {
@@ -159,6 +160,8 @@ public class KlijentController : ControllerBase
             return BadRequest(e.Message);
         }
     }
+
+
 
     [HttpPost("OceniSalon/{tekst}/{ocena}/{idSalona}")]
     public async Task<ActionResult<string>> OceniSalon(string tekst, float ocena, int idSalona)
@@ -384,6 +387,7 @@ public class KlijentController : ControllerBase
         }
     }
 
+    [AllowAnonymous]
     [HttpGet("VratiProizvodeNarudzbina/{id_narudzbine}")]
     public async Task<ActionResult<List<NaruceniProizvod>>> VratiProizvodeNarudzbina(int id_narudzbine)
     {
@@ -393,6 +397,8 @@ public class KlijentController : ControllerBase
         return n.NaruceniProizvodi;
     }
 
+
+
     [Route("VratiKlijenta/{korisnicko_ime}")]
     [HttpGet]
     public async Task<ActionResult<object>> VratiKlijenta(string korisnicko_ime)
@@ -400,6 +406,82 @@ public class KlijentController : ControllerBase
         Korisnik kor = Context.Korisnici.Where(k => k.korisnickoIme == korisnicko_ime).FirstOrDefault();
         Klijent kl = await Context.Klijenti.Include(k => k.Korisnik).Where(k => k.Korisnik.ID == kor.ID).FirstOrDefaultAsync();
         return kl;
+    }
+
+    [AllowAnonymous]
+    [HttpGet("PrikaziNarudzbineISalone/{korisnickoIme}")]
+    public ActionResult<List<object>> PrikaziNarudzbineISalone(string korisnickoIme)
+    {
+        var klijent = Context.Klijenti
+            .Include(k => k.Narudzbine)
+            .ThenInclude(n => n.Salon)
+            .FirstOrDefault(k => k.Korisnik.korisnickoIme == korisnickoIme);
+
+        if (klijent == null)
+        {
+            return NotFound(); // Vraćanje statusa 404 ako klijent nije pronađen
+        }
+
+        var narudzbine = klijent.Narudzbine
+            .Select(n => new
+            {
+                ID = n.ID,
+                Status = n.status,
+                KomentarSalona = n.komentarSalona,
+                UkupnaCena = n.ukupnaCena,
+                DatumVreme = n.datum,
+                KorisnickoIme = n.korisnickoIme,
+                Grad = n.grad,
+                Adresa = n.adresa,
+                Salon = new
+                {
+                    Naziv = n.Salon.naziv,
+                    Adresa = n.Salon.adresa,
+                    Grad = n.Salon.grad,
+                    BrojTelefona = n.Salon.brojTelefona
+                }
+            })
+            .ToList();
+
+        return Ok(narudzbine);
+    }
+
+
+    [AllowAnonymous]
+    [HttpGet("PrikaziZahteveISalone/{korisnickoIme}")]
+    public ActionResult<List<object>> PrikaziZahteveISalone(string korisnickoIme)
+    {
+        var klijent = Context.Klijenti
+            .Include(k => k.Zahtevi)
+            .ThenInclude(n => n.Salon)
+            .FirstOrDefault(k => k.Korisnik.korisnickoIme == korisnickoIme);
+
+        if (klijent == null)
+        {
+            return NotFound(); // Vraćanje statusa 404 ako klijent nije pronađen
+        }
+
+        var zahtevi = klijent.Zahtevi
+            .Select(n => new
+            {
+                ID = n.ID,
+                ImeLjubimca = n.imeLjubimca,
+                Zivotinja = n.zivotinja,
+                Cena = n.cena,
+                DatumVreme = n.datumVreme,
+                Status = n.status,
+                KomentarSalona = n.komentarSalona,
+                Salon = new
+                {
+                    Naziv = n.Salon.naziv,
+                    Adresa = n.Salon.adresa,
+                    Grad = n.Salon.grad,
+                    BrojTelefona = n.Salon.brojTelefona
+                }
+            })
+            .ToList();
+
+        return Ok(zahtevi);
     }
 
 
