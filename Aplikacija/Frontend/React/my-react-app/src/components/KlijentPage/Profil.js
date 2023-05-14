@@ -14,6 +14,7 @@ const Profil = () => {
     const [narudzbine, setNarudzbine] = useState([]);
     const [prikazNarudzbina, setPrikazNarudzbina] = useState(true);
     const [zahtevi, setZahtevi] = useState([]);
+    const [proizvodi, setProizvodi] = useState([]);
 
 
     // Autorizacija
@@ -35,7 +36,29 @@ const Profil = () => {
           console.error(error);
           // Došlo je do greške prilikom brisanja zahteva, možete prikazati odgovarajuću poruku ili preduzeti druge akcije
         }
+    };
+
+    const handleFetchProizvodi = async (idNarudzbine) => {
+        try {
+          const response = await axios.get(`http://localhost:5169/Klijent/VratiProizvodeNarudzbina/${idNarudzbine}`);
+          const proizvodiNarudzbine = response.data;
+          const updatedNarudzbine = narudzbine.map((narudzbina) => {
+            if (narudzbina.id === idNarudzbine) {
+              return {
+                ...narudzbina,
+                proizvodi: proizvodiNarudzbine,
+              };
+            }
+            return narudzbina;
+          });
+          setNarudzbine(updatedNarudzbine);
+        } catch (error) {
+          console.error(error);
+        }
       };
+      
+
+
       
     useEffect(() => {
     if (isKlijent()) {
@@ -76,8 +99,8 @@ const Profil = () => {
         <Header />
         <Informacije />
         <div className="button-list">
-          <button onClick={handleNarudzbineClick}>Narudžbine</button>
-          <button onClick={handleZahteviClick}>Zahtevi</button>
+            <button onClick={handleNarudzbineClick}>Narudžbine</button>
+            <button onClick={handleZahteviClick}>Zahtevi</button>
         </div>
         <div className="content"></div>
         <div className="narudzbine-container">
@@ -102,6 +125,24 @@ const Profil = () => {
                             <p>Adresa salona: {narudzbina.salon.adresa}</p>
                             <p>Grad salona: {narudzbina.salon.grad}</p>
                             <p>Broj telefona salona: {narudzbina.salon.brojTelefona}</p>
+                            <button className="sviProizvodi-button" onClick={() => handleFetchProizvodi(narudzbina.id)}>Svi proizvodi</button>
+
+                            {narudzbina.proizvodi && narudzbina.proizvodi.length > 0 && (
+                                <div className="proizvodi-container">
+                                    <h5>Svi proizvodi:</h5>
+                                    <ul>
+                                    {narudzbina.proizvodi.map((proizvod, index2) => (
+                                        <li key={index2}>
+                                        <p className="proizvodi-brojac">Proizvod {index2 + 1}.</p>
+                                        <p>Naziv proizvoda: {proizvod.nazivProizvoda}</p>
+                                        <p>Slika proizvoda: {proizvod.slikaProizvoda}</p>
+                                        <p>Količina: {proizvod.kolicina}</p>
+                                        </li>
+                                    ))}
+                                    </ul>
+                                </div>
+                            )}
+
                             <hr /> {/* Linija na kraju narudžbine */}
                         </li>
                         ))}

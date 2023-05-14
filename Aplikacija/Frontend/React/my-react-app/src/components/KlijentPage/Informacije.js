@@ -61,8 +61,8 @@ const Informacije = () => {
       setNewPassword('');
       alert(response.data); // Display the response status code
     } catch (error) {
-      console.error('Error changing password:', error);
-      setError('An error occurred while changing the password. Please try again.');
+      console.error('Greška pri izmeni lozinke', error);
+      setError('Greška prilikom izmene lozinke!');
     }
   };
 

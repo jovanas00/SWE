@@ -8,7 +8,7 @@
   border-right: 1px solid #ccc; /* Dodato: linija na desnoj strani sidebara */
 }
 
-.obrisi-zahtev-button {
+.obrisi-zahtev-button, .sviProizvodi-button {
     padding: 6px 10px;
     font-size: 15px;
     border: 1px solid black;
@@ -16,48 +16,69 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-
-.obrisi-zahtev-button:hover {
+  
+.obrisi-zahtev-button:hover, .sviProizvodi-button:hover {
     background-color: #fc6c6c;
     /*ovo da pocrveni kad se pređe mišem*/
 }
+
+.container {
+    display: flex;
+}
+
+.left-side {
+    flex: 1;
+    border-right: 1px solid #ccc;
+    padding-right: 10px;
+}
   
+.right-side {
+    flex: 1;
+    padding-left: 10px;
+}  
   
 
 .button-list button {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 0; /* Dodato: uklanjanje razmaka između dugmića */
-  background: none;
-  border: none;
-  border-bottom: 1px solid #ccc;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 0; /* Dodato: uklanjanje razmaka između dugmića */
+    background: none;
+    border: none;
+    border-bottom: 1px solid #ccc;
 }
-
+  
 .button-list button:hover {
-  background-color: #fc6c6c; /* Promeni boju pozadine prilikom prelaska mišem */
+    background-color: #fc6c6c; /* Promeni boju pozadine prilikom prelaska mišem */
 }
 
 .narudzbine-container {
+    flex: 1;
     max-height: 500px; /* Definiše maksimalnu visinu kontejnera */
     overflow-y: auto; /* Omogućava vertikalnu skrol traku ako je sadržaj veći od maksimalne visine */
 }
 
-.narudzbina-brojac, .zahtev-brojac {
+.proizvodi-container {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-left: 20px;
+  }
+
+.narudzbina-brojac, .zahtev-brojac, .proizvodi-brojac {
     font-weight: bold;
     font-size: 16px;
 }
   
   
-  /* Dodati stilovi za prikaz ispod dugmića */
-  .content {
-    margin-left: 200px;
-  }
-  .content {
+/* Dodati stilovi za prikaz ispod dugmića */
+.content {
     margin-left: 220px; /* Pomeranje prikaza udesno */
+    display: flex;
+    flex-direction: column;
   }
-  /* Dodati stilovi za prikaz detalja */
-  .details-container {
+
+/* Dodati stilovi za prikaz detalja */
+.details-container {
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
@@ -65,23 +86,23 @@
     background-color: #a9ebfc;
     max-height: 200px; /* Ograniči visinu detalja */
     overflow-y: auto; /* Omogući skrol samo kada je potrebno */
-  }
+}
   
-  /* Dodati stilove za responsivnost */
-  @media screen and (max-width: 768px) {
-    /* Kada se prozor smanji */
-    .button-list {
-      float: none;
-      width: auto;
-      margin-bottom: 0;
-      height: auto;
-    }
-    
-    .content {
-      margin-left: 0; /* Resetuj margine za smanjeni prozor */
-      padding-left: 20px; /* Dodaj unutrašnji razmak na levoj strani */
-    }
+/* Dodati stilove za responsivnost */
+@media screen and (max-width: 768px) {
+  /* Kada se prozor smanji */
+  .button-list {
+    float: none;
+    width: auto;
+    margin-bottom: 0;
+    height: auto;
   }
+
+  .content {
+    margin-left: 0; /* Resetuj margine za smanjeni prozor */
+    padding-left: 20px; /* Dodaj unutrašnji razmak na levoj strani */
+  }
+}
   
   
   
