@@ -1,0 +1,100 @@
+/* Dodati stilovi za sidebar */
+.button-list {
+  margin-bottom: 10px;
+  float: left;
+  height: 100vh;
+  width: 200px; /* Promenjena širina sidebara */
+
+  border-right: 1px solid #ccc; /* Dodato: linija na desnoj strani sidebara */
+}
+
+.obrisi-zahtev-button {
+    padding: 6px 10px;
+    font-size: 15px;
+    border: 1px solid black;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.obrisi-zahtev-button:hover {
+    background-color: #fc6c6c;
+    /*ovo da pocrveni kad se pređe mišem*/
+}
+  
+  
+
+.button-list button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 0; /* Dodato: uklanjanje razmaka između dugmića */
+  background: none;
+  border: none;
+  border-bottom: 1px solid #ccc;
+}
+
+.button-list button:hover {
+  background-color: #fc6c6c; /* Promeni boju pozadine prilikom prelaska mišem */
+}
+
+.narudzbine-container {
+    max-height: 500px; /* Definiše maksimalnu visinu kontejnera */
+    overflow-y: auto; /* Omogućava vertikalnu skrol traku ako je sadržaj veći od maksimalne visine */
+}
+
+.narudzbina-brojac, .zahtev-brojac {
+    font-weight: bold;
+    font-size: 16px;
+}
+  
+  
+  /* Dodati stilovi za prikaz ispod dugmića */
+  .content {
+    margin-left: 200px;
+  }
+  .content {
+    margin-left: 220px; /* Pomeranje prikaza udesno */
+  }
+  /* Dodati stilovi za prikaz detalja */
+  .details-container {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #a9ebfc;
+    max-height: 200px; /* Ograniči visinu detalja */
+    overflow-y: auto; /* Omogući skrol samo kada je potrebno */
+  }
+  
+  /* Dodati stilove za responsivnost */
+  @media screen and (max-width: 768px) {
+    /* Kada se prozor smanji */
+    .button-list {
+      float: none;
+      width: auto;
+      margin-bottom: 0;
+      height: auto;
+    }
+    
+    .content {
+      margin-left: 0; /* Resetuj margine za smanjeni prozor */
+      padding-left: 20px; /* Dodaj unutrašnji razmak na levoj strani */
+    }
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
