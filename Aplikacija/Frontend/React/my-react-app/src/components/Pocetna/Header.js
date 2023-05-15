@@ -111,8 +111,8 @@ const Header = () => {
           {klijent && <Link to="/klijent/saloni">Saloni</Link>}
           {admin && <Link to="/saloni">Saloni</Link>}
           {klijent && <Link to="/klijent/profil">Profil</Link>}
-          {salon && <Link to="/salon">Upravljanje</Link>}
-          {salon && <Link to="/salon/profil">Profil</Link>}
+          {salon && <Link to="/salon/upravljanje">Upravljanje</Link>}
+          {salon && <Link to="/salon">Profil</Link>}
           {(klijent || salon || admin) &&
             <Link to="/" onClick={handleLogout}>
               Log out
