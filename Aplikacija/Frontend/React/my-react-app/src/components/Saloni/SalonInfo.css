@@ -9,20 +9,24 @@
     /* align-items: flex-start; */
 }
 
-.span-header{
+.span-header {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     margin: 10px 10px 50px 10px;
-    /* align-items: end; */
-    font-size: 20px;
-    /* position: relative; */
+}
 
-    /* align-self: flex-start; */
+.span-header * {
+    flex: 1 1 100%;
+}
 
-    /* flex: 0 0 auto; */
-    /* align-self: flex-end; */
-    margin-left: auto;
-} 
+@media (min-width: 768px) {
+    .span-header * {
+        flex: 0 0 auto;
+        width: auto;
+        max-width: 400px;
+    }
+}
 
 span {
     /* display: flex;
@@ -40,7 +44,7 @@ span {
 }
 
 span.selected {
-    color:black;
+    color: black;
     background-color: transparent;
     text-decoration: underline;
 }
