@@ -1,10 +1,13 @@
 .korpa-container {
   display: flex;
-  flex-direction: column; /* Updated */
-  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .proizvod {
+  flex: 0 0 100%;
+  max-width: 100%;
   margin: 10px;
   padding: 10px;
   border: 1px solid #ccc;
@@ -13,8 +16,8 @@
 }
 
 .proizvod img {
-  max-width: 200px;
-  max-height: 200px;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .proizvod p {
@@ -43,4 +46,11 @@
 
 .naruci-button:hover {
   background-color: #0056b3;
+}
+
+@media screen and (min-width: 769px) {
+  .proizvod {
+    flex: 0 0 calc(33.33% - 20px);
+    max-width: calc(33.33% - 20px);
+  }
 }
