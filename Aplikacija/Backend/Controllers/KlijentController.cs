@@ -405,7 +405,24 @@ public class KlijentController : ControllerBase
     {
         Korisnik kor = Context.Korisnici.Where(k => k.korisnickoIme == korisnicko_ime).FirstOrDefault();
         Klijent kl = await Context.Klijenti.Include(k => k.Korisnik).Where(k => k.Korisnik.ID == kor.ID).FirstOrDefaultAsync();
-        return kl;
+        var k = new{
+            ime = kl.ime,
+            prezime = kl.prezime,
+            adresa = kl.adresa,
+            grad = kl.grad,
+            brojTelefona = kl.brojTelefona,
+            slika = kl.Korisnik.slika
+        };
+        return k;
+    }
+
+    [Route("VratiSliku/{korisnicko_ime}")]
+    [HttpGet]
+    public async Task<ActionResult<object>> VratiSliku(string korisnicko_ime)
+    {
+        Korisnik kor = Context.Korisnici.Where(k => k.korisnickoIme == korisnicko_ime).FirstOrDefault();
+        Klijent kl = await Context.Klijenti.Include(k => k.Korisnik).Where(k => k.Korisnik.ID == kor.ID).FirstOrDefaultAsync();
+        return kl.Korisnik.slika;
     }
 
     [AllowAnonymous]

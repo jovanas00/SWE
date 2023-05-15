@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Net.Http.Headers;
+using System.Web;
 
 namespace BackEnd.Controllers;
 
@@ -15,10 +16,10 @@ public class KorisnikController : ControllerBase
 {
     public PPContext Context { get; set; }
     private IConfiguration _config;
-    public  KorisnikController(PPContext context,IConfiguration config)
+    public KorisnikController(PPContext context, IConfiguration config)
     {
         Context = context;
-        _config=config;
+        _config = config;
     }
     private string Generate(Korisnik korisnik) // Generisanje tokena
     {
@@ -36,7 +37,7 @@ public class KorisnikController : ControllerBase
         var token = new JwtSecurityToken(_config["Jwt:Issuer"],
         _config["Jwt:Audience"],
         claims,
-        expires:DateTime.Now.AddMinutes(60),
+        expires: DateTime.Now.AddMinutes(60),
         signingCredentials: Podaci);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
@@ -45,7 +46,7 @@ public class KorisnikController : ControllerBase
     private Korisnik Authenticate(string korisnicko_ime, string lozinka) // Autentifikacija
     {
         Korisnik Current = Context.Korisnici.FirstOrDefault(p => p.korisnickoIme.ToLower() == korisnicko_ime.ToLower());
-        
+
         string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
 
         password: lozinka,
@@ -67,14 +68,15 @@ public class KorisnikController : ControllerBase
     private Korisnik VratiKorisnika()
     {
         var Identitet = HttpContext.User.Identity as ClaimsIdentity;
-        if(Identitet != null)
+        if (Identitet != null)
         {
             var Tvrdnja = Identitet.Claims;
-            return new Korisnik{
+            return new Korisnik
+            {
                 korisnickoIme = Tvrdnja.FirstOrDefault(p => p.Type == ClaimTypes.GivenName)?.Value,
                 email = Tvrdnja.FirstOrDefault(p => p.Type == ClaimTypes.Email)?.Value,
                 tip = Tvrdnja.FirstOrDefault(p => p.Type == ClaimTypes.Role)?.Value,
-                ID = int.Parse(Tvrdnja.FirstOrDefault(p=> p.Type == ClaimTypes.Name)?.Value)
+                ID = int.Parse(Tvrdnja.FirstOrDefault(p => p.Type == ClaimTypes.Name)?.Value)
             };
         }
         return null;
@@ -83,35 +85,35 @@ public class KorisnikController : ControllerBase
     [Route("RegistracijaKlijent/{korisnicko_ime}/{lozinka}/{email}/{ime}/{prezime}/{adresa}/{broj}/{grad}")]
     [HttpPost]
     //[AllowAnonymous]
-    public async Task<ActionResult> RegistracijaKlijent(string korisnicko_ime,string lozinka,string email,string ime,string prezime,string adresa,string broj,string grad)
+    public async Task<ActionResult> RegistracijaKlijent(string korisnicko_ime, string lozinka, string email, string ime, string prezime, string adresa, string broj, string grad)
     {
         //dodatna ogranicenja...
-        if(string.IsNullOrWhiteSpace(korisnicko_ime))
+        if (string.IsNullOrWhiteSpace(korisnicko_ime))
             return BadRequest("Korisnicko ime nije validno");
-            if(string.IsNullOrWhiteSpace(lozinka))
-            return BadRequest("Lozinka nije validna");   
-        if(string.IsNullOrWhiteSpace(email) ||  email.Length > 60)
-            return BadRequest("Email nije validan");   
-        if(string.IsNullOrWhiteSpace(grad))
+        if (string.IsNullOrWhiteSpace(lozinka))
+            return BadRequest("Lozinka nije validna");
+        if (string.IsNullOrWhiteSpace(email) || email.Length > 60)
+            return BadRequest("Email nije validan");
+        if (string.IsNullOrWhiteSpace(grad))
             return BadRequest("Grad nije validan");
-        if(string.IsNullOrWhiteSpace(ime) ||  ime.Length > 30)
-            return BadRequest("Ime nije validno");   
-        if(string.IsNullOrWhiteSpace(prezime) ||  prezime.Length > 60)
-            return BadRequest("Prezime nije validno"); 
-        if(string.IsNullOrWhiteSpace(broj) ||  broj.Length > 13)
-            return BadRequest("Broj nije validan"); 
+        if (string.IsNullOrWhiteSpace(ime) || ime.Length > 30)
+            return BadRequest("Ime nije validno");
+        if (string.IsNullOrWhiteSpace(prezime) || prezime.Length > 60)
+            return BadRequest("Prezime nije validno");
+        if (string.IsNullOrWhiteSpace(broj) || broj.Length > 13)
+            return BadRequest("Broj nije validan");
 
-        if(await Context.Korisnici.Where(p=>p.korisnickoIme==korisnicko_ime).FirstOrDefaultAsync()!=null) return BadRequest("Korisnicko ime zauzeto");
-        if(await Context.Korisnici.Where(p=>p.email==email).FirstOrDefaultAsync()!=null) return BadRequest("Email je zauzet");
+        if (await Context.Korisnici.Where(p => p.korisnickoIme == korisnicko_ime).FirstOrDefaultAsync() != null) return BadRequest("Korisnicko ime zauzeto");
+        if (await Context.Korisnici.Where(p => p.email == email).FirstOrDefaultAsync() != null) return BadRequest("Email je zauzet");
 
-        lozinka=lozinka.Replace("01abfc750a0c942167651c40d088531d","#");
+        lozinka = lozinka.Replace("01abfc750a0c942167651c40d088531d", "#");
 
         byte[] salt = new byte[128 / 8];
         using (var rngCsp = new RNGCryptoServiceProvider())
         {
             rngCsp.GetNonZeroBytes(salt);
         }
-        
+
         // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
         string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
             password: lozinka,
@@ -120,68 +122,71 @@ public class KorisnikController : ControllerBase
             iterationCount: 100000,
             numBytesRequested: 256 / 8));
 
-            try
+        try
+        {
+            Korisnik k = new Korisnik
             {
-                    Korisnik k=new Korisnik{
-                    korisnickoIme=korisnicko_ime.Replace("01abfc750a0c942167651c40d088531d","#"),
-                    sifra=hashed,
-                    email=email,
-                    tip="Klijent",
-                    salt_value = salt,
-                    };
-                Klijent kl=new Klijent{
-                    ime=ime.Replace("01abfc750a0c942167651c40d088531d",""),
-                    prezime=prezime.Replace("01abfc750a0c942167651c40d088531d",""),
-                    adresa=adresa,
-                    grad=grad,
-                    brojTelefona=broj,
-                    Korisnik=k
-                };
-                Korpa kor = new Korpa{
+                korisnickoIme = korisnicko_ime.Replace("01abfc750a0c942167651c40d088531d", "#"),
+                sifra = hashed,
+                email = email,
+                tip = "Klijent",
+                salt_value = salt,
+            };
+            Klijent kl = new Klijent
+            {
+                ime = ime.Replace("01abfc750a0c942167651c40d088531d", ""),
+                prezime = prezime.Replace("01abfc750a0c942167651c40d088531d", ""),
+                adresa = adresa,
+                grad = grad,
+                brojTelefona = broj,
+                Korisnik = k
+            };
+            Korpa kor = new Korpa
+            {
                 //ukupnaCena=0,
                 Klijent = kl
-                };
-                Context.Korisnici.Add(k);
-                Context.Klijenti.Add(kl);
-                Context.Korpe.Add(kor);
-                await Context.SaveChangesAsync();
-                return Ok($"ID kreirane korpe je: {kor.ID}");
-            }
-            catch(Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            };
+            Context.Korisnici.Add(k);
+            Context.Klijenti.Add(kl);
+            Context.Korpe.Add(kor);
+            await Context.SaveChangesAsync();
+            return Ok($"ID kreirane korpe je: {kor.ID}");
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [Route("RegistracijaSalon/{korisnicko_ime}/{lozinka}/{email}/{naziv}/{grad}/{adresa}/{broj}")]
     [HttpPost]
     //[AllowAnonymous]
-    public async Task<ActionResult> RegistracijaSalon(string korisnicko_ime,string lozinka,string email,string naziv,string grad,string adresa,string broj)
+    public async Task<ActionResult> RegistracijaSalon(string korisnicko_ime, string lozinka, string email, string naziv, string grad, string adresa, string broj)
     {
-        if(string.IsNullOrWhiteSpace(korisnicko_ime))
-        return BadRequest("Korisnicko ime nije validno");
-        if(string.IsNullOrWhiteSpace(lozinka))
-        return BadRequest("Lozinka nije validna");   
-        if(string.IsNullOrWhiteSpace(email) ||  email.Length > 60)
-            return BadRequest("Email nije validan");   
-        if(string.IsNullOrWhiteSpace(grad))
+        if (string.IsNullOrWhiteSpace(korisnicko_ime))
+            return BadRequest("Korisnicko ime nije validno");
+        if (string.IsNullOrWhiteSpace(lozinka))
+            return BadRequest("Lozinka nije validna");
+        if (string.IsNullOrWhiteSpace(email) || email.Length > 60)
+            return BadRequest("Email nije validan");
+        if (string.IsNullOrWhiteSpace(grad))
             return BadRequest("Grad nije validan");
-        if(string.IsNullOrWhiteSpace(naziv))
-            return BadRequest("Naziv nije validan");   
-        if(string.IsNullOrWhiteSpace(broj) ||  broj.Length > 13)
-            return BadRequest("Broj nije validan"); 
+        if (string.IsNullOrWhiteSpace(naziv))
+            return BadRequest("Naziv nije validan");
+        if (string.IsNullOrWhiteSpace(broj) || broj.Length > 13)
+            return BadRequest("Broj nije validan");
 
-        if(await Context.Korisnici.Where(p=>p.korisnickoIme==korisnicko_ime).FirstOrDefaultAsync()!=null) return BadRequest("Korisnicko ime zauzeto");
-        if(await Context.Korisnici.Where(p=>p.email==email).FirstOrDefaultAsync()!=null) return BadRequest("Email je zauzet");
+        if (await Context.Korisnici.Where(p => p.korisnickoIme == korisnicko_ime).FirstOrDefaultAsync() != null) return BadRequest("Korisnicko ime zauzeto");
+        if (await Context.Korisnici.Where(p => p.email == email).FirstOrDefaultAsync() != null) return BadRequest("Email je zauzet");
 
-        lozinka=lozinka.Replace("01abfc750a0c942167651c40d088531d","#");
+        lozinka = lozinka.Replace("01abfc750a0c942167651c40d088531d", "#");
 
         byte[] salt = new byte[128 / 8];
         using (var rngCsp = new RNGCryptoServiceProvider())
         {
             rngCsp.GetNonZeroBytes(salt);
         }
-        
+
         // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
         string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
             password: lozinka,
@@ -190,35 +195,37 @@ public class KorisnikController : ControllerBase
             iterationCount: 100000,
             numBytesRequested: 256 / 8));
 
-            try
+        try
+        {
+            Korisnik k = new Korisnik
             {
-                    Korisnik k=new Korisnik{
-                    korisnickoIme=korisnicko_ime.Replace("01abfc750a0c942167651c40d088531d","#"),
-                    sifra=hashed,
-                    email=email,
-                    tip="Salon",
-                    salt_value = salt,
-                    };
-                Salon s=new Salon{
-                    naziv=naziv,
-                    adresa=adresa,
-                    grad=grad,
-                    brojTelefona=broj,
-                    Korisnik=k,
-                    //prosecnaOcena=0,
-                };
-                Context.Korisnici.Add(k);
-                Context.Saloni.Add(s);
-                await Context.SaveChangesAsync();
-                return Ok(true);
-            }
-            catch(Exception e)
+                korisnickoIme = korisnicko_ime.Replace("01abfc750a0c942167651c40d088531d", "#"),
+                sifra = hashed,
+                email = email,
+                tip = "Salon",
+                salt_value = salt,
+            };
+            Salon s = new Salon
             {
-                return BadRequest(e.Message);
-            }
+                naziv = naziv,
+                adresa = adresa,
+                grad = grad,
+                brojTelefona = broj,
+                Korisnik = k,
+                //prosecnaOcena=0,
+            };
+            Context.Korisnici.Add(k);
+            Context.Saloni.Add(s);
+            await Context.SaveChangesAsync();
+            return Ok(true);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
-    [Route("Login/{korisnicko_ime}/{lozinka}")]      
+    [Route("Login/{korisnicko_ime}/{lozinka}")]
     [HttpGet]
     [AllowAnonymous]
     public async Task<IActionResult> Login(string korisnicko_ime, string lozinka)
@@ -233,7 +240,7 @@ public class KorisnikController : ControllerBase
                 var response = new { Token = token }; // token and user information
                 return Ok(response);
             }
-    
+
             else
             {
                 return null;
@@ -249,17 +256,17 @@ public class KorisnikController : ControllerBase
     [Route("IzmeniLozinku/{korisnicko_ime}/{lozinka}/{NovaLozinka}")]
     [HttpPut]
     [AllowAnonymous]
-    public async Task<ActionResult> IzmeniLozinku(string korisnicko_ime,string lozinka, string NovaLozinka)
+    public async Task<ActionResult> IzmeniLozinku(string korisnicko_ime, string lozinka, string NovaLozinka)
     {
-            if(string.IsNullOrWhiteSpace(korisnicko_ime) || korisnicko_ime.Length > 60)
+        if (string.IsNullOrWhiteSpace(korisnicko_ime) || korisnicko_ime.Length > 60)
             return BadRequest("Email nije validan");
 
-            if(string.IsNullOrWhiteSpace(lozinka))
-            return BadRequest("Lozinka nije validna");   
+        if (string.IsNullOrWhiteSpace(lozinka))
+            return BadRequest("Lozinka nije validna");
 
-            if(string.IsNullOrWhiteSpace(NovaLozinka) && lozinka.CompareTo(NovaLozinka)==0)
-            return BadRequest("Lozinka nije validna");  
-            
+        if (string.IsNullOrWhiteSpace(NovaLozinka) && lozinka.CompareTo(NovaLozinka) == 0)
+            return BadRequest("Lozinka nije validna");
+
 
         Korisnik Current = Context.Korisnici.FirstOrDefault(p => p.korisnickoIme.ToLower() == korisnicko_ime.ToLower());
 
@@ -275,15 +282,15 @@ public class KorisnikController : ControllerBase
 
         numBytesRequested: 256 / 8));
 
-        if(Current.sifra.CompareTo(hashed)==0)
+        if (Current.sifra.CompareTo(hashed) == 0)
         {
             byte[] salt = new byte[128 / 8];
             using (var rngCsp = new RNGCryptoServiceProvider())
             {
                 rngCsp.GetNonZeroBytes(salt);
             }
-        
-        // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
+
+            // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
             hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
             password: NovaLozinka,
             salt: salt,
@@ -292,13 +299,13 @@ public class KorisnikController : ControllerBase
             numBytesRequested: 256 / 8));
             try
             {
-                var p = await Context.Korisnici.Where(p => p.korisnickoIme.ToLower() == korisnicko_ime.ToLower() ).FirstOrDefaultAsync();
-                if(p==null) return Ok("Ne postoji taj korisnik");
-                    Current.sifra=hashed;
-                    Current.salt_value = salt;
+                var p = await Context.Korisnici.Where(p => p.korisnickoIme.ToLower() == korisnicko_ime.ToLower()).FirstOrDefaultAsync();
+                if (p == null) return Ok("Ne postoji taj korisnik");
+                Current.sifra = hashed;
+                Current.salt_value = salt;
                 await Context.SaveChangesAsync();
-                return Ok("Promenjena lozinka!");   
-            } 
+                return Ok("Promenjena lozinka!");
+            }
             catch (Exception)
             {
                 return Ok(false);
@@ -307,44 +314,54 @@ public class KorisnikController : ControllerBase
         else return Ok("Nisu unete dobre lozinke!");
     }
 
+    [HttpPost]
+    [Route("PostaviSliku/{korisnicko_ime}/{path}")]
+    public async Task<ActionResult> PostaviSliku(string korisnicko_ime,string path)
+    {
+        Korisnik korisnik = await Context.Korisnici.Where(k=>k.korisnickoIme==korisnicko_ime).FirstOrDefaultAsync();
+        korisnik.slika = HttpUtility.UrlDecode(path);
+        await Context.SaveChangesAsync();
+        return Ok(korisnik.slika);
+    }
+    
     [HttpPut]
     [Route("Upload/{korisnicko_ime}")]
     public async Task<IActionResult> Upload(string korisnicko_ime)
-    {   
+    {
         //forma na forntendu mora da bi se testiralo!
         try
         {
             Korisnik obj = VratiKorisnika();
-            Korisnik retVal = Context.Korisnici.Where(p=>p.korisnickoIme==korisnicko_ime).FirstOrDefault();
+            Korisnik retVal = Context.Korisnici.Where(p => p.korisnickoIme == korisnicko_ime).FirstOrDefault();
             var formCollection = await Request.ReadFormAsync();
             var file = formCollection.Files.First();
-            var folderName = Path.Combine("Resources","Images");
-            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(),folderName);
+            var folderName = Path.Combine("Resources", "Images");
+            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
-            if(file.Length > 0)
+            if (file.Length > 0)
             {
                 var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                var fullPath = Path.Combine(pathToSave,fileName);
-                var dbPath = Path.Combine(folderName,fileName);
-                using(var stream = new FileStream(fullPath,FileMode.Create))
+                var fullPath = Path.Combine(pathToSave, fileName);
+                var dbPath = Path.Combine(folderName, fileName);
+                using (var stream = new FileStream(fullPath, FileMode.Create))
                 {
                     file.CopyTo(stream);
                 }
-                retVal.slika=dbPath;
+                retVal.slika = dbPath;
                 await Context.SaveChangesAsync();
-                return Ok(new {dbPath});
+                return Ok(new { dbPath });
             }
             else
             {
                 return BadRequest();
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             return StatusCode(500, $"Internal server error: {e}");
         }
     }
-    
+
     [HttpGet]
     [Route("PrikaziKorisnike")]
     public IActionResult PrikaziKorisnike()
