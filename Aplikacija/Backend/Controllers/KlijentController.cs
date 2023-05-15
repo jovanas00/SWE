@@ -144,7 +144,7 @@ public class KlijentController : ControllerBase
         try
         {
             var zahtev = await Context.Zahtevi.FindAsync(idZahteva);
-            if (zahtev.status == "Potvrdjen")
+            if (zahtev.status == "Obrađen")
                 return BadRequest("Zahtev je vec potvrdjen!");
 
             if (zahtev != null)
