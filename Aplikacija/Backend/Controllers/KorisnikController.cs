@@ -313,17 +313,7 @@ public class KorisnikController : ControllerBase
         }
         else return Ok("Nisu unete dobre lozinke!");
     }
-
-    [HttpPost]
-    [Route("PostaviSliku/{korisnicko_ime}/{path}")]
-    public async Task<ActionResult> PostaviSliku(string korisnicko_ime, string path)
-    {
-        Korisnik korisnik = await Context.Korisnici.Where(k => k.korisnickoIme == korisnicko_ime).FirstOrDefaultAsync();
-        korisnik.slika = HttpUtility.UrlDecode(path);
-        await Context.SaveChangesAsync();
-        return Ok(korisnik.slika);
-    }
-
+    
     [HttpPost]
     [Route("Upload/{korisnicko_ime}")]
     public async Task<IActionResult> Upload(string korisnicko_ime)
