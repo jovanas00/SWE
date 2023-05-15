@@ -48,7 +48,7 @@ const SalonStranica = () => {
 
     if (!salon) {
         return <div></div>; // iz nekog razloga kad ova rpovera ne postoji greska se javi 
-    }//ovde se samo treba pojavi ova poruka dok se ne uzmu podaci iz baze
+    }//ovde se samo treba pojavi ova poruka dok se ne uzmu podaci iz bazez
 
     return (
         <div>

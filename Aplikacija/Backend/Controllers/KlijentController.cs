@@ -110,6 +110,9 @@ public class KlijentController : ControllerBase
                 var zauzet = Context.Zahtevi.Include(s => s.Salon).Include(u => u.Usluga).Where(z => z.datumVreme == termin && z.Usluga.Naziv == usluga && z.Salon.ID == id_salon).Any();
                 if (zauzet)
                     return BadRequest("Termin je zauzet,pokusajte drugi!");
+                var nedostupna = Context.Zahtevi.Include(s=>s.Salon).Include(u=>u.Usluga).Where(z=>z.Usluga.Naziv==usluga && z.Usluga.dostupnost==false && z.Salon.ID==id_salon).Any();
+                if(nedostupna)
+                    return BadRequest("Usluga trenutno nije dostupna!");
                 Zahtev z = new Zahtev
                 {
                     Salon = s,

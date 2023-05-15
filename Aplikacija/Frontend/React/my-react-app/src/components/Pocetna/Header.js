@@ -58,7 +58,7 @@ const Header = () => {
 
   const handleLogout = () => {
     Cookies.remove('token');
-    navigate('/')
+    navigate('/prijava')
   };
 
   const role = vratiRole();
@@ -101,20 +101,20 @@ const Header = () => {
           </div>
         )}
         {klijent && (<div className="logo">
-          <Link to="/klijent/saloni">
+          <Link to="/klijent">
             <img src={logo} alt="Logo" />
           </Link>
           <h3>Pet Planet</h3>
         </div>)}
         <nav className={isNavbarVisible ? 'responsive_nav' : ''}>
           {/* url */}
-          {klijent && <Link to="/klijent/saloni">Saloni</Link>}
+          {klijent && <Link to="/klijent">Saloni</Link>}
           {admin && <Link to="/saloni">Saloni</Link>}
           {klijent && <Link to="/klijent/profil">Profil</Link>}
           {salon && <Link to="/salon/upravljanje">Upravljanje</Link>}
           {salon && <Link to="/salon">Profil</Link>}
           {(klijent || salon || admin) &&
-            <Link to="/" onClick={handleLogout}>
+            <Link to="/prijava" onClick={handleLogout}>
               Log out
             </Link>
           }

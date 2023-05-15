@@ -94,7 +94,7 @@ const Body = () => {
             {!klijent && <Link to={`/saloni/${salon.id}`} key={salon.id} >
               <SalonCard salon={salon} />
             </Link>}
-            {klijent && <Link to={`/klijent/saloni/${salon.id}`} key={salon.id} >
+            {klijent && <Link to={`/klijent/${salon.id}`} key={salon.id} >
               <SalonCard salon={salon} />
             </Link>}
           </div>

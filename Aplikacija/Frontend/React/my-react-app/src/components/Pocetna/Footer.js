@@ -7,7 +7,7 @@ const Footer = () => {
             <div >
             <hr />
                 <p className="footer-copyright">
-                   @{new Date().getFullYear()} All rights reserved. 
+                   @{new Date().getFullYear()} AJD Team. 
                 </p>
             </div>
         </div>
