@@ -13,10 +13,10 @@ public class ProizvodController : ControllerBase
         Context = context;
     }
 
-    [Route("DodajProizvod/{naziv}/{cena}/{id_kategorija}/{id_salon}")] 
+    [Route("DodajProizvod/{naziv}/{cena}/{dostupnost}/{id_kategorija}/{id_salon}")] 
     [HttpPost]
     //[Authorize(Roles ="Salon")]
-    public async Task<ActionResult<Proizvod>> DodajProizvod(string naziv, float cena,int id_kategorija, int id_salon)
+    public async Task<ActionResult<Proizvod>> DodajProizvod(string naziv, float cena, bool dostupnost, int id_kategorija, int id_salon)
     {
         //Salon preko korisnikID
         Kategorija k = await Context.Kategorije.FindAsync(id_kategorija);
@@ -31,7 +31,7 @@ public class ProizvodController : ControllerBase
                 Proizvod p = new Proizvod{
                     naziv=naziv,
                     cena=cena,
-                    dostupnost=true,
+                    dostupnost=dostupnost,
                     Kategorija = k,
                     Salon = s//??
                 };
@@ -68,16 +68,17 @@ public class ProizvodController : ControllerBase
     [Route("IzmeniProizvod/{id_proizvod}")]
     [HttpPut]
     //[Authorize(Roles ="Salon")]
-    public async Task<ActionResult<Proizvod>> IzmeniProizvod(int id_proizvod,string naziv,float cena,string kategorija)
+    public async Task<ActionResult<Proizvod>> IzmeniProizvod(int id_proizvod, string naziv, float cena, bool dostupnost, int kategorijaId)
     {
         var p = await Context.Proizvodi.FindAsync(id_proizvod);
-        var k = Context.Kategorije.Where(k=>k.naziv==kategorija).FirstOrDefault();
+        var k = Context.Kategorije.Where(k=>k.ID==kategorijaId).FirstOrDefault();
         if(p == null)
             return NotFound();
         try{
 
             p.naziv = naziv;
             p.cena = cena;
+            p.dostupnost = dostupnost;
             p.Kategorija = k;
             await Context.SaveChangesAsync();
 
@@ -89,28 +90,28 @@ public class ProizvodController : ControllerBase
         }    
     } 
 
-    [Route("IzmeniDostupnost/{id_proizvod}")]
-    [HttpPut]
-    //[Authorize(Roles ="Salon")]
-     public async Task<ActionResult<Proizvod>> IzmeniProizvod(int id_proizvod)
-    {
-        try
-        {
-         var p = await Context.Proizvodi.FindAsync(id_proizvod);
-         if(p == null)
-            return NotFound();
-            if(p.dostupnost==true)
-                p.dostupnost = false;
-            else
-                p.dostupnost = true;
-            await Context.SaveChangesAsync();
-            return Ok(p);
-        }
-        catch(Exception e)
-        {
-            return BadRequest(e.Message);
-        }    
-    }
+    // [Route("IzmeniDostupnost/{id_proizvod}")]
+    // [HttpPut]
+    // //[Authorize(Roles ="Salon")]
+    //  public async Task<ActionResult<Proizvod>> IzmeniProizvod(int id_proizvod)
+    // {
+    //     try
+    //     {
+    //      var p = await Context.Proizvodi.FindAsync(id_proizvod);
+    //      if(p == null)
+    //         return NotFound();
+    //         if(p.dostupnost==true)
+    //             p.dostupnost = false;
+    //         else
+    //             p.dostupnost = true;
+    //         await Context.SaveChangesAsync();
+    //         return Ok(p);
+    //     }
+    //     catch(Exception e)
+    //     {
+    //         return BadRequest(e.Message);
+    //     }    
+    // }
 
     [Route("UploadProizvodSlika/{id_proizvod}")]
     [HttpPost]

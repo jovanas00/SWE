@@ -30,7 +30,7 @@ public class SalonController : ControllerBase
             brojTelefona = s.brojTelefona
         });
         return Ok(result);
-    }   
+    }
 
     [Route("VratiSalon/{id_salon}")]
     [HttpGet]
@@ -39,10 +39,32 @@ public class SalonController : ControllerBase
     {
         var s = await Context.Saloni.FindAsync(id_salon);
         s.ID = id_salon;
-        if(s==null)
+        if (s == null)
             return NotFound();
         return s;
     }
+
+    [Route("VratiSalonPrekoKI/{korisnicko_ime}")]
+    [HttpGet]
+    public async Task<ActionResult<object>> VratiSalonPrekoKI(string korisnicko_ime)
+    {
+        Korisnik korisnik = Context.Korisnici.FirstOrDefault(s => s.korisnickoIme == korisnicko_ime);
+        Salon salon = await Context.Saloni.Include(s => s.Korisnik).FirstOrDefaultAsync(s => s.Korisnik.ID == korisnik.ID);
+
+        if (salon != null)
+        {
+            var rezultat = new
+            {
+                SalonId = salon.ID,
+                Salon = salon
+            };
+
+            return rezultat;
+        }
+
+        return NotFound();
+    }
+
 
     [Route("IzmeniProfilSalona/{korisnicko_ime}/{naziv}/{adresa}/{grad}/{brojTelefona}")]
     [HttpPut]
@@ -50,11 +72,12 @@ public class SalonController : ControllerBase
     public async Task<ActionResult<Salon>> IzmeniProfil(string korisnicko_ime, string naziv, string adresa, string grad, string brojTelefona)
     {
         //nadjes na osnovu korisnika
-        var k = await Context.Korisnici.Where(p => p.korisnickoIme == korisnicko_ime ).FirstOrDefaultAsync();
-        if(k == null)
+        var k = await Context.Korisnici.Where(p => p.korisnickoIme == korisnicko_ime).FirstOrDefaultAsync();
+        if (k == null)
             return NotFound();
-        var s = await Context.Saloni.Where(p=>p.Korisnik==k).FirstOrDefaultAsync();
-        try{
+        var s = await Context.Saloni.Where(p => p.Korisnik == k).FirstOrDefaultAsync();
+        try
+        {
             s.naziv = naziv;
             s.adresa = adresa;
             s.grad = grad;
@@ -62,7 +85,7 @@ public class SalonController : ControllerBase
             await Context.SaveChangesAsync();
             return Ok(s);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             return BadRequest(e.Message);
         }
@@ -76,9 +99,9 @@ public class SalonController : ControllerBase
         try
         {
             Pitanje p = await Context.Pitanja.FindAsync(id_pitanje);
-            if(p==null)
+            if (p == null)
                 return NotFound();
-            if(p.tekstO==null)
+            if (p.tekstO == null)
                 p.tekstO = tekst;
             else
                 return BadRequest("Odgovoreno pitanje!");
@@ -86,7 +109,7 @@ public class SalonController : ControllerBase
             await Context.SaveChangesAsync();
             return Ok(p);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             return BadRequest(e);
         }
@@ -99,11 +122,11 @@ public class SalonController : ControllerBase
         try
         {
             var zahtev = await Context.Zahtevi.FindAsync(id_zahtev);
-            if(zahtev.status!="Neobrađen")
+            if (zahtev.status != "Neobrađen")
                 return BadRequest("Zahtev je obradjen!");
             if (zahtev != null)
             {
-                zahtev.status = status; 
+                zahtev.status = status;
                 zahtev.komentarSalona = komentarSalona;
                 Context.Zahtevi.Update(zahtev);
             }
@@ -115,16 +138,16 @@ public class SalonController : ControllerBase
             return BadRequest(e.Message);
         }
     }
-    
+
 
     [HttpPut("ObradiNarudzbinu/{id_narudzbina}/{status}/{komentar_salona}")]
     //[Authorize(Roles ="Salon")]
-    public async Task<ActionResult<Narudzbina>> ObradiNarudzbinu(int id_narudzbina, string status,string komentar_salona)
+    public async Task<ActionResult<Narudzbina>> ObradiNarudzbinu(int id_narudzbina, string status, string komentar_salona)
     {
         try
         {
             var narudzbina = await Context.Narudzbine.FindAsync(id_narudzbina);
-            if(narudzbina.status!="Neobrađena")
+            if (narudzbina.status != "Neobrađena")
                 return BadRequest("Narudzbina je vec obradjena!");
             if (narudzbina != null)
             {
@@ -141,7 +164,6 @@ public class SalonController : ControllerBase
         }
     }
 
-    //ovde isti slucaj kao za proizvode
     [Route("VratiPitanjaSalona/{id_salon}")]
     [HttpGet]
     [AllowAnonymous]
@@ -150,7 +172,9 @@ public class SalonController : ControllerBase
         var pitanja = await Context.Pitanja
         .Where(p => p.Salon.ID == id_salon)
         .Include(p => p.Klijent)
-        .Select(p => new {
+        .Select(p => new
+        {
+            id = p.ID,
             SalonNaziv = p.Salon.naziv,
             KlijentImePrezime = p.Klijent.ime + " " + p.Klijent.prezime,
             tekstP = p.tekstP,
@@ -163,7 +187,6 @@ public class SalonController : ControllerBase
         return pitanja;
     }
 
-    //isto kao gore
     [Route("VratiRecenzijeSalona/{id_salon}")]
     [HttpGet]
     [AllowAnonymous]
@@ -172,7 +195,8 @@ public class SalonController : ControllerBase
         var recenzije = await Context.Recenzije
         .Where(r => r.Salon.ID == id_salon)
         .Include(r => r.Klijent)
-        .Select(r => new {
+        .Select(r => new
+        {
             SalonNaziv = r.Salon.naziv,
             KlijentImePrezime = r.Klijent.ime + " " + r.Klijent.prezime,
             ocena = r.ocena,
@@ -181,5 +205,84 @@ public class SalonController : ControllerBase
         })
         .ToListAsync();
         return recenzije;
+    }
+
+    [Route("VratiNarudzbineSalona/{korisnicko_ime}")]
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<object>>> VratiNarudzbineSalona(string korisnicko_ime)
+    {
+        Korisnik korisnik = Context.Korisnici.FirstOrDefault(k => k.korisnickoIme == korisnicko_ime);
+        Salon salon = await Context.Saloni.Include(s => s.Korisnik).FirstOrDefaultAsync(s => s.Korisnik.ID == korisnik.ID);
+        if (salon == null)
+        {
+            return NotFound($"Salon sa korisničkim imenom {korisnicko_ime} nije pronađen.");
+        }
+
+        List<Narudzbina> narudzbine = await Context.Narudzbine
+        .Include(n => n.Salon)
+        .Include(n => n.Klijent)
+        .Where(n => n.Salon.ID == salon.ID)
+        .ToListAsync();
+
+        var rezultat = narudzbine.Select(n => new
+        {
+            NarudzbinaID = n.ID,
+            Status = n.status,
+            KomentarSalona = n.komentarSalona,
+            UkupnaCena = n.ukupnaCena,
+            Datum = n.datum,
+            KorisnickoIme = n.korisnickoIme,
+            Grad = n.grad,
+            Adresa = n.adresa,
+            Klijent = new
+            {
+                ID = n.Klijent.ID,
+                ime = n.Klijent.ime,
+                prezime = n.Klijent.prezime,
+                brojTelefona = n.Klijent.brojTelefona
+            }
+        });
+
+        return Ok(rezultat);
+    }
+
+    [Route("VratiZahteveSalona/{korisnicko_ime}")]
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<object>>> VratiZahteveSalona(string korisnicko_ime)
+    {
+        Korisnik korisnik = Context.Korisnici.FirstOrDefault(k => k.korisnickoIme == korisnicko_ime);
+        Salon salon = await Context.Saloni.Include(s => s.Korisnik).FirstOrDefaultAsync(s => s.Korisnik.ID == korisnik.ID);
+        if (salon == null)
+        {
+            return NotFound($"Salon sa korisničkim imenom {korisnicko_ime} nije pronađen.");
+        }
+
+        List<Zahtev> zahtevi = await Context.Zahtevi
+        .Include(n => n.Salon)
+        .Include(n => n.Klijent)
+        .Where(n => n.Salon.ID == salon.ID)
+        .ToListAsync();
+
+        var rezultat = zahtevi.Select(z => new
+        {
+            ZahtevID = z.ID,
+            ImeLjubimca = z.imeLjubimca,
+            Zivotinja = z.zivotinja,
+            Cena = z.cena,
+            DatumVreme = z.datumVreme,
+            Status = z.status,
+            KomentarSalona = z.komentarSalona,
+            Klijent = new
+            {
+                ID = z.Klijent.ID,
+                ime = z.Klijent.ime,
+                prezime = z.Klijent.prezime,
+                adresa = z.Salon.adresa,
+                grad = z.Salon.grad,
+                brojTelefona = z.Klijent.brojTelefona
+            }
+        });
+
+        return Ok(rezultat);
     }
 }

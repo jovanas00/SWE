@@ -13,10 +13,10 @@ public class UslugaController : ControllerBase
         Context = context;
     }
 
-    [Route("DodajUslugu/{naziv}/{cena}/{opis}/{kapacitet}/{dostupnost}/{id_salon}")]
+    [Route("DodajUslugu/{naziv}/{cena}/{opis}/{dostupnost}/{id_salon}")]
     [HttpPost]
     //[Authorize(Roles ="Salon")]
-    public async Task<ActionResult<Usluga>> DodajUslugu(string naziv, float cena, string opis, int kapacitet, bool dostupnost, int id_salon)
+    public async Task<ActionResult<Usluga>> DodajUslugu(string naziv, float cena, string opis, bool dostupnost, int id_salon)
     {
         //preko korisnika nalazis salon
         Salon s = await Context.Saloni.FindAsync(id_salon);
@@ -29,8 +29,8 @@ public class UslugaController : ControllerBase
                     Naziv=naziv,
                     cena=cena,
                     opis=opis,
-                    dostupnost=true,
-                    Salon=s//??
+                    dostupnost=dostupnost,
+                    Salon=s
                 };
                 Context.Usluge.Add(u);
                 await Context.SaveChangesAsync();
@@ -43,7 +43,7 @@ public class UslugaController : ControllerBase
     }
 
     [Route("ObrisiUslugu/{id_usluga}")]
-    [HttpPost]
+    [HttpDelete]
     //[Authorize(Roles ="Salon")]
     public async Task<ActionResult<Usluga>> ObrisiUslugu(int id_usluga)
     {
@@ -65,15 +65,20 @@ public class UslugaController : ControllerBase
     [Route("IzmeniUslugu/{id_usluga}")]
     [HttpPut]
     //[Authorize(Roles ="Salon")]
-    public async Task<ActionResult<Usluga>> IzmeniUslugu(int id_usluga,string naziv,float cena,string opis)
+    public async Task<ActionResult<Usluga>> IzmeniUslugu(int id_usluga, string naziv, float cena, string opis, bool dostupnost)
     {
         Usluga u = await Context.Usluge.FindAsync(id_usluga);
         if(u == null)
             return NotFound();
-        try{    
-            u.Naziv = naziv;
-            u.cena = cena;
-            u.opis = opis;
+        try{ 
+            if (!string.IsNullOrEmpty(naziv))  
+                u.Naziv = naziv;
+            if (cena != default(float))
+                u.cena = cena;
+            if (!string.IsNullOrEmpty(opis))
+                u.opis = opis;
+            if (dostupnost != default(bool))
+                u.dostupnost = dostupnost;
             await Context.SaveChangesAsync();
             return Ok(u);
         }
@@ -83,49 +88,66 @@ public class UslugaController : ControllerBase
         }    
     } 
 
-    [Route("IzmeniDostupnost/{id_usluga}")]
-    [HttpPut]
-    //[Authorize(Roles ="Salon")]
-    public async Task<ActionResult<Usluga>> IzmeniDostupnost(int id_usluga)
-    {
-        Usluga u = await Context.Usluge.FindAsync(id_usluga);
-        if(u == null)
-            return NotFound();
-        try{   
-            if(u.dostupnost==true)
-            {
-                u.dostupnost=false;
-            }
-            else
-                u.dostupnost=true;
-            await Context.SaveChangesAsync();
-            return Ok(u);
-        }
-        catch(Exception e)
-        {
-            return BadRequest(e.Message);
-        }    
-    } 
+    // [Route("IzmeniDostupnost/{id_usluga}")]
+    // [HttpPut]
+    // //[Authorize(Roles ="Salon")]
+    // public async Task<ActionResult<Usluga>> IzmeniDostupnost(int id_usluga)
+    // {
+    //     Usluga u = await Context.Usluge.FindAsync(id_usluga);
+    //     if(u == null)
+    //         return NotFound();
+    //     try{   
+    //         if(u.dostupnost==true)
+    //         {
+    //             u.dostupnost=false;
+    //         }
+    //         else
+    //             u.dostupnost=true;
+    //         await Context.SaveChangesAsync();
+    //         return Ok(u);
+    //     }
+    //     catch(Exception e)
+    //     {
+    //         return BadRequest(e.Message);
+    //     }    
+    // } 
+
+    // [Route("VratiUslugeSalona/{id_salon}")]
+    // [HttpGet]
+    // //[AllowAnonymous]
+    // public async Task<ActionResult<IEnumerable<Usluga>>> VratiUslugeSalona(int id_salon)
+    // {
+    //     var usluge = await Context.Usluge.Where(u => u.Salon.ID == id_salon).ToListAsync();
+    //     return usluge;
+    // }
+
+    // [Route("VratiUsluge/{id_salon}")]
+    // [HttpGet]
+    // //[AllowAnonymous]
+    // public async Task<ActionResult<IEnumerable<object>>> VratiUsluge(int id_salon)
+    // {
+    //     var usluge = await Context.Usluge.Where(u => u.Salon.ID == id_salon).ToListAsync();
+    //     var p = usluge.Select(p=>new{
+    //         naziv=p.Naziv,
+    //         ID=p.ID
+    //     });
+    //     return Ok(p);
+    // }
 
     [Route("VratiUslugeSalona/{id_salon}")]
     [HttpGet]
     //[AllowAnonymous]
-    public async Task<ActionResult<IEnumerable<Usluga>>> VratiUslugeSalona(int id_salon)
+    public async Task<ActionResult<IEnumerable<object>>> VratiUslugeSalona(int id_salon)
     {
         var usluge = await Context.Usluge.Where(u => u.Salon.ID == id_salon).ToListAsync();
-        return usluge;
-    }
-
-    [Route("VratiUsluge/{id_salon}")]
-    [HttpGet]
-    //[AllowAnonymous]
-    public async Task<ActionResult<IEnumerable<object>>> VratiUsluge(int id_salon)
-    {
-        var usluge = await Context.Usluge.Where(u => u.Salon.ID == id_salon).ToListAsync();
-        var p = usluge.Select(p=>new{
-            naziv=p.Naziv,
-            ID=p.ID
+        var result = usluge.Select(u=> new
+        {
+            ID = u.ID,
+            naziv = u.Naziv,
+            cena = u.cena,
+            opis = u.opis,
+            dostupnost = u.dostupnost
         });
-        return Ok(p);
+        return Ok(result);
     }
 }
