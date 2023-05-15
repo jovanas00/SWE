@@ -5,21 +5,15 @@ import './Proizvodi.css';
 import { vratiRole } from "../Auth/VratiRole";
 import Cookies from "js-cookie"
 import { BsCart } from 'react-icons/bs';
+import FormDodajProizvod from "../SalonPage/FormDodajProizvod";
+import FormIzmeniProizvod from "../SalonPage/FormIzmeniProizvod";
+// import { Form } from "react-router-dom";
 
 const Proizvodi = ({ id }) => {
     const [proizvodi, setProizvodi] = useState([]);
     const [proizvodID, setProizvodID] = useState();
     const [kategorije, setKategorije] = useState([]);
-
-    useEffect(() => {
-        axios.get(`http://localhost:5169/Proizvod/VratiProizvodeSalona/${id}`)
-            .then((response) => {
-                setProizvodi(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }, [id]);
+    // const [izmenaProizvoda, setIzmenaProizvoda] = useState(false);
 
     const token = Cookies.get('token');
     const config = {
@@ -27,6 +21,98 @@ const Proizvodi = ({ id }) => {
             'Authorization': `Bearer ${token}`
         }
     };
+
+    const ucitajProizvode = () => {
+        axios.get(`http://localhost:5169/Proizvod/VratiProizvodeSalona/${id}`)
+            .then((response) => {
+                setProizvodi(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    useEffect(() => {
+        ucitajProizvode();
+    }, [id]);
+
+    const ucitajKategorije = () => {
+        axios.get(`http://localhost:5169/Admin/SveKategorije`)
+            .then((response) => {
+                setKategorije(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    useEffect(() => {
+        ucitajKategorije();
+    }, []);
+
+
+    const dodajProizvod = (noviProizvod) => {
+        axios.post(`http://localhost:5169/Proizvod/DodajProizvod/${noviProizvod.naziv}/${noviProizvod.cena}/${noviProizvod.dostupnost}/${noviProizvod.kategorija}/${id}`)
+          .then((response) => {
+            console.log('Proizvod uspešno dodat.');
+            ucitajProizvode();
+          })
+          .catch((error) => {
+            console.log('Greška prilikom dodavanja proizvoda:', error);
+            if(noviProizvod == null)
+                window.alert("Proizvod ne postoji!");
+          });
+        
+    };
+
+    const obrisiProizvod = (proizvodId) => {
+        axios.delete(`http://localhost:5169/Proizvod/ObrisiProizvod/${proizvodId}`)
+          .then((response) => {
+            window.alert('Proizvod uspešno obrisan.');
+            ucitajProizvode();
+          })
+          .catch((error) => {
+            window.alert('Greška prilikom brisanja proizvoda:', error);
+            if(proizvodId == null)
+                window.alert("Proizvod ne postoji!");
+          });
+    };
+
+    const izmeniProizvod = (izmenjenProizvod) => {
+        const putanja = `http://localhost:5169/Proizvod/IzmeniProizvod/${izmenjenProizvod.id}?`;
+
+        let parametri = [];
+
+        if (izmenjenProizvod.naziv !== undefined) {
+            parametri.push(`naziv=${izmenjenProizvod.naziv}`);
+        }
+
+        if (izmenjenProizvod.cena !== undefined) {
+            parametri.push(`cena=${izmenjenProizvod.cena}`);
+        }
+
+        if (izmenjenProizvod.dostupnost !== undefined) {
+            parametri.push(`dostupnost=${izmenjenProizvod.dostupnost}`);
+        }
+
+        if (izmenjenProizvod.kategorija !== undefined) {
+            parametri.push(`kategorija=${izmenjenProizvod.kategorija}`);
+        }
+
+        if (parametri.length > 0) {
+            const putanjaSaParametrima = putanja + parametri.join("&");
+            axios
+                .put(putanjaSaParametrima)
+                .then((response) => {
+                    console.log("Proizvod je uspešno izmenjen:", response.data);
+                    ucitajProizvode();
+                })
+                .catch((error) => {
+                    console.error("Greška prilikom izmene proizvoda:", error);
+                });
+        }
+    };
+
     const handleDodajKorpa =
         async (proizvodID) => {
             try {
@@ -44,16 +130,7 @@ const Proizvodi = ({ id }) => {
         await handleDodajKorpa(id);
     }
 
-    // useEffect(() => {
-    //     axios.get()
-    //     .theh((response) => {
-    //         setKategorije(response.data);
-    //     })
-    //     .catch((error) => {
-    //         console.log(error);
-    //     });
-    // }, []);
-
+    //ovde bi mozda moglo da se podesi da se filtrira po kategorije, nije dovrseno
     // const handleFilterSubmit = (selektovaneKategorije) => {
     //     axios.get()
     //     .then((response) => setProizvodi(response.data))
@@ -66,6 +143,9 @@ const Proizvodi = ({ id }) => {
             {/* <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" }}>
                 <p style={{ fontSize: "40px" }}><strong><u>Proizvodi</u></strong></p>
             </div> */}
+            <div>
+                {role === "Salon" && <FormDodajProizvod dodajProizvod={dodajProizvod} kategorije={kategorije} />}
+            </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
                 {/* <div className="col-md-4 mb-3"> */}
                 {/* <Kategorije kategoije={kategorije} onSubmit={handleFilterSubmit} /> */}
@@ -84,6 +164,14 @@ const Proizvodi = ({ id }) => {
                                 <BsCart className="btn-cart__icon" />
                                 Dodaj u korpu
                             </button>}
+
+                            {role === "Salon" && (
+                                <div>
+                                    {/* <button onClick={() => setIzmenaProizvoda(true)}>Izmeni</button> */}
+                                    <FormIzmeniProizvod proizvod={proizvod} izmeniProizvod={izmeniProizvod} kategorije={kategorije} />
+                                    <button onClick={() => obrisiProizvod(proizvod.id)}>Obriši</button>
+                                </div>
+                            )}
                         </div>
                     </Card>
                 ))}

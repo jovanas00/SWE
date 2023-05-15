@@ -12,7 +12,8 @@ import { useNavigate } from "react-router-dom";
 const Odgovori = ({ id }) => {
     const [odgovori, setOdgovori] = useState([]);
     const [inputText, setInputText] = useState("");
-    const navigate = useNavigate();
+    const [odgovorInput, setOdgovorInput] = useState("");
+    // const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -37,15 +38,34 @@ const Odgovori = ({ id }) => {
             });
     };
 
-    useEffect(() => {
+    const UcitajPitanja = () => {
         axios.get(`http://localhost:5169/Salon/VratiPitanjaSalona/${id}`)
+            .then((response) => {
+                setOdgovori(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    useEffect(() => {
+        UcitajPitanja();
+    }, [id]);
+
+    const odgovoriNaPitanje = (idPitanje, tekst) => {
+        axios.put(`http://localhost:5169/Salon/OdgovoriNaPitanje/${idPitanje}/${tekst}`)
           .then((response) => {
-            setOdgovori(response.data);
+            console.log("Pitanje je uspešno odgovoreno:", response.data);
+           UcitajPitanja();
           })
           .catch((error) => {
-            console.log(error);
+            console.error("Greška pri odgovaranju na pitanje:", error);
+            if(tekst == "" || tekst == null)
+                window.alert("Niste uneli tekst odgovora!");
+            if(idPitanje == null)
+                window.alert("Pitanje ne postoji!");
           });
-      }, [id]);
+      };
 
     const role = vratiRole();
     return (
@@ -85,10 +105,25 @@ const Odgovori = ({ id }) => {
                             }}>
                                 {/* <div className="col-xl"> */}
                                 <img src={salonChat} alt="" />
-                                <div style={{}}>
-                                    <h5>{odgovor.salonNaziv}</h5>
-                                    <p>Postavljeno: {formatirajDatum(odgovor.datumOdgovaranja)}</p>
-                                    <h4><strong>{(odgovor.tekstO !== null) ? odgovor.tekstO : "Jos uvek nije odgovoreno..."}</strong></h4>
+                                <div>
+                                    {role === "Salon" && odgovor.tekstO === null && odgovor.datumOdgovaranja === null && (
+                                        <div>
+                                            <input type="text" value={odgovorInput} onChange={(e) => setOdgovorInput(e.target.value)} />
+                                            <button onClick={() => odgovoriNaPitanje(odgovor.id, odgovorInput)}>Odgovori</button>
+                                        </div>
+                                    )}
+                                    {role === "Salon" && odgovor.tekstO != null && odgovor.datumOdgovaranja != null && (
+                                        <div>
+                                            <p>Postavljeno: {(odgovor.datumOdgovaranja)}</p>
+                                            <h4><strong>{(odgovor.tekstO)}</strong></h4>
+                                        </div>
+                                    )}
+                                    {role !== "Salon" && (
+                                        <div>
+                                            <p>Postavljeno: {(odgovor.datumOdgovaranja !== null) ? formatirajDatum(odgovor.datumOdgovaranja) : "Datum nije dostupan"}</p>
+                                            <h4><strong>{(odgovor.tekstO !== null) ? odgovor.tekstO : "Još uvek nije odgovoreno..."}</strong></h4>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
