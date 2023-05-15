@@ -27,7 +27,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     };
                 });
 
-builder.Services.AddCors(options=>
+builder.Services.AddCors(options =>
 {
     options.AddPolicy("CORS", policy =>
     {
@@ -38,7 +38,8 @@ builder.Services.AddCors(options=>
                      "http://127.0.0.1:3000",
                      "http://localhost:3000",
                      "https://127.0.0.1:3000",
-                     "https://localhost:3000");
+                     "https://localhost:3000"
+                    );
     });
 });
 

@@ -5,9 +5,9 @@ import Cookies from "js-cookie";
 import { vratiKorisnickoIme } from "../Auth/VratIKorisnickoIme";
 import { useNavigate } from "react-router-dom";
 import { Card } from "react-bootstrap";
-import PictureChange from "./Slika";
 import ChangePasswordModal from "./PasswordChangeModal";
 import UserInfoModal from "./UserInfoModal";
+import UploadFile from "./Upload";
 
 const Informacije = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -18,6 +18,16 @@ const Informacije = () => {
   useEffect(() => {
     fetchUserInfo();
   }, []);
+
+  const handleUploadFinished = (response) => {
+    const { dbPath } = response;
+    console.log(dbPath)
+    setUserInfo((prevUserInfo) => ({
+      ...prevUserInfo,
+      slika: `http://localhost:5169/${dbPath}`,
+    })
+    );
+  };
 
   const navigate = useNavigate();
 
@@ -81,13 +91,10 @@ const Informacije = () => {
       <button onClick={() => setShowInfoModal(true)} className="button-primary">
         Izmeni informacije
       </button>
-      <PictureChange
-        korisnicko_ime={korisnicko_ime}
-        onSuccess={handlePictureChangeSuccess}
-      />
       {showInfoModal && (
         <UserInfoModal userInfo={userInfo} onClose={handleCancelUserInfoChange} />
       )}
+      <UploadFile onUploadFinished={handleUploadFinished} />
     </Card>
   );
 };

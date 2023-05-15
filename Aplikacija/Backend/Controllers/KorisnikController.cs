@@ -316,22 +316,20 @@ public class KorisnikController : ControllerBase
 
     [HttpPost]
     [Route("PostaviSliku/{korisnicko_ime}/{path}")]
-    public async Task<ActionResult> PostaviSliku(string korisnicko_ime,string path)
+    public async Task<ActionResult> PostaviSliku(string korisnicko_ime, string path)
     {
-        Korisnik korisnik = await Context.Korisnici.Where(k=>k.korisnickoIme==korisnicko_ime).FirstOrDefaultAsync();
+        Korisnik korisnik = await Context.Korisnici.Where(k => k.korisnickoIme == korisnicko_ime).FirstOrDefaultAsync();
         korisnik.slika = HttpUtility.UrlDecode(path);
         await Context.SaveChangesAsync();
         return Ok(korisnik.slika);
     }
-    
-    [HttpPut]
+
+    [HttpPost]
     [Route("Upload/{korisnicko_ime}")]
     public async Task<IActionResult> Upload(string korisnicko_ime)
     {
-        //forma na forntendu mora da bi se testiralo!
         try
         {
-            Korisnik obj = VratiKorisnika();
             Korisnik retVal = Context.Korisnici.Where(p => p.korisnickoIme == korisnicko_ime).FirstOrDefault();
             var formCollection = await Request.ReadFormAsync();
             var file = formCollection.Files.First();
@@ -347,6 +345,10 @@ public class KorisnikController : ControllerBase
                 {
                     file.CopyTo(stream);
                 }
+
+                var baseUrl = $"{Request.Scheme}://{Request.Host.Value}";
+                dbPath = $"{baseUrl}/{dbPath.Replace("\\", "/")}";
+
                 retVal.slika = dbPath;
                 await Context.SaveChangesAsync();
                 return Ok(new { dbPath });
