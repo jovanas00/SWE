@@ -96,7 +96,7 @@ const Zahtev = ({ id }) => {
                 >
                     <option value="">-- Odaberite uslugu --</option>
                     {uslugaList.map((usluga) => (
-                        <option value={usluga.id} key={usluga.id}>
+                        <option value={usluga.naziv} key={usluga.id}>
                             {usluga.naziv}
                         </option>
                     ))}
