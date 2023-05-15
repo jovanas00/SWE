@@ -1,48 +1,46 @@
-/* Korpa.css */
-
 .korpa-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .proizvod {
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    text-align: center;
-  }
-  
-  .proizvod img {
-    max-width: 200px;
-    max-height: 200px;
-  }
-  
-  .proizvod p {
-    margin: 5px 0;
-  }
-  
-  .obrisi-button {
-    background-color: #ff0000;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-  
-  .naruci-button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    margin-top: 10px;
-    cursor: pointer;
-  }
-  
-  .naruci-button:hover {
-    background-color: #0056b3;
-  }
-  
+  display: flex;
+  flex-direction: column; /* Updated */
+  align-items: center;
+}
+
+.proizvod {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.proizvod img {
+  max-width: 200px;
+  max-height: 200px;
+}
+
+.proizvod p {
+  margin: 5px 0;
+}
+
+.obrisi-button {
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.naruci-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-top: 10px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.naruci-button:hover {
+  background-color: #0056b3;
+}

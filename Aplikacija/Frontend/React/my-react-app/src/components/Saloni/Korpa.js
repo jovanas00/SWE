@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import { vratiKorisnickoIme } from '../Auth/VratIKorisnickoIme';
 import { isKlijent } from '../Auth/AuthKlijent';
 import { vratiRole } from '../Auth/VratiRole';
+import './Korpa.css'
 
 const Korpa = ({ id }) => {
     const [korpaId, setKorpaId] = useState(null);
