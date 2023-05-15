@@ -14,8 +14,10 @@ import { useState } from 'react';
 // Importujte komponente za administratora, salon i klijenta
 import AdminPage from './components/AdminPage/AdminPage';
 import SalonPage from './components/SalonPage/SalonPage';
+import SalonUpravljanje from './components/SalonPage/SalonUpravljanje';
 import KlijentPage from './components/KlijentPage/KlijentPage';
 import Profil from './components/KlijentPage/Profil';
+
 
 function App() {
   return (
@@ -36,6 +38,7 @@ function App() {
             <Route path="/klijent/saloni" element={<Saloni />} />
             <Route path="/klijent/saloni/:id" element={<SalonStranica />} />
             <Route path="/klijent/profil" element={<Profil />} />
+            <Route path="/salon/upravljanje" element={<SalonUpravljanje />} />
           </Routes>
         </div>
       </Router>
