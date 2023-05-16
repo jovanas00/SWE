@@ -3,7 +3,7 @@ import axios from "axios";
 //import Card from "../UI/Card";
 import { Card } from "react-bootstrap";
 import salonChat from '../../images/salon.png';
-import clientChat from '../../images/clientChatIcon.png';
+import user from '../../images/user.webp';
 import { vratiRole } from '../Auth/VratiRole';
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
@@ -42,6 +42,7 @@ const Odgovori = ({ id }) => {
         axios.get(`http://localhost:5169/Salon/VratiPitanjaSalona/${id}`)
             .then((response) => {
                 setOdgovori(response.data);
+                console.log(response.data)
             })
             .catch((error) => {
                 console.log(error);
@@ -88,7 +89,11 @@ const Odgovori = ({ id }) => {
                     <Card>
                         <div className="row" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                             <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                <img src={clientChat} alt="" />
+                            <img
+                                            src={odgovor.slikaKlijenta ? odgovor.slikaKlijenta : user}
+                                            alt={user}
+                                            style={{ width: '50px', height: '50px', marginRight: '10px' }}
+                                        />
                                 <div>
                                     <h5>{odgovor.klijentImePrezime}</h5>
                                     <p>Postavljeno: {formatirajDatum(odgovor.datumPostavljanja)}</p>
