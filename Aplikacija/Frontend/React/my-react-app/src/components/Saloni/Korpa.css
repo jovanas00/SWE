@@ -6,8 +6,8 @@
 }
 
 .proizvod {
-  flex: 0 0 100%;
-  max-width: 100%;
+  flex: 0 0 calc(33.33% - 20px); /* Adjust the width as needed */
+  max-width: calc(33.33% - 20px); /* Adjust the width as needed */
   margin: 10px;
   padding: 10px;
   border: 1px solid #ccc;
@@ -34,6 +34,8 @@
 }
 
 .naruci-button {
+  display: block;
+  width: 34%;
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -41,16 +43,20 @@
   padding: 10px 20px;
   margin-top: 10px;
   cursor: pointer;
-  margin-bottom: 10px;
 }
 
 .naruci-button:hover {
   background-color: #0056b3;
 }
 
-@media screen and (min-width: 769px) {
+.empty-cart-message {
+  margin-top: 20px;
+  text-align: center;
+}
+
+@media (max-width: 768px) { /* Adjust the breakpoint as needed */
   .proizvod {
-    flex: 0 0 calc(33.33% - 20px);
-    max-width: calc(33.33% - 20px);
+    flex: 0 0 calc(100% - 20px);
+    max-width: calc(100% - 20px);
   }
 }
