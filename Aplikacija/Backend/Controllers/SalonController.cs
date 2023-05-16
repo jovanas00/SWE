@@ -171,6 +171,7 @@ public class SalonController : ControllerBase
     {
         var pitanja = await Context.Pitanja
         .Where(p => p.Salon.ID == id_salon)
+        .Include(p => p.Salon)
         .Include(p => p.Klijent)
         .ThenInclude(k=>k.Korisnik)
         .Select(p => new
@@ -182,7 +183,8 @@ public class SalonController : ControllerBase
             tekstO = p.tekstO,
             datumPostavljanja = p.datumPostavljanja,
             datumOdgovaranja = p.datumOdgovaranja,
-            slikaKlijenta = p.Klijent.Korisnik.slika
+            slikaKlijenta = p.Klijent.Korisnik.slika,
+            slikaSalona = p.Salon.Korisnik.slika
         })
         .ToListAsync();
 
