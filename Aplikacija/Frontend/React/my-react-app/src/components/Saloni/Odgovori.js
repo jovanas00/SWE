@@ -118,7 +118,7 @@ const Odgovori = ({ id }) => {
                                     )}
                                     {role === "Salon" && odgovor.tekstO != null && odgovor.datumOdgovaranja != null && (
                                         <div>
-                                            <p>Postavljeno: {(odgovor.datumOdgovaranja)}</p>
+                                            <p>Postavljeno: {(formatirajDatum(odgovor.datumOdgovaranja))}</p>
                                             <h4><strong>{(odgovor.tekstO)}</strong></h4>
                                         </div>
                                     )}
