@@ -3,7 +3,7 @@ import axios from "axios";
 //import Card from "../UI/Card";
 import { Card } from "react-bootstrap";
 import salonChat from '../../images/salon.png';
-import user from '../../images/user.webp';
+import clientChat from '../../images/clientChatIcon.png';
 import { vratiRole } from '../Auth/VratiRole';
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
@@ -42,7 +42,6 @@ const Odgovori = ({ id }) => {
         axios.get(`http://localhost:5169/Salon/VratiPitanjaSalona/${id}`)
             .then((response) => {
                 setOdgovori(response.data);
-                console.log(response.data)
             })
             .catch((error) => {
                 console.log(error);
@@ -55,18 +54,18 @@ const Odgovori = ({ id }) => {
 
     const odgovoriNaPitanje = (idPitanje, tekst) => {
         axios.put(`http://localhost:5169/Salon/OdgovoriNaPitanje/${idPitanje}/${tekst}`)
-          .then((response) => {
-            console.log("Pitanje je uspešno odgovoreno:", response.data);
-           UcitajPitanja();
-          })
-          .catch((error) => {
-            console.error("Greška pri odgovaranju na pitanje:", error);
-            if(tekst == "" || tekst == null)
-                window.alert("Niste uneli tekst odgovora!");
-            if(idPitanje == null)
-                window.alert("Pitanje ne postoji!");
-          });
-      };
+            .then((response) => {
+                console.log("Pitanje je uspešno odgovoreno:", response.data);
+                UcitajPitanja();
+            })
+            .catch((error) => {
+                console.error("Greška pri odgovaranju na pitanje:", error);
+                if (tekst == "" || tekst == null)
+                    window.alert("Niste uneli tekst odgovora!");
+                if (idPitanje == null)
+                    window.alert("Pitanje ne postoji!");
+            });
+    };
 
     const role = vratiRole();
     return (
@@ -89,11 +88,7 @@ const Odgovori = ({ id }) => {
                     <Card>
                         <div className="row" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                             <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                            <img
-                                            src={odgovor.slikaKlijenta ? odgovor.slikaKlijenta : user}
-                                            alt={user}
-                                            style={{ width: '50px', height: '50px', marginRight: '10px' }}
-                                        />
+                                <img src={clientChat} alt="" />
                                 <div>
                                     <h5>{odgovor.klijentImePrezime}</h5>
                                     <p>Postavljeno: {formatirajDatum(odgovor.datumPostavljanja)}</p>
@@ -113,8 +108,12 @@ const Odgovori = ({ id }) => {
                                 <div>
                                     {role === "Salon" && odgovor.tekstO === null && odgovor.datumOdgovaranja === null && (
                                         <div>
-                                            <input type="text" value={odgovorInput} onChange={(e) => setOdgovorInput(e.target.value)} />
-                                            <button onClick={() => odgovoriNaPitanje(odgovor.id, odgovorInput)}>Odgovori</button>
+                                            <input
+                                                type="text"
+                                                value={odgovorInput[odgovor.id] || ""}
+                                                onChange={(e) => setOdgovorInput({ ...odgovorInput, [odgovor.id]: e.target.value })}
+                                            />
+                                            <button onClick={() => odgovoriNaPitanje(odgovor.id, odgovorInput[odgovor.id])}>Odgovori</button>
                                         </div>
                                     )}
                                     {role === "Salon" && odgovor.tekstO != null && odgovor.datumOdgovaranja != null && (
