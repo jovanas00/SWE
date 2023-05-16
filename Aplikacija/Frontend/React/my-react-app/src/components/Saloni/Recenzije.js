@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Card from "../UI/Card";
-import clientChat from '../../images/clientChatIcon.png';
+import user from '../../images/user.webp';
 import { vratiRole } from "../Auth/VratiRole";
 import { BsStarFill, BsStar } from 'react-icons/bs';
 import Cookies from "js-cookie";
@@ -15,6 +15,7 @@ const Recenzije = ({ id }) => {
         axios.get(`http://localhost:5169/Salon/VratiRecenzijeSalona/${id}`)
             .then((response) => {
                 setRecenzije(response.data);
+                console.log(response.data)
             })
             .catch((error) => {
                 console.log(error);
@@ -104,9 +105,15 @@ const Recenzije = ({ id }) => {
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                         <div className="col-xl-12">
                             <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                <img src={clientChat} alt="" />
                                 <div>
-                                    <h5>{recenzija.klijentImePrezime}</h5>
+                                    <h5>
+                                        <img
+                                            src={recenzija.slika ? recenzija.slika : user}
+                                            alt={user}
+                                            style={{ width: '50px', height: '50px', marginRight: '10px' }}
+                                        />
+                                        {recenzija.klijentImePrezime}
+                                    </h5>
                                     <p>Postavljeno: {formatirajDatum(recenzija.datumPostavljanja)}</p>
                                     <h5><strong>Ocenjujem: {recenzija.salonNaziv}</strong></h5>
                                     <h4><strong>Recenzija: {recenzija.tekst}</strong></h4>
@@ -116,8 +123,10 @@ const Recenzije = ({ id }) => {
                         </div>
                     </div>
                 </Card>
-            ))}
-        </div>
+
+            ))
+            }
+        </div >
     );
 };
 

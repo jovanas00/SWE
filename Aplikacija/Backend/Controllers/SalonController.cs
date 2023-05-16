@@ -195,13 +195,15 @@ public class SalonController : ControllerBase
         var recenzije = await Context.Recenzije
         .Where(r => r.Salon.ID == id_salon)
         .Include(r => r.Klijent)
+        .ThenInclude(k=>k.Korisnik)
         .Select(r => new
         {
             SalonNaziv = r.Salon.naziv,
             KlijentImePrezime = r.Klijent.ime + " " + r.Klijent.prezime,
             ocena = r.ocena,
             tekst = r.tekst,
-            datumPostavljanja = r.datum
+            datumPostavljanja = r.datum,
+            slika = r.Klijent.Korisnik.slika
         })
         .ToListAsync();
         return recenzije;
