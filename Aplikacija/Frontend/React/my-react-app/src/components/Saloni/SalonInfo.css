@@ -46,7 +46,8 @@ span {
 span.selected {
     color: black;
     background-color: transparent;
-    text-decoration: underline;
+    /* text-decoration: underline; */
+    border: 1px solid #29335c;
 }
 
 .items {
