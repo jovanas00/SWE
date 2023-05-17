@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Modal, Button } from 'react-bootstrap';
 import { formatirajDatum } from "../UI/FormatirajDatum";
 import axios from "axios";
@@ -9,20 +9,6 @@ const DetaljiZahteva = ({ zahtev, ucitajZahteve }) => {
     const [status, setStatus] = useState("");
     const [komentarSalona, setKomentarSalona] = useState("");
     const statusi = ["Neobrađen", "Obrađen"];
-
-    // const ucitajProizvodeNarudzbine = async () => {
-    //     try {
-    //         const response = await axios.get(`http://localhost:5169/Klijent/VratiProizvodeNarudzbina/${narudzbina.narudzbinaID}`);
-    //         const proizvodi = response.data;
-    //         setProizvodi(proizvodi);
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     ucitajProizvodeNarudzbine();
-    // }, []);
 
     const obradiZahtev = async () => {
         try {
@@ -50,7 +36,11 @@ const DetaljiZahteva = ({ zahtev, ucitajZahteve }) => {
     };
 
     const openObradaForma = () => {
-        setObradaOpen(true);
+        if (zahtev.status !== "Obrađen") {
+            setObradaOpen(true);
+        } else {
+            window.alert("Zahtev je već obrađen!");
+        }
     };
 
     const closeObradaForma = () => {
@@ -70,6 +60,7 @@ const DetaljiZahteva = ({ zahtev, ucitajZahteve }) => {
                     <Modal.Title>Detalji narudžbine</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+
                     <h5><u><strong>Detalji Kupca:</strong></u></h5>
                     <p>Ime: {zahtev.klijent.ime}</p>
                     <p>Prezime: {zahtev.klijent.prezime}</p>
@@ -77,7 +68,7 @@ const DetaljiZahteva = ({ zahtev, ucitajZahteve }) => {
                     <p>Adresa: {zahtev.klijent.adresa}</p>
                     <p>Broj telefona: {zahtev.klijent.brojTelefona}</p>
 
-                    <h5><u><strong>Detalji narudžbine:</strong></u></h5>
+                    <h5><u><strong>Detalji zahteva:</strong></u></h5>
                     <p>Ime ljubimca: {zahtev.imeLjubimca}</p>
                     <p>Zivotinja: {zahtev.zivotinja}</p>
                     <p>Status: {zahtev.status}</p>
@@ -117,9 +108,11 @@ const DetaljiZahteva = ({ zahtev, ucitajZahteve }) => {
                         </div>
                     ) : (
                         <div>
-                            <Button variant="primary" onClick={openObradaForma}>
-                                Obradi zahtev
-                            </Button>
+                            {zahtev.status !== "Obrađen" && (
+                                <Button variant="primary" onClick={openObradaForma}>
+                                    Obradi zahtev
+                                </Button>
+                            )}
                             <Button variant="secondary" onClick={closeModal}>
                                 Otkaži
                             </Button>
