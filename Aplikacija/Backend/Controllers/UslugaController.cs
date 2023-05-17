@@ -73,12 +73,11 @@ public class UslugaController : ControllerBase
         try{ 
             if (!string.IsNullOrEmpty(naziv))  
                 u.Naziv = naziv;
-            if (cena != default(float))
+            if (cena != default(float) || cena>0)
                 u.cena = cena;
             if (!string.IsNullOrEmpty(opis))
                 u.opis = opis;
-            if (dostupnost != default(bool))
-                u.dostupnost = dostupnost;
+            u.dostupnost = dostupnost;
             await Context.SaveChangesAsync();
             return Ok(u);
         }
@@ -86,7 +85,7 @@ public class UslugaController : ControllerBase
         {
             return BadRequest(e.Message);
         }    
-    } 
+    }
 
     // [Route("IzmeniDostupnost/{id_usluga}")]
     // [HttpPut]
