@@ -50,7 +50,7 @@ const Usluge = ({ id }) => {
             });
     };
 
-
+    //ogranicenje za prazno polje fali
     const izmeniUslugu = (id) => {
         const putanja = `http://localhost:5169/Usluga/IzmeniUslugu/${id}?`;
 
@@ -134,7 +134,7 @@ const Usluge = ({ id }) => {
                                                 <input
                                                     type="text"
                                                     name="naziv"
-                                                    value={izmenjeneVrednosti.naziv || usluga.naziv}
+                                                    value={izmenjeneVrednosti.naziv === undefined ? usluga.naziv : izmenjeneVrednosti.naziv}
                                                     onChange={(e) => setIzmenjeneVrednosti({ ...izmenjeneVrednosti, naziv: e.target.value })}
                                                 />
                                             ) : (
@@ -146,7 +146,7 @@ const Usluge = ({ id }) => {
                                                 <input
                                                     type="number"
                                                     name="cena"
-                                                    value={izmenjeneVrednosti.cena || usluga.cena}
+                                                    value={izmenjeneVrednosti.cena === undefined ? usluga.cena : izmenjeneVrednosti.cena}
                                                     onChange={(e) => setIzmenjeneVrednosti({ ...izmenjeneVrednosti, cena: e.target.value })}
                                                 />
                                             ) : (
@@ -158,7 +158,7 @@ const Usluge = ({ id }) => {
                                                 <input
                                                     type="text"
                                                     name="opis"
-                                                    value={izmenjeneVrednosti.opis || usluga.opis}
+                                                    value={izmenjeneVrednosti.opis === undefined ? usluga.opis : izmenjeneVrednosti.opis}
                                                     onChange={(e) => setIzmenjeneVrednosti({ ...izmenjeneVrednosti, opis: e.target.value })}
                                                 />
                                             ) : (
@@ -169,8 +169,8 @@ const Usluge = ({ id }) => {
                                             {trenutnoIzmenjenRed === index ? (
                                                 <input
                                                     type="checkbox"
-                                                    label="dostupnost"
-                                                    checked={izmenjeneVrednosti.dostupnost === undefined ? usluga.dostupnost : izmenjeneVrednosti.dostupnost}
+                                                    name="dostupnost"
+                                                    checked={izmenjeneVrednosti.dostupnost !== undefined ? izmenjeneVrednosti.dostupnost : usluga.dostupnost}
                                                     onChange={(e) => setIzmenjeneVrednosti({ ...izmenjeneVrednosti, dostupnost: e.target.checked })}
                                                 />
                                             ) : (
