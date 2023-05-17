@@ -9,10 +9,29 @@ const Zahtevi = () => {
     const korisnicko_ime = vratiKorisnickoIme();
     const [zahtevi, setZahtevi] = useState([]);
 
+    // const ucitajZahteve = async () => {
+    //     try {
+    //         const response = await axios.get(`http://localhost:5169/Salon/VratiZahteveSalona/${korisnicko_ime}`);
+    //         setZahtevi(response.data);
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // };
+
     const ucitajZahteve = async () => {
         try {
             const response = await axios.get(`http://localhost:5169/Salon/VratiZahteveSalona/${korisnicko_ime}`);
-            setZahtevi(response.data);
+            const noveZahteve = response.data;
+            const sortiraniZahtevi = noveZahteve.sort((a, b) => {
+                if (a.status === "Neobrađen" && b.status !== "Neobrađen") {
+                    return -1; // Ako je a neobrađen, a b nije, a treba biti ispred b u sortiranju
+                } else if (a.status !== "Neobrađen" && b.status === "Neobrađen") {
+                    return 1; // Ako je a obrađen, a b neobrađen, a treba biti iza b u sortiranju
+                } else {
+                    return 0; // Ako su oba statusa ista, ne menjamo redosled
+                }
+            });
+            setZahtevi(sortiraniZahtevi);
         } catch (error) {
             console.error(error);
         }
