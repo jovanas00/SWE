@@ -51,7 +51,11 @@ const DetaljiNarudzbine = ({ narudzbina, ucitajNarudzbine }) => {
     };
 
     const openObradaForma = () => {
-        setObradaOpen(true);
+        if (narudzbina.status !== "Obrađena") {
+            setObradaOpen(true);
+        } else {
+            window.alert("Narudžbina je već obrađena!");
+        }
     };
 
     const closeObradaForma = () => {
@@ -59,7 +63,6 @@ const DetaljiNarudzbine = ({ narudzbina, ucitajNarudzbine }) => {
         setStatus("");
         setKomentarSalona("");
     };
-
 
 
     return (
@@ -129,9 +132,11 @@ const DetaljiNarudzbine = ({ narudzbina, ucitajNarudzbine }) => {
                         </div>
                     ) : (
                         <div>
-                            <Button variant="primary" onClick={openObradaForma}>
-                                Obradi narudžbinu
-                            </Button>
+                            {narudzbina.status !== "Obrađena" && (
+                                <Button variant="primary" onClick={openObradaForma}>
+                                    Obradi narudžbinu
+                                </Button>
+                            )}
                             <Button variant="secondary" onClick={closeModal}>
                                 Otkaži
                             </Button>
