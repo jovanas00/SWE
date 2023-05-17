@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { FaBars, FaTimes, FaCogs } from 'react-icons/fa';
 import './Header.css';
 import logo from '../../images/logo.png';
 import { Link, useNavigate } from 'react-router-dom';
@@ -111,13 +111,13 @@ const Header = () => {
           {klijent && <Link to="/klijent">Saloni</Link>}
           {admin && <Link to="/saloni">Saloni</Link>}
           {klijent && <Link to="/klijent/profil">Profil</Link>}
-          {salon && <Link to="/salon/upravljanje">Upravljanje</Link>}
           {salon && <Link to="/salon">Profil</Link>}
           {(klijent || salon || admin) &&
             <Link to="/prijava" onClick={handleLogout}>
               Log out
             </Link>
           }
+          {salon && <Link to="/salon/upravljanje"><FaCogs style={{ fontSize: '1.5rem' }} /></Link>}
           <button className="nav-btn nav-close-btn" onClick={hideNavbar}>
             <FaTimes />
           </button>
