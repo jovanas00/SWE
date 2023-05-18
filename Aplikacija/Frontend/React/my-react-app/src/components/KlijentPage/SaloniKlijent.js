@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { vratiRole } from '../Auth/VratiRole';
 import Header from '../Pocetna/Header';
 import Body from '../Saloni/Body';
+import TokenChecker from '../Auth/TokenChecker';
 
 
 const SaloniKlijent = () => {
@@ -11,6 +12,7 @@ const SaloniKlijent = () => {
         return (
             <div>
                 <Header />
+                <TokenChecker/>
                 <Body/>
             </div>
         );

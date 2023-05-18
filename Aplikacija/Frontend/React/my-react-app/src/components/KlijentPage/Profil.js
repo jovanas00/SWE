@@ -8,6 +8,7 @@ import Header from '../Pocetna/Header';
 import Informacije from './Informacije';
 import './Profil.css';
 import Cookies from 'js-cookie';
+import TokenChecker from '../Auth/TokenChecker';
 
 
 const Profil = () => {
@@ -116,6 +117,7 @@ const Profil = () => {
   if (isKlijent()) {
     return (
       <div>
+        <TokenChecker/>
         <Header />
         <Informacije />
         <div className="button-list">

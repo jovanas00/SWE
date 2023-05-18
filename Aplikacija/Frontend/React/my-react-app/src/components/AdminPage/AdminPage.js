@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import Header from '../Pocetna/Header';
 import axios from 'axios';
 import './AdminPage.css';
@@ -12,6 +12,7 @@ import Cookies from 'js-cookie';
 import UploadFile from "../KlijentPage/Upload";
 import ChangePasswordModal from "../KlijentPage/PasswordChangeModal";
 import AdminInfoModal from "./AdminInfoModal";
+import TokenChecker from '../Auth/TokenChecker';
 
 const AdminPage = () => {
   const [selectedSection, setSelectedSection] = useState(null);
@@ -28,6 +29,33 @@ const AdminPage = () => {
   const [isAdminInfoLoaded, setIsAdminInfoLoaded] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
+
+  // const prevTokenRef = useRef('');
+
+  // useEffect(() => {
+  //   const checkToken = () => {
+  //     const token = Cookies.get('token');
+
+  //     if (!token) {
+  //       window.location.href = '/prijava';
+  //     } else {
+  //       if (prevTokenRef.current !== token && prevTokenRef.current!=='') {
+  //         window.location.href = '/prijava';
+  //         Cookies.remove('token')
+  //       }
+
+  //       prevTokenRef.current = token;
+  //     }
+  //   };
+
+  //   checkToken();
+
+  //   const interval = setInterval(checkToken, 1000); // Adjust the interval as needed
+
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, []);
 
 
 
@@ -196,6 +224,7 @@ const AdminPage = () => {
   if (isAdmin()) {
     return (
       <div className="admin-page">
+        <TokenChecker/>
         <Header />
         <div className="admin-content">
           <aside className="admin-sidebar">
@@ -211,49 +240,49 @@ const AdminPage = () => {
             {/* Prikaz odabrane sekcije */}
             {selectedSection === 'admin-info' && (
               <div className="admin-info">
-              <Card className="container-a">
-                <div className="admin-info">
-                  <h2>Profil admina</h2>
-                  <div className="admin-info-details">
-                    <h5 className="admin-info-label"></h5>
-                    <img 
-                      src={adminInfo.korisnik?.slika ? adminInfo.korisnik.slika : icon} 
-                      alt="User" 
-                      className="image"
-                    />
-                  </div>
-                  <div className="admin-info-details">
-                    <h5 className="admin-info-label">Korisničko ime:</h5>
-                    <p>{adminInfo.korisnik?.korisnickoIme}</p>
-                  </div>
-                  <div className="admin-info-details">
-                    <h5 className="admin-info-label">Ime:</h5>
-                    <p>{adminInfo.ime}</p>
-                  </div>
-                  <div className="admin-info-details">
-                    <h5 className="admin-info-label">Prezime:</h5>
-                    <p>{adminInfo.prezime}</p>
-                  </div>
+                <Card className="container-a">
+                  <div className="admin-info">
+                    <h2>Profil admina</h2>
+                    <div className="admin-info-details">
+                      <h5 className="admin-info-label"></h5>
+                      <img
+                        src={adminInfo.korisnik?.slika ? adminInfo.korisnik.slika : icon}
+                        alt="User"
+                        className="image"
+                      />
+                    </div>
+                    <div className="admin-info-details">
+                      <h5 className="admin-info-label">Korisničko ime:</h5>
+                      <p>{adminInfo.korisnik?.korisnickoIme}</p>
+                    </div>
+                    <div className="admin-info-details">
+                      <h5 className="admin-info-label">Ime:</h5>
+                      <p>{adminInfo.ime}</p>
+                    </div>
+                    <div className="admin-info-details">
+                      <h5 className="admin-info-label">Prezime:</h5>
+                      <p>{adminInfo.prezime}</p>
+                    </div>
 
-                </div>
-                <div className="password-change">
-                  <button onClick={() => setShowModal(true)} className="button-primary">
-                    Promeni lozinku
+                  </div>
+                  <div className="password-change">
+                    <button onClick={() => setShowModal(true)} className="button-primary">
+                      Promeni lozinku
+                    </button>
+                  </div>
+                  <ChangePasswordModal
+                    korisnicko_ime={adminInfo.korisnik?.korisnickoIme}
+                    showModal={showModal}
+                    setShowModal={setShowModal}
+                  />
+                  <button onClick={() => setShowInfoModal(true)} className="button-primary">
+                    Izmeni informacije
                   </button>
-                </div>
-                <ChangePasswordModal
-                  korisnicko_ime={adminInfo.korisnik?.korisnickoIme}
-                  showModal={showModal}
-                  setShowModal={setShowModal}
-                />
-                <button onClick={() => setShowInfoModal(true)} className="button-primary">
-                  Izmeni informacije
-                </button>
-                {showInfoModal && (
-                  <AdminInfoModal adminInfo={adminInfo} onClose={handleCancelAdminInfoChange} />
-                )}
-                <UploadFile onUploadFinished={handleUploadFinished} />
-              </Card>
+                  {showInfoModal && (
+                    <AdminInfoModal adminInfo={adminInfo} onClose={handleCancelAdminInfoChange} />
+                  )}
+                  <UploadFile onUploadFinished={handleUploadFinished} />
+                </Card>
               </div>
             )}
 
@@ -286,43 +315,43 @@ const AdminPage = () => {
                 </div>
                 {/* Prikaz podataka o korisnicima */}
                 <div className="user-list">
-                <div className="user-container">
-                  {users
-                    .filter((user) => selectedTip === '' || user.tip === selectedTip)
-                    .filter((user) => user.tip !== 'Admin')
-                    .map((user) => (
-                      <div key={user.id} className="user-card">
-                        <div className="profile-picture">
-                          {user.slika ? (
-                            <img src={user.slika ? user.slika : icon} alt="Profilna slika" />
-                          ) : (
-                            <img src={icon} alt="Ikona" />
-                          )}
-                        </div>
-                        <p>Korisničko ime: {user.korisnickoIme}</p>
-                        <p>Tip korisnika: {user.tip}</p>
-                        {selectedImage === user.slika && isModalOpen && (
-                          <div className="modal">
-                            <div className="modal-overlay" onClick={handleCloseModal} />
-                            <div className="modal-content">
-                              {user.slika ? (
-                                <img src={user.slika} alt="Profilna slika" />
-                              ) : (
-                                <img src={icon} alt="Ikona" />
-                              )}
-                              <button className="close-button" onClick={handleCloseModal}>
-                                Zatvori
-                              </button>
-                            </div>
+                  <div className="user-container">
+                    {users
+                      .filter((user) => selectedTip === '' || user.tip === selectedTip)
+                      .filter((user) => user.tip !== 'Admin')
+                      .map((user) => (
+                        <div key={user.id} className="user-card">
+                          <div className="profile-picture">
+                            {user.slika ? (
+                              <img src={user.slika ? user.slika : icon} alt="Profilna slika" />
+                            ) : (
+                              <img src={icon} alt="Ikona" />
+                            )}
                           </div>
-                        )}
-                        <button className="povecaj-button" onClick={() => handleShowImage(user.slika)}>
-                          Povećaj sliku
-                        </button>
-                      </div>
-                    ))}
+                          <p>Korisničko ime: {user.korisnickoIme}</p>
+                          <p>Tip korisnika: {user.tip}</p>
+                          {selectedImage === user.slika && isModalOpen && (
+                            <div className="modal">
+                              <div className="modal-overlay" onClick={handleCloseModal} />
+                              <div className="modal-content">
+                                {user.slika ? (
+                                  <img src={user.slika} alt="Profilna slika" />
+                                ) : (
+                                  <img src={icon} alt="Ikona" />
+                                )}
+                                <button className="close-button" onClick={handleCloseModal}>
+                                  Zatvori
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                          <button className="povecaj-button" onClick={() => handleShowImage(user.slika)}>
+                            Povećaj sliku
+                          </button>
+                        </div>
+                      ))}
+                  </div>
                 </div>
-              </div>
 
 
 

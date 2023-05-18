@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { vratiKorisnickoIme } from "../Auth/VratIKorisnickoIme";
 import Zahtevi from './Zahtevi';
 import Narudzbine from './Narudzbine';
+import TokenChecker from '../Auth/TokenChecker';
 
 const SalonUpravljanje = () => {
     const korisnicko_ime = vratiKorisnickoIme();
@@ -53,6 +54,7 @@ const SalonUpravljanje = () => {
         return (
             <div>
                 <Header />
+                <TokenChecker/>
                 <div className='salon-page'>
                     <aside className='salon-sidebar'>
                         <ul>

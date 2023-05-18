@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { vratiRole } from '../Auth/VratiRole';
 import Header from '../Pocetna/Header';
 import Informacije from './Informacije';
+import TokenChecker from '../Auth/TokenChecker';
 
 
 const KlijentPage = () => {
@@ -12,7 +13,6 @@ if(isKlijent())
   return (
     <div>
         <Header/>
-        <h1>Upravljajte profilom i istrazujte salone!</h1>
     </div>
     
   );

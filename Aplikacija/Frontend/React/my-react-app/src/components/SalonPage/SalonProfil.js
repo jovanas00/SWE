@@ -4,12 +4,14 @@ import { Navigate } from 'react-router-dom';
 import { vratiRole } from '../Auth/VratiRole';
 import Header from '../Pocetna/Header';
 import Informacije from "./Informacije";
+import TokenChecker from "../Auth/TokenChecker";
 
 const SalonProfil = () => {
     if (isSalon()) {
         return (
             <div>
                 <Informacije />
+                <TokenChecker/>
             </div>     
         );
     }
