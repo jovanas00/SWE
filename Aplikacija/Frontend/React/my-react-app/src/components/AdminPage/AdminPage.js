@@ -6,24 +6,28 @@ import { isAdmin } from '../Auth/AuthAdmin';
 import { vratiRole } from '../Auth/VratiRole';
 import { vratiKorisnickoIme } from '../Auth/VratIKorisnickoIme';
 import { Navigate } from 'react-router-dom';
+import { Card } from "react-bootstrap";
+import icon from "../../images/user.webp";
 import Cookies from 'js-cookie';
+import UploadFile from "../KlijentPage/Upload";
+import ChangePasswordModal from "../KlijentPage/PasswordChangeModal";
+import AdminInfoModal from "./AdminInfoModal";
 
 const AdminPage = () => {
   const [selectedSection, setSelectedSection] = useState(null);
   const [categoryName, setCategoryName] = useState('');
   const [categoryId, setCategoryId] = useState('');
-  const [korisnickoIme, setKorisnickoIme] = useState('');
-  const [ime, setIme] = useState('');
-  const [prezime, setPrezime] = useState('');
-  const [file, setFile] = useState(null);
   const [users, setUsers] = useState([]);
   const [categories, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTip, setSelectedTip] = useState('');
   const [unosKorisnickogImena, setUnosKorisnickogImena] = useState('');
-  const [editIme, setEditIme] = useState(false);
-  const [editPrezime, setEditPrezime] = useState(false);
-  const [editMode, setEditMode] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [adminInfo, setAdminInfo] = useState(null);
+  const [isAdminInfoLoaded, setIsAdminInfoLoaded] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showInfoModal, setShowInfoModal] = useState(false);
 
 
 
@@ -47,85 +51,41 @@ const AdminPage = () => {
   const fetchAdminInfo = async () => {
     try {
       const response = await axios.get('http://localhost:5169/Admin/SviAdmini', config);
-
-      //const korIme = "admin2";
       const korIme = vratiKorisnickoIme();
-
-      console.log(korIme); // pristupanje ulozi korisnika
       const adminInfo = response.data;
-
-      // Pronalaženje odgovarajućeg admina na osnovu korisničkog imena iz tokena
-
       const admin = adminInfo.find(admin => admin.korisnik.korisnickoIme === korIme);
-
       if (admin) {
-        setKorisnickoIme(admin.korisnik.korisnickoIme);
-        setIme(admin.ime);
-        setPrezime(admin.prezime);
+        setAdminInfo(admin);
+        setIsAdminInfoLoaded(true);
       }
     } catch (error) {
-      //handleError();
+      console.error(error);
     }
   };
 
 
-  //deo za polja za izmenu profila admina
-  /*const handleEdit = (field) => {
-    const newValue = prompt(`Unesite novu vrednost za ${field}:`);
-    if (newValue !== null && newValue !== '') {
-      // Ovde možete ažurirati stanje (state) ili poslati ažuriranje na server
-      switch (field) {
-        case 'korisnicko_ime':
-          setKorisnickoIme(newValue);
-          break;
-        case 'ime':
-          setIme(newValue);
-          break;
-        case 'prezime':
-          setPrezime(newValue);
-          break;
-        default:
-          break;
-      }
-    }
-  };*/
-  const handleEdit = (field) => {
-    switch (field) {
-      case 'ime':
-        setEditIme(true);
-        setEditMode(true);
-        break;
-      case 'prezime':
-        setEditPrezime(true);
-        setEditMode(true);
-        break;
-      default:
-        break;
-    }
-  };
-  /*const handleSave = () => {
-    // Ovde možete implementirati logiku za slanje promena na server
-    setEditKorisnickoIme(false);
-    setEditIme(false);
-    setEditPrezime(false);
-  };*/
-
-  const handleSave = () => {
-    // Pozovite funkciju updateAdmin sa ažuriranim podacima
-    updateAdmin(korisnickoIme, ime, prezime);
-
-    // Vratite režim izmena na početnu vrednost
-    setEditMode(false);
+  const handleUploadFinished = (response) => {
+    const { dbPath } = response;
+    console.log(dbPath)
+    setAdminInfo((prevAdminInfo) => ({
+      ...prevAdminInfo,
+      slika: `http://localhost:5169/${dbPath}`,
+    })
+    );
   };
 
-  const handleCancel = () => {
-    //osvežava stranicu..
-    window.location.reload()
 
-    // Vratite režim izmena na početnu vrednost
-    setEditMode(false);
+  const handleCancelAdminInfoChange = () => {
+    setShowInfoModal(false);
+  };
 
+  const handleShowImage = (imagePath) => {
+    setSelectedImage(imagePath);
+    setIsModalOpen(true);
+  };
 
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
 
@@ -194,6 +154,7 @@ const AdminPage = () => {
     }
   };
 
+  //ovo nam ja mislim ne treba, ali neka ga za sad
   // Funkcija za upload preko Axios
   const uploadFile = async (korisnicko_ime, file) => {
     const formData = new FormData();
@@ -226,7 +187,11 @@ const AdminPage = () => {
       fetchAdminInfo();
       fetchCategories();
     }
-  }, []);
+    if (isAdminInfoLoaded) {
+      setSelectedSection('admin-info');
+    }
+  }, [isAdminInfoLoaded]);
+
 
   if (isAdmin()) {
     return (
@@ -236,7 +201,7 @@ const AdminPage = () => {
           <aside className="admin-sidebar">
             {/* Sidebar sa navigacijom */}
             <ul>
-              <li onClick={() => handleSectionChange('admin-info')}>Informacije o adminu</li>
+              <li onClick={() => handleSectionChange('admin-info')}>Profil admina</li>
               <li onClick={() => handleSectionChange('user-management')}>Upravljanje korisnicima</li>
               <li onClick={() => handleSectionChange('category-management')}>Upravljanje kategorijama</li>
             </ul>
@@ -246,51 +211,49 @@ const AdminPage = () => {
             {/* Prikaz odabrane sekcije */}
             {selectedSection === 'admin-info' && (
               <div className="admin-info">
-                {/* Sadržaj za informacije o adminu */}
-                <h2>Informacije o adminu</h2>
-                <h6>Ovde možete promeniti ime i prezime admina:</h6>
-                <div className="admin-info-details">
-                  <h5 className="admin-info-label">Korisničko ime:</h5>
-                  <p>{korisnickoIme}</p>
-                </div>
+              <Card className="container-a">
+                <div className="admin-info">
+                  <h2>Profil admina</h2>
+                  <div className="admin-info-details">
+                    <h5 className="admin-info-label"></h5>
+                    <img 
+                      src={adminInfo.korisnik?.slika ? adminInfo.korisnik.slika : icon} 
+                      alt="User" 
+                      className="image"
+                    />
+                  </div>
+                  <div className="admin-info-details">
+                    <h5 className="admin-info-label">Korisničko ime:</h5>
+                    <p>{adminInfo.korisnik?.korisnickoIme}</p>
+                  </div>
+                  <div className="admin-info-details">
+                    <h5 className="admin-info-label">Ime:</h5>
+                    <p>{adminInfo.ime}</p>
+                  </div>
+                  <div className="admin-info-details">
+                    <h5 className="admin-info-label">Prezime:</h5>
+                    <p>{adminInfo.prezime}</p>
+                  </div>
 
-                <div className="admin-info-details">
-                  <h5 className="admin-info-label">Ime:</h5>
-                  {editIme ? (
-                    <div className="admin-info-edit">
-                      <input
-                        type="text"
-                        value={ime}
-                        onChange={(e) => setIme(e.target.value)}
-                      />
-                      <button onClick={() => handleSave('ime')}>Sačuvaj</button>
-                      <button onClick={() => handleCancel('ime')}>Odustani</button>
-                    </div>
-                  ) : (
-                    <p>
-                      {ime} <button onClick={() => handleEdit('ime')}>Izmeni</button>
-                    </p>
-                  )}
                 </div>
-
-                <div className="admin-info-details">
-                  <h5 className="admin-info-label">Prezime:</h5>
-                  {editPrezime ? (
-                    <div className="admin-info-edit">
-                      <input
-                        type="text"
-                        value={prezime}
-                        onChange={(e) => setPrezime(e.target.value)}
-                      />
-                      <button onClick={() => handleSave('prezime')}>Sačuvaj</button>
-                      <button onClick={() => handleCancel('prezime')}>Odustani</button>
-                    </div>
-                  ) : (
-                    <p>
-                      {prezime} <button onClick={() => handleEdit('prezime')}>Izmeni</button>
-                    </p>
-                  )}
+                <div className="password-change">
+                  <button onClick={() => setShowModal(true)} className="button-primary">
+                    Promeni lozinku
+                  </button>
                 </div>
+                <ChangePasswordModal
+                  korisnicko_ime={adminInfo.korisnik?.korisnickoIme}
+                  showModal={showModal}
+                  setShowModal={setShowModal}
+                />
+                <button onClick={() => setShowInfoModal(true)} className="button-primary">
+                  Izmeni informacije
+                </button>
+                {showInfoModal && (
+                  <AdminInfoModal adminInfo={adminInfo} onClose={handleCancelAdminInfoChange} />
+                )}
+                <UploadFile onUploadFinished={handleUploadFinished} />
+              </Card>
               </div>
             )}
 
@@ -317,31 +280,55 @@ const AdminPage = () => {
                   <label htmlFor="tip-filter">Filtriraj po tipu: </label>
                   <select id="tip-filter" value={selectedTip} onChange={(e) => setSelectedTip(e.target.value)}>
                     <option value="">Svi</option>
-                    <option value="Admin">Admin</option>
                     <option value="Klijent">Klijent</option>
                     <option value="Salon">Salon</option>
                   </select>
                 </div>
                 {/* Prikaz podataka o korisnicima */}
                 <div className="user-list">
-                  <ul>
-                    {users
-                      .filter((user) => selectedTip === '' || user.tip === selectedTip)
-                      .map((user) => (
-                        <li key={user.id}>
-                          <p>Korisničko ime: {user.korisnickoIme}</p>
-                          <p>Tip korisnika: {user.tip}</p>
-                          <p>Slika: {user.slika}</p>
-                        </li>
-                      ))}
-                  </ul>
+                <div className="user-container">
+                  {users
+                    .filter((user) => selectedTip === '' || user.tip === selectedTip)
+                    .filter((user) => user.tip !== 'Admin')
+                    .map((user) => (
+                      <div key={user.id} className="user-card">
+                        <div className="profile-picture">
+                          {user.slika ? (
+                            <img src={user.slika ? user.slika : icon} alt="Profilna slika" />
+                          ) : (
+                            <img src={icon} alt="Ikona" />
+                          )}
+                        </div>
+                        <p>Korisničko ime: {user.korisnickoIme}</p>
+                        <p>Tip korisnika: {user.tip}</p>
+                        {selectedImage === user.slika && isModalOpen && (
+                          <div className="modal">
+                            <div className="modal-overlay" onClick={handleCloseModal} />
+                            <div className="modal-content">
+                              {user.slika ? (
+                                <img src={user.slika} alt="Profilna slika" />
+                              ) : (
+                                <img src={icon} alt="Ikona" />
+                              )}
+                              <button className="close-button" onClick={handleCloseModal}>
+                                Zatvori
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                        <button className="povecaj-button" onClick={() => handleShowImage(user.slika)}>
+                          Povećaj sliku
+                        </button>
+                      </div>
+                    ))}
                 </div>
               </div>
+
+
+
+
+              </div>
             )}
-
-
-
-
 
             {selectedSection === 'category-management' && (
               <div>
@@ -389,9 +376,6 @@ const AdminPage = () => {
                 </div>
               </div>
             )}
-
-
-
           </main>
         </div>
       </div>
