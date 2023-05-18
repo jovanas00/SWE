@@ -291,4 +291,32 @@ public class SalonController : ControllerBase
 
         return Ok(rezultat);
     }
+
+
+    [Route("ProsecnaOcena/{id_salon}")]
+    [HttpGet]
+    public async Task<ActionResult<object>> ProsecnaOcena(int id_salon)
+    {
+        var salon = await Context.Saloni.Include(s => s.Recenzije).FirstOrDefaultAsync(s => s.ID == id_salon);
+
+        if (salon == null)
+            return NotFound();
+
+        float prosecnaOcena = 0;
+        if (salon.Recenzije != null && salon.Recenzije.Count > 0)
+        {
+            prosecnaOcena = salon.Recenzije.Average(r => r.ocena);
+        }
+
+        var rezultat = new
+        {
+            Salon = salon,
+            ProsecnaOcena = prosecnaOcena
+        };
+
+        return rezultat;
+    }
+
+
+
 }
