@@ -137,7 +137,6 @@ public class KlijentController : ControllerBase
 
     }
 
-    [AllowAnonymous]
     [HttpDelete("ObrisiZahtev/{idZahteva}")]
     public async Task<ActionResult> ObrišiZahtev(int idZahteva)
     {
@@ -388,7 +387,6 @@ public class KlijentController : ControllerBase
         }
     }
 
-    [AllowAnonymous]
     [HttpGet("VratiProizvodeNarudzbina/{id_narudzbine}")]
     public async Task<ActionResult<List<NaruceniProizvod>>> VratiProizvodeNarudzbina(int id_narudzbine)
     {
@@ -397,7 +395,6 @@ public class KlijentController : ControllerBase
                     .FirstOrDefaultAsync(n => n.ID == id_narudzbine);
         return n.NaruceniProizvodi;
     }
-
 
 
     [Route("VratiKlijenta/{korisnicko_ime}")]
@@ -465,7 +462,6 @@ public class KlijentController : ControllerBase
     }
 
 
-    [AllowAnonymous]
     [HttpGet("PrikaziZahteveISalone/{korisnickoIme}")]
     public ActionResult<List<object>> PrikaziZahteveISalone(string korisnickoIme)
     {
