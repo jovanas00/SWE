@@ -7,6 +7,7 @@ import Cookies from "js-cookie"
 import { BsCart } from 'react-icons/bs';
 import FormDodajProizvod from "../SalonPage/FormDodajProizvod";
 import FormIzmeniProizvod from "../SalonPage/FormIzmeniProizvod";
+import product from "../../images/item.jpg";
 import api from "../Auth/Interceptor";
 // import { Form } from "react-router-dom";
 
@@ -54,29 +55,29 @@ const Proizvodi = ({ id }) => {
 
     const dodajProizvod = (noviProizvod) => {
         axios.post(`http://localhost:5169/Proizvod/DodajProizvod/${noviProizvod.naziv}/${noviProizvod.cena}/${noviProizvod.dostupnost}/${noviProizvod.kategorija}/${id}`)
-          .then((response) => {
-            console.log('Proizvod uspešno dodat.');
-            ucitajProizvode();
-          })
-          .catch((error) => {
-            console.log('Greška prilikom dodavanja proizvoda:', error);
-            if(noviProizvod == null)
-                window.alert("Proizvod ne postoji!");
-          });
-        
+            .then((response) => {
+                console.log('Proizvod uspešno dodat.');
+                ucitajProizvode();
+            })
+            .catch((error) => {
+                console.log('Greška prilikom dodavanja proizvoda:', error);
+                if (noviProizvod == null)
+                    window.alert("Proizvod ne postoji!");
+            });
+
     };
 
     const obrisiProizvod = (proizvodId) => {
         axios.delete(`http://localhost:5169/Proizvod/ObrisiProizvod/${proizvodId}`)
-          .then((response) => {
-            window.alert('Proizvod uspešno obrisan.');
-            ucitajProizvode();
-          })
-          .catch((error) => {
-            window.alert('Greška prilikom brisanja proizvoda:', error);
-            if(proizvodId == null)
-                window.alert("Proizvod ne postoji!");
-          });
+            .then((response) => {
+                window.alert('Proizvod uspešno obrisan.');
+                ucitajProizvode();
+            })
+            .catch((error) => {
+                window.alert('Greška prilikom brisanja proizvoda:', error);
+                if (proizvodId == null)
+                    window.alert("Proizvod ne postoji!");
+            });
     };
 
     const izmeniProizvod = (izmenjenProizvod) => {
@@ -116,11 +117,11 @@ const Proizvodi = ({ id }) => {
 
     const handleDodajKorpa = async (proizvodID) => {
         try {
-          const response = await api.put(`http://localhost:5169/Klijent/DodajUKorpu/${proizvodID}`, {});
-          console.log(response.data); // Response message
-          alert(response.data);
+            const response = await api.put(`http://localhost:5169/Klijent/DodajUKorpu/${proizvodID}`, {});
+            console.log(response.data); // Response message
+            alert(response.data);
         } catch (error) {
-          console.error('There was a problem with the PUT request:', error);
+            console.error('There was a problem with the PUT request:', error);
         }
     }
 
@@ -146,36 +147,34 @@ const Proizvodi = ({ id }) => {
             <div>
                 {role === "Salon" && <FormDodajProizvod dodajProizvod={dodajProizvod} kategorije={kategorije} />}
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
-                {/* <div className="col-md-4 mb-3"> */}
-                {/* <Kategorije kategoije={kategorije} onSubmit={handleFilterSubmit} /> */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(500px, 1fr))", gap: "10px" }}>
                 {proizvodi.map((proizvod) => (
-                    <Card >
-                        <div className="prozvod-card__image">
-                            <img src={proizvod.slika} alt="{salon.naziv}" />
+                    <div className="product-item">
+                        <div className="image-container">
+                            <img src={proizvod.slika ? proizvod.slika : product} className="image-item" />
                         </div>
-                        <div>
-                            {klijent && <p>{proizvod.id}</p>}
+                        <div className="product-details">
                             <h3>Naziv: {proizvod.naziv}</h3>
                             <p>Cena: {proizvod.cena}</p>
-                            {console.log(proizvod.dostupnost)}
-                            <p>Dostupnost: {proizvod.dostupnost ? "NA STANJU" : "NEMA NA STANJU"}</p>
-                            {klijent && <button className="btn-cart" onClick={() => handleButtonClick(proizvod.id)}>
-                                <BsCart className="btn-cart__icon" />
-                                Dodaj u korpu
-                            </button>}
+                            <p className="dostupnost">Dostupnost: {proizvod.dostupnost ? "NA STANJU" : "NEMA NA STANJU"}</p>
+                            {klijent && (
+                                <button className="btn-cart" onClick={() => handleButtonClick(proizvod.id)}>
+                                    <BsCart className="btn-cart__icon" />
+                                    Dodaj u korpu
+                                </button>
+                            )}
 
                             {role === "Salon" && (
                                 <div>
-                                    {/* <button onClick={() => setIzmenaProizvoda(true)}>Izmeni</button> */}
                                     <FormIzmeniProizvod proizvod={proizvod} izmeniProizvod={izmeniProizvod} kategorije={kategorije} />
                                     <button onClick={() => obrisiProizvod(proizvod.id)}>Obriši</button>
                                 </div>
                             )}
                         </div>
-                    </Card>
+                    </div>
                 ))}
             </div>
+
         </div>
         // </div>
     );

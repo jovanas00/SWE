@@ -6,6 +6,7 @@ import { isKlijent } from '../Auth/AuthKlijent';
 import { vratiRole } from '../Auth/VratiRole';
 import './Korpa.css'
 import api from '../Auth/Interceptor';
+import item from "../../images/item.jpg"
 
 const Korpa = ({ id }) => {
     const [korpaId, setKorpaId] = useState(null);
@@ -80,7 +81,7 @@ const Korpa = ({ id }) => {
             {/* Render div for each product */}
             {proizvodi.map((proizvod) => (
                 <div key={proizvod.proizvodID} className="proizvod">
-                    <img src={proizvod.slikaProizvoda} alt={proizvod.naziv} />
+                    <img className="image-item" src={proizvod.slikaProizvoda ? proizvod.slikaProizvoda : item} alt={proizvod.naziv} />
                     <p className="proizvod-naziv">Naziv: {proizvod.nazivProizvoda}</p>
                     <p className="proizvod-kolicina">Kolicina: {proizvod.kolicina}</p>
                     <button className="obrisi-button" onClick={() => handleDeleteClick(proizvod.proizvodID)}>Obrisi</button>

@@ -255,7 +255,7 @@ public class KorisnikController : ControllerBase
 
     [Route("IzmeniLozinku/{korisnicko_ime}/{lozinka}/{NovaLozinka}")]
     [HttpPut]
-    [AllowAnonymous]
+    [Authorize]
     public async Task<ActionResult> IzmeniLozinku(string korisnicko_ime, string lozinka, string NovaLozinka)
     {
         if (string.IsNullOrWhiteSpace(korisnicko_ime) || korisnicko_ime.Length > 60)
@@ -316,6 +316,7 @@ public class KorisnikController : ControllerBase
     
     [HttpPost]
     [Route("Upload/{korisnicko_ime}")]
+    [Authorize]
     public async Task<IActionResult> Upload(string korisnicko_ime)
     {
         try
