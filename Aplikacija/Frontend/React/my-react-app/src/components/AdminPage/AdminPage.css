@@ -1,4 +1,11 @@
 /* Stilizacija admin stranice */
+.container-a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
 .admin-page {
   display: flex;
   flex-direction: column;
@@ -12,9 +19,11 @@
 
 .admin-sidebar {
   width: 200px;
+  flex-shrink: 0;
   background-color: #a9ebfc;
   overflow-y: auto;
 }
+
 
 .admin-main {
   flex-grow: 1;
@@ -43,12 +52,33 @@
 }
 
 .user-list {
-  max-height: 400px; /* Maksimalna visina prozora sa skrolom */
-  overflow-y: auto;
-  border: 1px solid #338fa5;
-  padding: 10px;
-  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
+
+.user-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 10px;
+  gap: 50px;
+}
+
+.user-card{
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+}
+
+.user-list li {
+  flex: 0 0 calc(33% - 20px);
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 4px;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+}
+
 
 .user-list div {
   margin-bottom: 10px;
@@ -59,6 +89,91 @@
   font-size: 15px;
   /* Dodajte ostale stilove po potrebi */
 }
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Prozirna pozadina */
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  padding: 20px;
+  max-width: 80%;
+  max-height: 80%;
+  overflow: auto;
+  border-radius: 4px;
+}
+
+.close-button {
+  padding: 6px 10px;
+  font-size: 15px;
+  /* Dodajte ostale stilove po potrebi */
+  border: 1px solid black;
+  border-radius: 4px;
+  cursor: pointer;
+  /* Dodajte ostale stilove po potrebi */
+  transition: background-color 0.3s ease; /* Dodajemo tranziciju za glatku promenu boje */
+}
+
+.close-button:hover {
+  background-color: #e0e0e0; /* Promena boje na hover */
+}
+
+.povecaj-button{
+  padding: 3px 5px;
+  font-size: 15px;
+  border: 0.8px solid black;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.close-button:hover, .povecaj-button:hover {
+  background-color: #fc6c6c; /* Promenite boju po želji */
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.profile-picture {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: #f1f1f1; /* Boja pozadine */
+}
+
+.profile-picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
 
 .delete-user-button {
   padding: 6px 10px;
@@ -86,8 +201,13 @@
   }
 }
 
+.user-list li {
+  flex-basis: 100%;
+  justify-content: center;
+}
+
 .scrollable-window {
-  max-height: 200px; /* Maksimalna visina prozora za prikaz kategorija */
+  max-height: 400px; /* Maksimalna visina prozora za prikaz kategorija */
   overflow-y: auto;
 }
 
@@ -147,7 +267,9 @@
 
 
 .admin-info {
-  margin-top: 20px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .admin-info h2 {
@@ -156,9 +278,11 @@
 
 .admin-info-details {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
+
 .admin-info-edit {
   display: flex;
   align-items: center;
@@ -167,6 +291,7 @@
 .admin-info-label {
   font-weight: bold;
   margin-right: 10px;
+  margin-bottom: 5px;
 }
 
 .admin-info-edit input {
@@ -177,6 +302,12 @@
 .admin-info-details p {
   margin: 0;
   margin-top: -8px; /* Podiže elemente malo gore */
+}
+
+.admin-info-details img {
+  max-width: 100%;
+  max-height: 100%;
+  margin-top: 5px; /* Dodajemo malo razmaka iznad slike */
 }
 
 .admin-info-details button {
@@ -215,6 +346,7 @@
   padding: 5px;
   width: 40px;
 }
+
 
 
 
