@@ -324,7 +324,7 @@ public class AdminController : ControllerBase
         }
     }
 
-
+    [AllowAnonymous]
     [HttpGet("SveKategorije")]
     public async Task<ActionResult<List<object>>> GetKategorije()
     {

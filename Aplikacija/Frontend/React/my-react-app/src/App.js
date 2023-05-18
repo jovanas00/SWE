@@ -19,6 +19,8 @@ import KlijentPage from './components/KlijentPage/KlijentPage';
 import Profil from './components/KlijentPage/Profil';
 import SaloniKlijent from './components/KlijentPage/SaloniKlijent';
 import SalonStranicaKlijent from './components/KlijentPage/SalonStranicaKlijent';
+import SaloniAdmin from './components/AdminPage/SaloniAdmin'
+import SalonStranicaAdmin from './components/AdminPage/SalonStranicaAdmin';
 
 
 function App() {
@@ -35,6 +37,8 @@ function App() {
 
             {/* Dodajte rute za administratora, salon i klijenta */}
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin/saloni" element={<SaloniAdmin />} />
+            <Route path="/admin/saloni/:id" element={<SalonStranicaAdmin />} />
             <Route path="/salon" element={<SalonPage />} />
             <Route path="/klijent" element={<SaloniKlijent />} />
             <Route path="/klijent/:id" element={<SalonStranicaKlijent />} />

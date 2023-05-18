@@ -72,6 +72,7 @@ const Body = () => {
 
   const role = vratiRole();
   const klijent = role === "Klijent" ? "Klijent" : null;
+  const admin = role === "Admin" ? "Admin" : null
   return (
     <div className="container">
       {/* za filter */}
@@ -91,10 +92,13 @@ const Body = () => {
           <div className="col-md-4 mb-3">  {/*treba jos da se cacka ovaj prikaz nije flex*/}
             {/* {console.error(salon.id)} */}
             {/*Link sluzi da svaka Salon kartica moze da se otvori na novu stranu gde ce se detaljno citati o salonima*/}
-            {!klijent && <Link to={`/saloni/${salon.id}`} key={salon.id} >
+            {!klijent && !admin && <Link to={`/saloni/${salon.id}`} key={salon.id} >
               <SalonCard salon={salon} />
             </Link>}
             {klijent && <Link to={`/klijent/${salon.id}`} key={salon.id} >
+              <SalonCard salon={salon} />
+            </Link>}
+            {admin && <Link to={`/admin/saloni/${salon.id}`} key={salon.id} >
               <SalonCard salon={salon} />
             </Link>}
           </div>

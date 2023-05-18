@@ -109,7 +109,7 @@ const Header = () => {
         <nav className={isNavbarVisible ? 'responsive_nav' : ''}>
           {/* url */}
           {klijent && <Link to="/klijent">Saloni</Link>}
-          {admin && <Link to="/saloni">Saloni</Link>}
+          {admin && <Link to="/admin/saloni">Saloni</Link>}
           {klijent && <Link to="/klijent/profil">Profil</Link>}
           {salon && <Link to="/salon">Profil</Link>}
           {(klijent || salon || admin) &&

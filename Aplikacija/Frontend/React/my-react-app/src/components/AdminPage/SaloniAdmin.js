@@ -6,20 +6,22 @@ import Header from '../Pocetna/Header';
 import Body from '../Saloni/Body';
 import SalonStranica from '../Saloni/SalonStranica';
 import TokenChecker from '../Auth/TokenChecker';
+import { isAdmin } from '../Auth/AuthAdmin';
 
 
-const SalonStranicaKlijent = () => {
-    if (isKlijent()) {
+const SaloniStranicaAdmin = () => {
+    if (isAdmin()) {
         return (
             <div>
+                <Header />
                 <TokenChecker/>
-                <SalonStranica/>
+                <Body/>
             </div>
         );
     }
     else {
         const role = vratiRole();
-        if (role === "Admin")
+        if (role === "Klijent")
             return <Navigate to={{ pathname: '/admin' }} />
         if (role === "Salon")
             return <Navigate to={{ pathname: '/salon' }} />
@@ -27,4 +29,4 @@ const SalonStranicaKlijent = () => {
     }
 };
 
-export default SalonStranicaKlijent;
+export default SaloniStranicaAdmin;
