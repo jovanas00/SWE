@@ -26,6 +26,18 @@ label {
     display: block;
     margin-bottom: 0.5rem;
 }
+.prijava-button{
+    padding: 6px 10px;
+    font-size: 15px;
+    border: 0.8px solid black;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.prijava-button:hover {
+    background-color: #fc6c6c; /* Promenite boju po želji */
+}
   
 input[type='text'],
 input[type='password'] {

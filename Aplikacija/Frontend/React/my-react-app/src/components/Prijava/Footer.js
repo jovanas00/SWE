@@ -57,7 +57,7 @@ const Footer = () => {
           <label htmlFor="lozinka">Lozinka:</label>
           <input type="password" id="lozinka" name="lozinka" value={prijava.lozinka} onChange={handleChange} required />
         </div>
-        <button type="submit">Prijavi se</button>
+        <button className="prijava-button" type="submit">Prijavi se</button>
       </form>
     </div>
   );
