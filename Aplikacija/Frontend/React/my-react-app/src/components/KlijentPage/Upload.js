@@ -31,6 +31,7 @@ const UploadFile = () => {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
+                window.location.reload(); // Osvežavanje stranice
             })
             .catch((error) => {
                 // Handle any errors
