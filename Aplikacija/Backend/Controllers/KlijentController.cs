@@ -144,6 +144,8 @@ public class KlijentController : ControllerBase
         {
             var zahtev = await Context.Zahtevi.FindAsync(idZahteva);
 
+            if(zahtev.status=="Obrađen")
+                return BadRequest("Zahtev je vec obradjen!");
             if (zahtev != null)
             {
                 Context.Zahtevi.Remove(zahtev);

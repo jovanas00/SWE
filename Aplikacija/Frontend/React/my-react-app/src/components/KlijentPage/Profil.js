@@ -192,7 +192,7 @@ const Profil = () => {
                                     <p>Adresa salona: {zahtev.salon.adresa}</p>
                                     <p>Grad salona: {zahtev.salon.grad}</p>
                                     <p>Kontakt telefon salona: {zahtev.salon.brojTelefona}</p>
-                                    <button className="obrisi-zahtev-button" onClick={() => handleDeleteZahtev(zahtev.id)}>Obriši zahtev</button>
+                                    {zahtev.status=="Neobrađen" && <button className="obrisi-zahtev-button" onClick={() => handleDeleteZahtev(zahtev.id)}>Obriši zahtev</button>}
                                     <hr /> {/* Linija na kraju zahteva */}
                                     
                                 </li>
