@@ -2,37 +2,29 @@ import { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import "./Informacije.css"
+import api from "../Auth/Interceptor";
+import { vratiKorisnickoIme } from "../Auth/VratIKorisnickoIme";
 
 const UserInfoModal = ({ userInfo, onClose }) => {
-    const [ime, setIme] = useState();
-    const [prezime, setPrezime] = useState();
-    const [adresa, setAdresa] = useState();
-    const [grad, setGrad] = useState();
-    const [brojTelefona, setBrojTelefona] = useState();
+    const [ime, setIme] = useState('');
+    const [prezime, setPrezime] = useState('');
+    const [adresa, setAdresa] = useState('');
+    const [grad, setGrad] = useState('');
+    const [brojTelefona, setBrojTelefona] = useState('');
+
+    const korisnicko_ime = vratiKorisnickoIme();
 
     const handleChangeUserInfo = async () => {
         if (ime === "" || prezime === "" || adresa === "" || grad === "" || brojTelefona === "") {
             alert("Niste popunili sva polja!");
             return;
         }
-
         try {
-            await axios.put(
-                `http://localhost:5169/Klijent/IzmeniProfilKlijenta/${userInfo.korisnicko_ime}`,
-                {
-                    ime,
-                    prezime,
-                    adresa,
-                    grad,
-                    brojTelefona,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${Cookies.get("token")}`,
-                    },
-                }
+            await api.put(
+                `/Klijent/IzmeniProfilKlijenta/${korisnicko_ime}/${ime}/${prezime}/${adresa}/${grad}/${brojTelefona}`
             );
             onClose();
+            window.location.reload();
         } catch (error) {
             console.error("Error changing user info:", error);
             // Handle the error

@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { vratiKorisnickoIme } from '../Auth/VratIKorisnickoIme';
 import Cookies from 'js-cookie';
+import api from '../Auth/Interceptor';
 
 const UploadFile = () => {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -21,14 +22,8 @@ const UploadFile = () => {
         const formData = new FormData();
         formData.append('file', file);
 
-        fetch(`http://localhost:5169/Korisnik/Upload/${korisnicko_ime}`, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                Authorization: `Bearer ${Cookies.get('token')}`,
-            },
-        })
-            .then((response) => response.json())
+        api.post(`/Korisnik/Upload/${korisnicko_ime}`, formData)
+            .then((response) => response.data)
             .then((data) => {
                 console.log(data);
                 window.location.reload(); // Osvežavanje stranice

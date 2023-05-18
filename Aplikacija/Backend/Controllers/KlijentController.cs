@@ -293,6 +293,7 @@ public class KlijentController : ControllerBase
     }
 
     [HttpGet("VratiProizvodeIzKorpe/{id_korpa}")]
+    [AllowAnonymous]
     public async Task<ActionResult<List<KorpaProizvod>>> VratiProizvodeIzKorpe(int id_korpa)
     {
         //nadjes korpu isto kao gore

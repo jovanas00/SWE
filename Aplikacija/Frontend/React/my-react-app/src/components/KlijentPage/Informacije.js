@@ -8,6 +8,7 @@ import { Card } from "react-bootstrap";
 import ChangePasswordModal from "./PasswordChangeModal";
 import UserInfoModal from "./UserInfoModal";
 import UploadFile from "./Upload";
+import api from "../Auth/Interceptor";
 
 const Informacije = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -33,21 +34,14 @@ const Informacije = () => {
 
   const fetchUserInfo = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:5169/Klijent/VratiKlijenta/${korisnicko_ime}`,
-        {
-          headers: {
-            Authorization: `Bearer ${Cookies.get("token")}`,
-          },
-        }
-      );
+      const response = await api.get(`/Klijent/VratiKlijenta/${korisnicko_ime}`);
       const data = response.data;
       setUserInfo(data);
       console.log(response.data);
     } catch (error) {
-      Cookies.remove("token");
-      navigate("/prijava");
-      console.error("Error fetching user info:", error);
+      Cookies.remove('token');
+      navigate('/prijava');
+      console.error('Error fetching user info:', error);
     }
   };
 

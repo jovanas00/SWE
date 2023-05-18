@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import './Zahtev.css'
+import api from '../Auth/Interceptor';
 
 const Zahtev = ({ id }) => {
     const [imeLjubimca, setImeLjubimca] = useState('');
@@ -34,14 +35,9 @@ const Zahtev = ({ id }) => {
         }
 
         try {
-            const response = await axios.post(
-                `http://localhost:5169/Klijent/PosaljiZahtev/${imeLjubimca}/${zivotinja}/${id}/${selectedUslugaId}/${selectedDate}/${selectedTime}`,
-                null,
-                {
-                    headers: {
-                        Authorization: `Bearer ${Cookies.get('token')}`,
-                    },
-                }
+            const response = await api.post(
+                `/Klijent/PosaljiZahtev/${imeLjubimca}/${zivotinja}/${id}/${selectedUslugaId}/${selectedDate}/${selectedTime}`,
+                null
             );
 
             // Handle the response
@@ -49,7 +45,7 @@ const Zahtev = ({ id }) => {
 
             // Reset form inputs
             setImeLjubimca('');
-            setSelectedUslugaId('')
+            setSelectedUslugaId('');
             setZivotinja('');
             setSelectedDate('');
             setSelectedTime('');
@@ -61,6 +57,7 @@ const Zahtev = ({ id }) => {
             }
         }
     };
+
 
     return (
         <form className="form-container" onSubmit={handleSubmit}>

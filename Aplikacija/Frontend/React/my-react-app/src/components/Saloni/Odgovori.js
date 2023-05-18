@@ -7,6 +7,7 @@ import user from '../../images/user.webp';
 import { vratiRole } from '../Auth/VratiRole';
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import api from "../Auth/Interceptor";
 
 
 const Odgovori = ({ id }) => {
@@ -18,25 +19,22 @@ const Odgovori = ({ id }) => {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (inputText === "") {
-            alert("Niste postavili pitanje!")
+            alert("Niste postavili pitanje!");
             return;
         }
-        axios.post('http://localhost:5169/Klijent/PostaviPitanje/' + encodeURIComponent(inputText) + '/' + id, {
-        }, {
-            headers: {
-                'Authorization': `Bearer ${Cookies.get('token')}`
-            }
-        })
+
+        api
+            .post(`http://localhost:5169/Klijent/PostaviPitanje/${encodeURIComponent(inputText)}/${id}`)
             .then((response) => {
                 console.log(response.data);
-                alert(response.data)
-                window.location.reload()
-
+                alert(response.data);
+                window.location.reload();
             })
             .catch((error) => {
                 console.log(error.data);
             });
     };
+
 
     const UcitajPitanja = () => {
         axios.get(`http://localhost:5169/Salon/VratiPitanjaSalona/${id}`)

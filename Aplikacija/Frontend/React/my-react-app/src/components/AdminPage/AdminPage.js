@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header from '../Pocetna/Header';
 import axios from 'axios';
 import './AdminPage.css';
@@ -13,6 +13,7 @@ import UploadFile from "../KlijentPage/Upload";
 import ChangePasswordModal from "../KlijentPage/PasswordChangeModal";
 import AdminInfoModal from "./AdminInfoModal";
 import TokenChecker from '../Auth/TokenChecker';
+import api from '../Auth/Interceptor';
 
 const AdminPage = () => {
   const [selectedSection, setSelectedSection] = useState(null);
@@ -30,36 +31,6 @@ const AdminPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
 
-  // const prevTokenRef = useRef('');
-
-  // useEffect(() => {
-  //   const checkToken = () => {
-  //     const token = Cookies.get('token');
-
-  //     if (!token) {
-  //       window.location.href = '/prijava';
-  //     } else {
-  //       if (prevTokenRef.current !== token && prevTokenRef.current!=='') {
-  //         window.location.href = '/prijava';
-  //         Cookies.remove('token')
-  //       }
-
-  //       prevTokenRef.current = token;
-  //     }
-  //   };
-
-  //   checkToken();
-
-  //   const interval = setInterval(checkToken, 1000); // Adjust the interval as needed
-
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, []);
-
-
-
-
   // Autorizacija
   const token = Cookies.get('token');
   const config = {
@@ -72,16 +43,15 @@ const AdminPage = () => {
 
   const handleError = () => {
     window.location.reload();
-    alert('Greška sa autorizacijom, ulogujte se!');
   };
 
   // Funkcija za dohvatanje informacija o adminu
   const fetchAdminInfo = async () => {
     try {
-      const response = await axios.get('http://localhost:5169/Admin/SviAdmini', config);
+      const response = await api.get('/Admin/SviAdmini');
       const korIme = vratiKorisnickoIme();
       const adminInfo = response.data;
-      const admin = adminInfo.find(admin => admin.korisnik.korisnickoIme === korIme);
+      const admin = adminInfo.find((admin) => admin.korisnik.korisnickoIme === korIme);
       if (admin) {
         setAdminInfo(admin);
         setIsAdminInfoLoaded(true);
@@ -120,21 +90,19 @@ const AdminPage = () => {
   //Funkcija za prikaz svih kategorija preko Axios
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:5169/Admin/SveKategorije', config);
+      const response = await api.get('/Admin/SveKategorije');
       setCategories(response.data); // Postavljanje podataka o kategorijama u state
     } catch (error) {
       handleError();
     }
   };
 
-
-
   // Funkcija za dodavanje kategorije preko Axios
   const addCategory = async (naziv) => {
     try {
-      const response = await axios.post(`http://localhost:5169/Admin/DodajKategoriju/${naziv}`, null, config);
+      const response = await api.post(`/Admin/DodajKategoriju/${naziv}`);
       console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
-      fetchCategories(); // osvežava lsitu kategorija u prozoru
+      fetchCategories(); // osvežava listu kategorija u prozoru
     } catch (error) {
       handleError();
     }
@@ -143,9 +111,9 @@ const AdminPage = () => {
   // Funkcija za brisanje kategorije preko Axios
   const deleteCategory = async (id_kategorija) => {
     try {
-      const response = await axios.post(`http://localhost:5169/Admin/ObrisiKategoriju/${id_kategorija}`, null, config);
+      const response = await api.post(`/Admin/ObrisiKategoriju/${id_kategorija}`);
       console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
-      fetchCategories(); // osvežava lsitu kategorija u prozoru
+      fetchCategories(); // osvežava listu kategorija u prozoru
     } catch (error) {
       handleError();
     }
@@ -154,10 +122,9 @@ const AdminPage = () => {
   // Funkcija za brisanje korisnika preko Axios
   const deleteUser = async () => {
     try {
-      const response = await axios.delete(`http://localhost:5169/Admin/ObrisiKorisnika/${unosKorisnickogImena}`, config);
+      const response = await api.delete(`/Admin/ObrisiKorisnika/${unosKorisnickogImena}`);
       console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
-
-
+  
       if (response.data == true) {
         alert('Korisnik je uspešno obrisan.');
       } else {
@@ -169,11 +136,12 @@ const AdminPage = () => {
       handleError();
     }
   };
+  
 
   // Funkcija za izmenu admina preko Axios
   const updateAdmin = async (korisnicko_ime, ime, prezime) => {
     try {
-      const response = await axios.put(`http://localhost:5169/Admin/IzmeniAdmina/${korisnicko_ime}/${ime}/${prezime}`);
+      const response = await api.put(`/Admin/IzmeniAdmina/${korisnicko_ime}/${ime}/${prezime}`);
       console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
       alert("Uspešno promenjeni podaci admina");
       window.location.reload();
@@ -188,7 +156,7 @@ const AdminPage = () => {
     const formData = new FormData();
     formData.append('file', file);
     try {
-      const response = await axios.post(`http://localhost:5169/Korisnik/Upload/${korisnicko_ime}`, formData, {
+      const response = await api.post(`/Korisnik/Upload/${korisnicko_ime}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
@@ -200,7 +168,7 @@ const AdminPage = () => {
   // Funkcija za prikaz svih korisnika preko Axios
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:5169/Korisnik/PrikaziKorisnike', config);
+      const response = await api.get('/Korisnik/PrikaziKorisnike');
       setUsers(response.data); // Postavljanje podataka o korisnicima u state
     } catch (error) {
       //handleError();
@@ -224,7 +192,7 @@ const AdminPage = () => {
   if (isAdmin()) {
     return (
       <div className="admin-page">
-        <TokenChecker/>
+        <TokenChecker />
         <Header />
         <div className="admin-content">
           <aside className="admin-sidebar">

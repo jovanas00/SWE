@@ -7,6 +7,7 @@ import Cookies from "js-cookie"
 import { BsCart } from 'react-icons/bs';
 import FormDodajProizvod from "../SalonPage/FormDodajProizvod";
 import FormIzmeniProizvod from "../SalonPage/FormIzmeniProizvod";
+import api from "../Auth/Interceptor";
 // import { Form } from "react-router-dom";
 
 const Proizvodi = ({ id }) => {
@@ -113,16 +114,15 @@ const Proizvodi = ({ id }) => {
         }
     };
 
-    const handleDodajKorpa =
-        async (proizvodID) => {
-            try {
-                const response = await axios.put(`http://localhost:5169/Klijent/DodajUKorpu/${proizvodID}`, {}, config);
-                console.log(response.data); // response message\
-                alert(response.data)
-            } catch (error) {
-                console.error('There was a problem with the PUT request:', error);
-            }
+    const handleDodajKorpa = async (proizvodID) => {
+        try {
+          const response = await api.put(`http://localhost:5169/Klijent/DodajUKorpu/${proizvodID}`, {});
+          console.log(response.data); // Response message
+          alert(response.data);
+        } catch (error) {
+          console.error('There was a problem with the PUT request:', error);
         }
+    }
 
     const handleButtonClick = async (id) => {
         setProizvodID(id);

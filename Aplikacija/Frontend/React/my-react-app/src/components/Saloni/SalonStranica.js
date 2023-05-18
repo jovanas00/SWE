@@ -10,6 +10,7 @@ import Cookies from 'js-cookie';
 import icon from '../../images/salonIcon.png';
 import { isKlijent } from '../Auth/AuthKlijent';
 import { vratiRole } from '../Auth/VratiRole';
+import api from '../Auth/Interceptor';
 
 const SalonStranica = () => {
     const { id } = useParams();
@@ -30,17 +31,12 @@ const SalonStranica = () => {
                 });
         }
         if (klijent) {
-            axios.delete(`http://localhost:5169/Klijent/IsprazniKorpu/${id}`, {
-                headers: {
-                    'Authorization': `Bearer ${Cookies.get('token')}`
-                }
-            })
-                .then(response => {
-                    console.log(response.data);
-                })
-                .catch(error => {
-                    console.error(error);
-                });
+            try {
+                const response = api.delete(`/Klijent/IsprazniKorpu/${id}`);
+                console.log(response.data);
+            } catch (error) {
+                console.error(error);
+            }
         }
         const dohvatiProsecnuOcenu = async () => {
             try {
@@ -64,23 +60,23 @@ const SalonStranica = () => {
         <div>
             <Header />
 
-                <div className="salon-info1">
-                    <div className="salon-card1">
-                        <div className="salon-card__image1">
-                            <img className="slika" src={icon} alt="{salon.naziv}" />
-                        </div>
-                        <div className="salon-card__text1">
-                            <h5>Naziv: {salon.naziv}</h5>
-                            <p>Adresa: {salon.adresa}</p>
-                            <p>Grad: {salon.grad}</p>
-                            <p>Broj telefona: {salon.brojTelefona}</p>
-                            <p>Prosecna ocena: {prosecnaOcena}</p>
-                        </div>
+            <div className="salon-info1">
+                <div className="salon-card1">
+                    <div className="salon-card__image1">
+                        <img className="slika" src={icon} alt="{salon.naziv}" />
                     </div>
-                    <div className="salon-info__items">
-                        <SalonInfo salon={salon} id={id} />
+                    <div className="salon-card__text1">
+                        <h5>Naziv: {salon.naziv}</h5>
+                        <p>Adresa: {salon.adresa}</p>
+                        <p>Grad: {salon.grad}</p>
+                        <p>Broj telefona: {salon.brojTelefona}</p>
+                        <p>Prosecna ocena: {prosecnaOcena}</p>
                     </div>
                 </div>
+                <div className="salon-info__items">
+                    <SalonInfo salon={salon} id={id} />
+                </div>
+            </div>
         </div>
     );
 }

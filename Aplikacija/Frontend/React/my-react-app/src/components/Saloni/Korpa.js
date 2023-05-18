@@ -5,6 +5,7 @@ import { vratiKorisnickoIme } from '../Auth/VratIKorisnickoIme';
 import { isKlijent } from '../Auth/AuthKlijent';
 import { vratiRole } from '../Auth/VratiRole';
 import './Korpa.css'
+import api from '../Auth/Interceptor';
 
 const Korpa = ({ id }) => {
     const [korpaId, setKorpaId] = useState(null);
@@ -40,12 +41,7 @@ const Korpa = ({ id }) => {
         fetchKorpaId();
         const VratiProizvodeIzKorpe = async (korpaId) => {
             try {
-                const response = await axios.get(`http://localhost:5169/Klijent/VratiProizvodeIzKorpe/${korpaId}`, {
-                    headers: {
-                        Authorization: `Bearer ${Cookies.get('token')}`,
-                    },
-                });
-
+                const response = await api.get(`/Klijent/VratiProizvodeIzKorpe/${korpaId}`);
                 console.log(response.data); // Log the response data
                 setProizvodi(response.data);
                 setShowNaruciButton(true);
@@ -57,11 +53,7 @@ const Korpa = ({ id }) => {
 
     const handleDeleteClick = async (proizvodID) => {
         try {
-            const response = await axios.delete(`http://localhost:5169/Klijent/IzbaciIzKorpe/${proizvodID}/${korpaId}`, {
-                headers: {
-                    Authorization: `Bearer ${Cookies.get('token')}`,
-                },
-            });
+            const response = await api.delete(`/Klijent/IzbaciIzKorpe/${proizvodID}/${korpaId}`);
             console.log('Product removed from cart successfully!');
             alert(response.data);
             setProizvodi(prevProizvodi => prevProizvodi.filter(proizvod => proizvod.proizvodID !== proizvodID));
@@ -74,11 +66,7 @@ const Korpa = ({ id }) => {
 
     const handleNaruciClick = async (proizvodID) => {
         try {
-            const response = await axios.post(`http://localhost:5169/Klijent/Naruci/${korpaId}/${id}`, null, {
-                headers: {
-                    Authorization: `Bearer ${Cookies.get('token')}`,
-                },
-            });
+            const response = await api.post(`/Klijent/Naruci/${korpaId}/${id}`, null);
             alert(response.data);
             setProizvodi([]);
             // Optionally, you can perform any necessary actions after placing the order

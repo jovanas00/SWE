@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import "./Informacije.css";
+import api from "../Auth/Interceptor";
 
 const ChangePasswordModal = ({ korisnicko_ime, showModal, setShowModal }) => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -10,21 +11,13 @@ const ChangePasswordModal = ({ korisnicko_ime, showModal, setShowModal }) => {
 
   const handlePasswordChange = async () => {
     try {
-      const response = await axios.put(
-        `http://localhost:5169/Korisnik/IzmeniLozinku/${korisnicko_ime}/${currentPassword}/${newPassword}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${Cookies.get("token")}`,
-          },
-        }
-      );
+      const response = await api.put(`/Korisnik/IzmeniLozinku/${korisnicko_ime}/${currentPassword}/${newPassword}`, {});
       setShowModal(false);
       setCurrentPassword("");
       setNewPassword("");
       alert(response.data);
     } catch (error) {
-      console.error("Greška pri izmeni lozinke", error);
+      console.error('Greška pri izmeni lozinke', error);
     }
   };
 

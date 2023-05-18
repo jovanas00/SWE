@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import "./AdminPage.css"
+import api from "../Auth/Interceptor";
 
 const AdminInfoModal = ({ adminInfo, onClose }) => {
     const [ime, setIme] = useState();
@@ -15,19 +16,10 @@ const AdminInfoModal = ({ adminInfo, onClose }) => {
         }
 
         try {
-            await axios.put(
-                `http://localhost:5169/Admin/IzmeniAdmina/${korisnickoIme}/${ime}/${prezime}`,
-                {
-                    ime,
-                    prezime,
-                    korisnickoIme,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${Cookies.get("token")}`,
-                    },
-                }
+            const response = await api.put(
+                `/Admin/IzmeniAdmina/${korisnickoIme}/${ime}/${prezime}`
             );
+            console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
             onClose();
         } catch (error) {
             console.error("Error changing user info:", error);

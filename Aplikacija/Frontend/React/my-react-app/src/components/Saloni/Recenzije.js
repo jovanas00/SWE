@@ -6,6 +6,7 @@ import { vratiRole } from "../Auth/VratiRole";
 import { BsStarFill, BsStar } from 'react-icons/bs';
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import api from "../Auth/Interceptor";
 
 
 const Recenzije = ({ id }) => {
@@ -38,28 +39,35 @@ const Recenzije = ({ id }) => {
     };
 
     const handleSubmit = (event) => {
-        event.preventDefault()
+        event.preventDefault();
+
         if (inputText === "") {
-            alert("Niste uneli tekst recenzije!")
+            alert("Niste uneli tekst recenzije!");
             return;
         }
+
         const selectedValue = document.querySelector('input[name="ocena"]:checked').value;
-        axios.post('http://localhost:5169/Klijent/OceniSalon/' + encodeURIComponent(inputText) + '/' + selectedValue + '/' + id, {
-        }, {
-            headers: {
-                'Authorization': `Bearer ${Cookies.get('token')}`
-            }
-        })
+
+        api.post(
+                `http://localhost:5169/Klijent/OceniSalon/${encodeURIComponent(inputText)}/${selectedValue}/${id}`,
+                null,
+                {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get("token")}`,
+                    },
+                }
+            )
             .then((response) => {
                 alert(response.data);
                 window.location.reload();
             })
             .catch((error) => {
                 if (error.response && error.response.data === false) {
-                    alert("Vec ste ocenili salon!");
+                    alert("Već ste ocenili salon!");
                 }
             });
     };
+
     const role = vratiRole();
     return (
         <div>
