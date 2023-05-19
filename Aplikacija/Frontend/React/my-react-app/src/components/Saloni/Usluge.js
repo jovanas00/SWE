@@ -4,6 +4,7 @@ import Table from "react-bootstrap/Table";
 import Card from "../UI/Card";
 import FormDodajUslugu from "../SalonPage/FormDodajUslugu";
 import { vratiRole } from "../Auth/VratiRole";
+import '../UI/Button.css';
 
 const Usluge = ({ id }) => {
     const [usluge, setUsluge] = useState([]);
@@ -50,15 +51,16 @@ const Usluge = ({ id }) => {
             });
     };
 
-    //ogranicenje za prazno polje fali
-    const izmeniUslugu = (id) => {
+    const izmeniUslugu = (id, index) => {
         const putanja = `http://localhost:5169/Usluga/IzmeniUslugu/${id}?`;
 
         let parametri = [];
         const naziv = izmenjeneVrednosti.naziv;
         const cena = izmenjeneVrednosti.cena;
         const opis = izmenjeneVrednosti.opis;
-        const dostupnost = izmenjeneVrednosti.dostupnost;
+        const dostupnost = izmenjeneVrednosti.dostupnost !== undefined ?
+            izmenjeneVrednosti.dostupnost :
+            usluge[index].dostupnost;
         if (naziv !== undefined) {
             parametri.push(`naziv=${naziv}`);
         }
@@ -183,13 +185,13 @@ const Usluge = ({ id }) => {
                                             <td>
                                                 {trenutnoIzmenjenRed === index ? (
                                                     <>
-                                                        <button onClick={() => izmeniUslugu(usluga.id)}>Potvrdi</button>
-                                                        <button onClick={() => setTrenutnoIzmenjenRed(null)}>Odustani</button>
+                                                        <button onClick={() => izmeniUslugu(usluga.id, index)} className="customButton">Potvrdi</button>
+                                                        <button onClick={() => setTrenutnoIzmenjenRed(null)} className="customButton">Odustani</button>
                                                     </>
                                                 ) : (
-                                                    <button onClick={() => handleIzmeni(index)}>Izmeni</button>
+                                                    <button onClick={() => handleIzmeni(index)} className="customButton">Izmeni</button>
                                                 )}
-                                                <button onClick={() => obrisiUslugu(usluga.id)}>Obriši</button>
+                                                <button onClick={() => obrisiUslugu(usluga.id)} className="customButton">Obriši</button>
                                             </td>
                                         )}
                                     </tr>
