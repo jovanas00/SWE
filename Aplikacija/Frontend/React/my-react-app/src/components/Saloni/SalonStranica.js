@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../Pocetna/Header';
-import Card from '../UI/Card';
+import SalonCard from './SalonCard';
 import SalonInfo from './SalonInfo';
 import "./SalonStranica.css";
 import Korpa from './Korpa';
@@ -60,10 +60,13 @@ const SalonStranica = () => {
         <div>
             <Header />
 
-            <div className="salon-info1">
+            <div className="salon-info">
+                {/* <div className="salon-card__div">
+                    <SalonCard salon={salon} slika={salon.korisnik.slika} />
+                </div> */}
                 <div className="salon-card1">
                     <div className="salon-card__image1">
-                        <img className="slika" src={icon} alt="{salon.naziv}" />
+                        <img className="slika" src={salon.korisnik.slika ? salon.korisnik.slika : icon} alt={salon.naziv}/>
                     </div>
                     <div className="salon-card__text1">
                         <h5>Naziv: {salon.naziv}</h5>
