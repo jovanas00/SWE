@@ -9,13 +9,13 @@ import FormDodajProizvod from "../SalonPage/FormDodajProizvod";
 import FormIzmeniProizvod from "../SalonPage/FormIzmeniProizvod";
 import product from "../../images/item.jpg";
 import api from "../Auth/Interceptor";
-// import { Form } from "react-router-dom";
+import UploadFile from "../SalonPage/UploadProizvodSlika";
+import '../UI/Button.css';
 
 const Proizvodi = ({ id }) => {
     const [proizvodi, setProizvodi] = useState([]);
     const [proizvodID, setProizvodID] = useState();
     const [kategorije, setKategorije] = useState([]);
-    // const [izmenaProizvoda, setIzmenaProizvoda] = useState(false);
 
     const token = Cookies.get('token');
     const config = {
@@ -131,6 +131,26 @@ const Proizvodi = ({ id }) => {
         await handleDodajKorpa(id);
     }
 
+    const handleUploadFinished = (response, proizvodID) => {
+        const { dbPath } = response;
+        console.log(dbPath);
+
+        setProizvodi((prevProizvodi) => {
+            const updatedProizvodi = prevProizvodi.map((proizvod) => {
+                console.log(proizvod.slika);
+                if (proizvod.id === proizvodID) {
+                    return {
+                        ...proizvod,
+                        slika: dbPath ? `http://localhost:5169/${dbPath}` : product,
+                    };
+                }
+                return proizvod;
+            });
+            ucitajProizvode();
+            return updatedProizvodi;
+        });
+    };
+
     //ovde bi mozda moglo da se podesi da se filtrira po kategorije, nije dovrseno
     // const handleFilterSubmit = (selektovaneKategorije) => {
     //     axios.get()
@@ -141,17 +161,14 @@ const Proizvodi = ({ id }) => {
     const klijent = role === "Klijent" ? "Klijent" : null
     return (
         <div>
-            {/* <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" }}>
-                <p style={{ fontSize: "40px" }}><strong><u>Proizvodi</u></strong></p>
-            </div> */}
             <div>
                 {role === "Salon" && <FormDodajProizvod dodajProizvod={dodajProizvod} kategorije={kategorije} />}
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(500px, 1fr))", gap: "10px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(500px, 1fr))", gap: "10px", marginTop: "10px"}}>
                 {proizvodi.map((proizvod) => (
                     <div className="product-item">
                         <div className="image-container">
-                            <img src={proizvod.slika ? proizvod.slika : product} className="image-item" />
+                            <img src={proizvod.slika ? proizvod.slika : product} alt={proizvod.naziv} className="image-item" />
                         </div>
                         <div className="product-details">
                             <h3>Naziv: {proizvod.naziv}</h3>
@@ -165,9 +182,10 @@ const Proizvodi = ({ id }) => {
                             )}
 
                             {role === "Salon" && (
-                                <div>
+                                <div style={{ display: "flex", justifyContent: "space-evenly", alignItems: "center", topMargin:"20px"}}>
                                     <FormIzmeniProizvod proizvod={proizvod} izmeniProizvod={izmeniProizvod} kategorije={kategorije} />
-                                    <button onClick={() => obrisiProizvod(proizvod.id)}>Obriši</button>
+                                    <UploadFile id={proizvod.id} onUploadFinished={(response) => handleUploadFinished(response, proizvod.id)} />
+                                    <button onClick={() => obrisiProizvod(proizvod.id)} className="customButton">Obriši</button>
                                 </div>
                             )}
                         </div>
