@@ -7,6 +7,7 @@ import { BsStarFill, BsStar } from 'react-icons/bs';
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import api from "../Auth/Interceptor";
+import { formatirajDatum } from "../UI/FormatirajDatum";
 
 
 const Recenzije = ({ id }) => {
@@ -138,17 +139,17 @@ const Recenzije = ({ id }) => {
     );
 };
 
-function formatirajDatum(datum) {
-    const formatiran = new Date(datum);
-    const opcije = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true
-    };
-    return formatiran.toLocaleString('en-US', opcije);
-}
+// function formatirajDatum(datum) {
+//     const formatiran = new Date(datum);
+//     const opcije = {
+//         year: 'numeric',
+//         month: 'long',
+//         day: 'numeric',
+//         hour: 'numeric',
+//         minute: 'numeric',
+//         hour12: true
+//     };
+//     return formatiran.toLocaleString('en-US', opcije);
+// }
 
 export default Recenzije;
