@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Card from '../UI/Card';
+import Button from '../UI/Button';
 
 const FormDodajUslugu = ({ dodajUslugu }) => {
     const [naziv, setNaziv] = useState('');
@@ -34,42 +35,46 @@ const FormDodajUslugu = ({ dodajUslugu }) => {
     return (
         <Card>
             <form onSubmit={handleSubmit}>
-                <label>
-                    Naziv:
-                    <input
-                        type="text"
-                        value={naziv}
-                        onChange={(e) => setNaziv(e.target.value)}
-                    />
-                </label>
-
-                <label>
-                    Cena:
-                    <input
-                        type="number"
-                        value={cena}
-                        onChange={(e) => setCena(e.target.value)}
-                    />
-                </label>
-
-                <label>
-                    Opis:
-                    <textarea
-                        value={opis}
-                        onChange={(e) => setOpis(e.target.value)}
-                    ></textarea>
-                </label>
-
-                <label>
-                    Dostupnost:
-                    <input
-                        type="checkbox"
-                        checked={dostupnost}
-                        onChange={(e) => setDostupnost(e.target.checked)}
-                    />
-                </label>
-
-                <button type="submit">Dodaj Uslugu</button>
+                <div>
+                    <label>
+                        Naziv:
+                        <input
+                            type="text"
+                            value={naziv}
+                            onChange={(e) => setNaziv(e.target.value)}
+                        />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Cena:
+                        <input
+                            type="number"
+                            value={cena}
+                            onChange={(e) => setCena(e.target.value)}
+                        />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Opis:
+                        <textarea
+                            value={opis}
+                            onChange={(e) => setOpis(e.target.value)}
+                        ></textarea>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Dostupnost:
+                        <input
+                            type="checkbox"
+                            checked={dostupnost}
+                            onChange={(e) => setDostupnost(e.target.checked)}
+                        />
+                    </label>
+                </div>
+                <Button type="submit" naziv={"Dodaj uslugu"}>Dodaj Uslugu</Button>
             </form>
         </Card>
 
