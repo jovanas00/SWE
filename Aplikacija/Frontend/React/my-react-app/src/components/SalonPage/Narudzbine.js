@@ -5,6 +5,7 @@ import { vratiKorisnickoIme } from "../Auth/VratIKorisnickoIme";
 import { isSalon } from "../Auth/AuthSalon";
 import { formatirajDatum } from "../UI/FormatirajDatum";
 import DetaljiNarudzbine from "./DetaljiNarudzbine";
+import Card from "../UI/Card";
 
 const Narudzbine = () => {
     const korisnicko_ime = vratiKorisnickoIme();
@@ -44,32 +45,34 @@ const Narudzbine = () => {
     }, []);
 
     return (
-        <Table striped bordered responsive>
-            <thead>
-                <tr>
-                    <th>Korisnik(korisničko ime)</th>
-                    <th>Status</th>
-                    <th>Komentar</th>
-                    <th>Ukupna cena</th>
-                    <th>Datum</th>
-                    <th>Detalji</th>
-                </tr>
-            </thead>
-            <tbody>
-                {narudzbine.map((narudzbina) => (
+        <Card>
+            <Table striped bordered responsive>
+                <thead>
                     <tr>
-                        <td>{narudzbina.korisnickoIme}</td>
-                        <td>{narudzbina.status}</td>
-                        <td>{narudzbina.komentarSalona}</td>
-                        <td>{narudzbina.ukupnaCena}</td>
-                        <td>{formatirajDatum(narudzbina.datum)}</td>
-                        <td>
-                            <DetaljiNarudzbine narudzbina={narudzbina} ucitajNarudzbine={ucitajNarudzbine} />
-                        </td>
+                        <th>Korisnik(korisničko ime)</th>
+                        <th>Status</th>
+                        <th>Komentar</th>
+                        <th>Ukupna cena</th>
+                        <th>Datum</th>
+                        <th>Detalji</th>
                     </tr>
-                ))}
-            </tbody>
-        </Table>
+                </thead>
+                <tbody>
+                    {narudzbine.map((narudzbina) => (
+                        <tr>
+                            <td>{narudzbina.korisnickoIme}</td>
+                            <td>{narudzbina.status}</td>
+                            <td>{narudzbina.komentarSalona}</td>
+                            <td>{narudzbina.ukupnaCena}</td>
+                            <td>{formatirajDatum(narudzbina.datum)}</td>
+                            <td>
+                                <DetaljiNarudzbine narudzbina={narudzbina} ucitajNarudzbine={ucitajNarudzbine} />
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+        </Card>
     );
 };
 
