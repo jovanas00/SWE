@@ -6,27 +6,29 @@
     height: 40vh;
     background-color: #ccf5ff;
 }
-  
+
 .login-form {
     background-color: #fff;
-    padding: 1rem 2rem 2rem 2rem; /* gore, desno, dole, levo */
+    padding: 1rem 2rem 2rem 2rem;
+    /* gore, desno, dole, levo */
     border-radius: 0.25rem;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
 }
-  
+
 .login-form h2 {
     margin-bottom: 1rem;
 }
-  
+
 .form-group {
     margin-bottom: 1rem;
 }
-  
+
 label {
     display: block;
     margin-bottom: 0.5rem;
 }
-.prijava-button{
+
+.prijava-button {
     padding: 6px 10px;
     font-size: 15px;
     border: 0.8px solid black;
@@ -36,9 +38,10 @@ label {
 }
 
 .prijava-button:hover {
-    background-color: #fc6c6c; /* Promenite boju po želji */
+    background-color: #fc6c6c;
+    /* Promenite boju po želji */
 }
-  
+
 input[type='text'],
 input[type='password'] {
     width: 100%;
@@ -47,7 +50,7 @@ input[type='password'] {
     border-radius: 0.25rem;
     border: 1px solid #ccc;
 }
-  
+
 .footer button {
     display: block;
     width: 100%;
@@ -58,13 +61,19 @@ input[type='password'] {
     background-color: #29335c;
     color: #fff;
     cursor: pointer;
-  }
-  
-  .footer button:hover {
+}
+
+.footer button:hover {
     background-color: #5767aa;
-  }
-  
+}
+
 
 body {
-    background-color:  #ccf5ff;
+    background-color: #ccf5ff;
+}
+
+.loginForm-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Footer.css';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
@@ -44,7 +45,7 @@ const Footer = () => {
         window.alert('Pogrešno korisničko ime ili lozinka!');
       });
   };
-  
+
   return (
     <div className="login-container">
       <form onSubmit={handleSubmit} className="login-form">
@@ -57,7 +58,10 @@ const Footer = () => {
           <label htmlFor="lozinka">Lozinka:</label>
           <input type="password" id="lozinka" name="lozinka" value={prijava.lozinka} onChange={handleChange} required />
         </div>
-        <button className="prijava-button" type="submit">Prijavi se</button>
+        <div className="loginForm-button">
+          <button className="prijava-button" type="submit">Prijavi se</button>
+        </div>
+        <p className="registration-login">Nemaš nalog? <Link to="/registracija">Registruj se</Link></p>
       </form>
     </div>
   );

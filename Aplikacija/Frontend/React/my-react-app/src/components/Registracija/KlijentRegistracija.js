@@ -74,8 +74,8 @@ const KlijentRegistracija = () => {
         <label htmlFor="grad">Grad:</label>
         <input type="text" id="grad" name="grad" onChange={handleChange} value={client.grad} required />
         <button type="submit">Registruj se</button>
+        <p className="registration-login">Već imaš nalog? <Link to="/prijava">Prijavi se</Link></p>
       </form>
-      <p className="registration-login">Već imaš nalog? <Link to="/prijava">Prijavi se</Link></p>
     </div>
   );
 };
