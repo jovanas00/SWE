@@ -4,6 +4,7 @@ import { Table } from "react-bootstrap";
 import { vratiKorisnickoIme } from "../Auth/VratIKorisnickoIme";
 import { formatirajDatum } from "../UI/FormatirajDatum";
 import DetaljiZahteva from "./DetaljiZahteva";
+import Card from "../UI/Card";
 
 const Zahtevi = () => {
     const korisnicko_ime = vratiKorisnickoIme();
@@ -42,30 +43,32 @@ const Zahtevi = () => {
     }, []);
 
     return (
-        <Table striped bordered responsive>
-            <thead>
-                <tr>
-                    <th>Tip zivotinje</th>
-                    <th>Status</th>
-                    <th>Komentar</th>
-                    <th>Datum</th>
-                    <th>Detalji</th>
-                </tr>
-            </thead>
-            <tbody>
-                {zahtevi.map((zahtev) => (
+        <Card>
+            <Table striped bordered responsive>
+                <thead>
                     <tr>
-                        <td>{zahtev.zivotinja}</td>
-                        <td>{zahtev.status}</td>
-                        <td>{zahtev.komentarSalona}</td>
-                        <td>{formatirajDatum(zahtev.datumVreme)}</td>
-                        <td>
-                            <DetaljiZahteva zahtev={zahtev} ucitajZahteve={ucitajZahteve} />
-                        </td>
+                        <th>Tip zivotinje</th>
+                        <th>Status</th>
+                        <th>Komentar</th>
+                        <th>Datum</th>
+                        <th>Detalji</th>
                     </tr>
-                ))}
-            </tbody>
-        </Table>
+                </thead>
+                <tbody>
+                    {zahtevi.map((zahtev) => (
+                        <tr>
+                            <td>{zahtev.zivotinja}</td>
+                            <td>{zahtev.status}</td>
+                            <td>{zahtev.komentarSalona}</td>
+                            <td>{formatirajDatum(zahtev.datumVreme)}</td>
+                            <td>
+                                <DetaljiZahteva zahtev={zahtev} ucitajZahteve={ucitajZahteve} />
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+        </Card>
     );
 };
 

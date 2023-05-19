@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Modal, Button } from 'react-bootstrap';
 import { formatirajDatum } from "../UI/FormatirajDatum";
 import axios from "axios";
+import './Modal.css';
+import '../UI/Button.css';
 
 const DetaljiZahteva = ({ zahtev, ucitajZahteve }) => {
     const [modalOpen, setModalOpen] = useState(false);
@@ -53,7 +55,7 @@ const DetaljiZahteva = ({ zahtev, ucitajZahteve }) => {
 
     return (
         <>
-            <button onClick={openModal}>Pogledaj detalje</button>
+            <button onClick={openModal} className="customButton">Pogledaj detalje</button>
 
             <Modal show={modalOpen} onHide={closeModal}>
                 <Modal.Header closeButton>
@@ -98,23 +100,23 @@ const DetaljiZahteva = ({ zahtev, ucitajZahteve }) => {
                 </Modal.Body>
                 <Modal.Footer>
                     {obradaOpen ? (
-                        <div>
-                            <Button variant="secondary" onClick={closeObradaForma}>
-                                Zatvori
-                            </Button>
-                            <Button variant="primary" onClick={obradiZahtev}>
+                        <div className="modal-buttons-container">
+                            <Button variant="primary" onClick={obradiZahtev} className="action-button">
                                 Sačuvaj obradu
+                            </Button>
+                            <Button variant="secondary" onClick={closeObradaForma} className="action-button">
+                                Zatvori
                             </Button>
                         </div>
                     ) : (
-                        <div>
+                        <div className="modal-buttons-container">
                             {zahtev.status !== "Obrađen" && (
-                                <Button variant="primary" onClick={openObradaForma}>
+                                <Button variant="primary" onClick={openObradaForma} className="action-button">
                                     Obradi zahtev
                                 </Button>
                             )}
-                            <Button variant="secondary" onClick={closeModal}>
-                                Otkaži
+                            <Button variant="secondary" onClick={closeModal} className="action-button">
+                                Zatvori
                             </Button>
                         </div>
                     )}
