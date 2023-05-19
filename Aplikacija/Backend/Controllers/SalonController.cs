@@ -28,7 +28,7 @@ public class SalonController : ControllerBase
             grad = s.grad,
             // prosecnaOcena = s.ProsecnaOcena,
             brojTelefona = s.brojTelefona,
-            slika = s.Korisnik.slika
+            slika = s.Korisnik?.slika
         });
         return Ok(result);
     }

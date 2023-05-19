@@ -412,7 +412,7 @@ public class KlijentController : ControllerBase
             adresa = kl.adresa,
             grad = kl.grad,
             brojTelefona = kl.brojTelefona,
-            slika = kl.Korisnik.slika
+            slika = kl.Korisnik?.slika
         };
         return k;
     }
