@@ -8,6 +8,8 @@ import { vratiRole } from '../Auth/VratiRole';
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import api from "../Auth/Interceptor";
+import { formatirajDatum } from "../UI/FormatirajDatum";
+import '../UI/Button.css';
 
 
 const Odgovori = ({ id }) => {
@@ -15,6 +17,21 @@ const Odgovori = ({ id }) => {
     const [inputText, setInputText] = useState("");
     const [odgovorInput, setOdgovorInput] = useState("");
     // const navigate = useNavigate();
+
+    const UcitajPitanja = () => {
+        axios.get(`http://localhost:5169/Salon/VratiPitanjaSalona/${id}`)
+            .then((response) => {
+                setOdgovori(response.data);
+                console.log(response.data)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    useEffect(() => {
+        UcitajPitanja();
+    }, [id]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -34,22 +51,6 @@ const Odgovori = ({ id }) => {
                 console.log(error.data);
             });
     };
-
-
-    const UcitajPitanja = () => {
-        axios.get(`http://localhost:5169/Salon/VratiPitanjaSalona/${id}`)
-            .then((response) => {
-                setOdgovori(response.data);
-                console.log(response.data)
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }
-
-    useEffect(() => {
-        UcitajPitanja();
-    }, [id]);
 
     const odgovoriNaPitanje = (idPitanje, tekst) => {
         axios.put(`http://localhost:5169/Salon/OdgovoriNaPitanje/${idPitanje}/${tekst}`)
@@ -78,85 +79,79 @@ const Odgovori = ({ id }) => {
                 )
                 }
             </form >
-            {/* <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" }}>
-                <p style={{ fontSize: "40px" }}><strong><u>Pitanja i Odgovori</u></strong></p>
-            </div> */}
-
-            {
-                odgovori.map((odgovor) => (
-                    <Card>
-                        <div className="row" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                <img
-                                    src={odgovor.slikaKlijenta ? odgovor.slikaKlijenta : user}
-                                    alt={user}
-                                    style={{ width: '50px', height: '50px', marginRight: '10px' }}
-                                />
-                                <div>
-                                    <h5>{odgovor.klijentImePrezime}</h5>
-                                    <p>Postavljeno: {formatirajDatum(odgovor.datumPostavljanja)}</p>
-                                    <h4><strong>{odgovor.tekstP}</strong></h4>
-                                </div>
-                            </div>
-                            <div style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                border: "1px solid black",
-                                backgroundColor: "#ea99a2",
-                                borderRadius: "14px"
-                            }}>
-                                {/* <div className="col-xl"> */}
-                                <img
-                                    src={odgovor.slikaSalona ? odgovor.slikaSalona : salonChat}
-                                    alt={user}
-                                    style={{ width: '50px', height: '50px', marginRight: '10px' }}
-                                />
-                                <div>
-                                    {role === "Salon" && odgovor.tekstO === null && odgovor.datumOdgovaranja === null && (
-                                        <div>
-                                            <input
-                                                type="text"
-                                                value={odgovorInput[odgovor.id] || ""}
-                                                onChange={(e) => setOdgovorInput({ ...odgovorInput, [odgovor.id]: e.target.value })}
-                                            />
-                                            <button onClick={() => odgovoriNaPitanje(odgovor.id, odgovorInput[odgovor.id])}>Odgovori</button>
-                                        </div>
-                                    )}
-                                    {role === "Salon" && odgovor.tekstO != null && odgovor.datumOdgovaranja != null && (
-                                        <div>
-                                            <p>Postavljeno: {(formatirajDatum(odgovor.datumOdgovaranja))}</p>
-                                            <h4><strong>{(odgovor.tekstO)}</strong></h4>
-                                        </div>
-                                    )}
-                                    {role !== "Salon" && (
-                                        <div>
-                                            <p>Postavljeno: {(odgovor.datumOdgovaranja !== null) ? formatirajDatum(odgovor.datumOdgovaranja) : "Datum nije dostupan"}</p>
-                                            <h4><strong>{(odgovor.tekstO !== null) ? odgovor.tekstO : "Još uvek nije odgovoreno..."}</strong></h4>
-                                        </div>
-                                    )}
-                                </div>
+            {odgovori.map((odgovor) => (
+                <Card>
+                    <div className="row" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <img
+                                src={odgovor.slikaKlijenta ? odgovor.slikaKlijenta : user}
+                                alt={user}
+                                style={{ width: '50px', height: '50px', marginRight: '10px' }}
+                            />
+                            <div>
+                                <h5>{odgovor.klijentImePrezime}</h5>
+                                <p>Postavljeno: {formatirajDatum(odgovor.datumPostavljanja)}</p>
+                                <h4><strong>{odgovor.tekstP}</strong></h4>
                             </div>
                         </div>
-                    </Card>
-                ))
+                        <div style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            border: "1px solid black",
+                            backgroundColor: "#fc6c6c",
+                            borderRadius: "14px"
+                        }}>
+                            <img
+                                src={odgovor.slikaSalona ? odgovor.slikaSalona : salonChat}
+                                alt={user}
+                                style={{ width: '50px', height: '50px', marginRight: '10px' }}
+                            />
+                            <div>
+                                {role === "Salon" && odgovor.tekstO === null && odgovor.datumOdgovaranja === null && (
+                                    <div>
+                                        <input
+                                            type="text"
+                                            value={odgovorInput[odgovor.id] || ""}
+                                            onChange={(e) => setOdgovorInput({ ...odgovorInput, [odgovor.id]: e.target.value })}
+                                        />
+                                        <button onClick={() => odgovoriNaPitanje(odgovor.id, odgovorInput[odgovor.id])} className="customButton">Odgovori</button>
+                                    </div>
+                                )}
+                                {role === "Salon" && odgovor.tekstO != null && odgovor.datumOdgovaranja != null && (
+                                    <div>
+                                        <p>Postavljeno: {(formatirajDatum(odgovor.datumOdgovaranja))}</p>
+                                        <h4><strong>{(odgovor.tekstO)}</strong></h4>
+                                    </div>
+                                )}
+                                {role !== "Salon" && (
+                                    <div>
+                                        <p>Postavljeno: {(odgovor.datumOdgovaranja !== null) ? formatirajDatum(odgovor.datumOdgovaranja) : "Datum nije dostupan"}</p>
+                                        <h4><strong>{(odgovor.tekstO !== null) ? odgovor.tekstO : "Još uvek nije odgovoreno..."}</strong></h4>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </Card>
+            ))
             }
         </div >
     );
 };
 
-function formatirajDatum(datum) {
-    const formatiran = new Date(datum);
-    const opcije = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true
-    };
-    return formatiran.toLocaleString('en-US', opcije);
-}
+// function formatirajDatum(datum) {
+//     const formatiran = new Date(datum);
+//     const opcije = {
+//         year: 'numeric',
+//         month: 'long',
+//         day: 'numeric',
+//         hour: 'numeric',
+//         minute: 'numeric',
+//         hour12: true
+//     };
+//     return formatiran.toLocaleString('en-US', opcije);
+// }
 
 {/* <div className="proizvodi-items" style={{display: "flex", flexDirection: "column"}}>
                         <div style={{marginBottom: "0.5rem", border: "1px solid black", borderRadius: "5px"}}>
