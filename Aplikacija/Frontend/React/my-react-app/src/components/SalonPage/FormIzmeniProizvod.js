@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import './Modal.css';
+import '../UI/Button.css';
 
 const FormIzmeniProizvod = ({ proizvod, izmeniProizvod, kategorije }) => {
     //slika
@@ -44,7 +46,7 @@ const FormIzmeniProizvod = ({ proizvod, izmeniProizvod, kategorije }) => {
 
     return (
         <div>
-            <button variant="primary" onClick={() => setShowModal(true)}>
+            <button variant="primary" onClick={() => setShowModal(true)} className="customButton">
                 Izmeni
             </button>
 
@@ -94,12 +96,14 @@ const FormIzmeniProizvod = ({ proizvod, izmeniProizvod, kategorije }) => {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleOdustaniOdIzmene}>
-                        Odustani
-                    </Button>
-                    <Button variant="primary" onClick={handleIzmeniProizvod}>
-                        Sačuvaj izmene
-                    </Button>
+                    <div className="modal-buttons-container">
+                        <Button variant="primary" onClick={handleIzmeniProizvod} className="action-button">
+                            Sačuvaj izmene
+                        </Button>
+                        <Button variant="secondary" onClick={handleOdustaniOdIzmene} className="action-button">
+                            Zatvori
+                        </Button>
+                    </div>
                 </Modal.Footer>
             </Modal>
         </div>
