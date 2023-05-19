@@ -4,7 +4,7 @@ import Card from '../UI/Card';
 import icon from '../../images/salonIcon.png';
 import './SalonCard.css';
 
-const SalonCard = ({ salon }) => {
+const SalonCard = ({ salon, slika }) => {
     const [prosecnaOcena, setProsecnaOcena] = useState(0);
 
     useEffect(() => {
@@ -25,7 +25,7 @@ const SalonCard = ({ salon }) => {
     return (
         <Card className="salon-card">
             <div className="salon-card__image">
-                <img src={icon} alt="{salon.naziv}" />
+                <img src={slika ? slika : icon} alt={salon.naziv} />
             </div>
             <div className="salon-card__text">
                 <h5>Naziv: {salon.naziv}</h5>
