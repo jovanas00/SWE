@@ -1,7 +1,7 @@
 .salon-page {
     display: flex;
     /* flex-direction: column; */
-    height: 100vh;
+    /* height: 100vh; */
 }
 
 .salon-content {
@@ -13,12 +13,16 @@
     width: 200px;
     background-color: #a9ebfc;
     overflow-y: auto;
+    overflow-x: hidden;
+    position: sticky;
+    top: 0;
+    height: 270px;
 }
 
 .salon-sidebar ul {
     list-style-type: none;
     padding: 0;
-    margin-bottom: 0;
+    margin: 0;
 }
 
 .salon-sidebar li {
@@ -39,4 +43,20 @@
     flex-grow: 1;
     padding: 20px;
     overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+    .salon-page {
+        flex-direction: column;
+    }
+
+    .salon-sidebar {
+        width: 100%;
+        position: static;
+        /* margin-bottom: 10px; */
+    }
+
+    .salon-main {
+        margin-left: 0;
+    }
 }
