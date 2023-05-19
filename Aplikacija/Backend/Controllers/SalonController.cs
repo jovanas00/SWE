@@ -18,7 +18,7 @@ public class SalonController : ControllerBase
     //[AllowAnonymous]
     public async Task<ActionResult<IEnumerable<object>>> VratiSveSalone()
     {
-        var saloni = await Context.Saloni.ToListAsync();
+        var saloni = await Context.Saloni.Include(s => s.Korisnik).ToListAsync();
 
         var result = saloni.Select(s => new
         {
@@ -27,7 +27,8 @@ public class SalonController : ControllerBase
             adresa = s.adresa,
             grad = s.grad,
             // prosecnaOcena = s.ProsecnaOcena,
-            brojTelefona = s.brojTelefona
+            brojTelefona = s.brojTelefona,
+            slika = s.Korisnik.slika
         });
         return Ok(result);
     }
@@ -37,11 +38,11 @@ public class SalonController : ControllerBase
     //[AllowAnonymous]
     public async Task<ActionResult<Salon>> VratiSalon(int id_salon)
     {
-        var s = await Context.Saloni.FindAsync(id_salon);
-        s.ID = id_salon;
-        if (s == null)
+        var salon = await Context.Saloni.Include(s => s.Korisnik).FirstOrDefaultAsync(s => s.ID == id_salon);
+        // s.ID = id_salon;
+        if (salon == null)
             return NotFound();
-        return s;
+        return salon;
     }
 
     [Route("VratiSalonPrekoKI/{korisnicko_ime}")]
