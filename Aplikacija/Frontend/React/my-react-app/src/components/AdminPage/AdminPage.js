@@ -138,33 +138,6 @@ const AdminPage = () => {
   };
   
 
-  // Funkcija za izmenu admina preko Axios
-  const updateAdmin = async (korisnicko_ime, ime, prezime) => {
-    try {
-      const response = await api.put(`/Admin/IzmeniAdmina/${korisnicko_ime}/${ime}/${prezime}`);
-      console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
-      alert("Uspešno promenjeni podaci admina");
-      window.location.reload();
-    } catch (error) {
-      //handleError();
-    }
-  };
-
-  //ovo nam ja mislim ne treba, ali neka ga za sad
-  // Funkcija za upload preko Axios
-  const uploadFile = async (korisnicko_ime, file) => {
-    const formData = new FormData();
-    formData.append('file', file);
-    try {
-      const response = await api.post(`/Korisnik/Upload/${korisnicko_ime}`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   // Funkcija za prikaz svih korisnika preko Axios
   const fetchUsers = async () => {
     try {
