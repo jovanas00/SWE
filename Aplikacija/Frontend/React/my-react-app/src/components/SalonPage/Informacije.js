@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { vratiKorisnickoIme } from "../Auth/VratIKorisnickoIme";
 // import SalonProfilIzmene from "./SalonProfilIzmene";
 import './Informacije.css';
+import UploadFile from "../KlijentPage/Upload";
+import '../UI/Button.css';
 
 
 const Informacije = () => {
@@ -112,14 +114,29 @@ const Informacije = () => {
         setBrojTelefona('');
     };
 
+    const handleUploadFinished = (response) => {
+        const { dbPath } = response;
+        console.log(dbPath)
+        setSalon((prevUserInfo) => ({
+            ...prevUserInfo,
+            slika: `http://localhost:5169/${dbPath}`,
+        })
+        );
+    };
+
     return (
         <div>
             <div>
                 <Card className="container-i">
-                    <img src={icon} alt="Salon" className="image" />
+                    {/* <img src={icon} alt="Salon" className="image" /> */}
                     <div className="salon-details">
                         {salon && (
-                            <div className="salon-card__text">
+                            <div>
+                                <img
+                                    src={salon.korisnik.slika ? salon.korisnik.slika : icon}
+                                    alt="Salon"
+                                    className="image"
+                                />
                                 <h5>Naziv: {salon.naziv}</h5>
                                 <p>Adresa: {salon.adresa}</p>
                                 <p>Grad: {salon.grad}</p>
@@ -205,6 +222,7 @@ const Informacije = () => {
                                     <button onClick={handleChangeUserInfo} className="confirm">
                                         Potvrdi
                                     </button>
+
                                     <button onClick={handleCancelUserInfoChange} className="cancel">
                                         Odustani
                                     </button>
@@ -212,6 +230,7 @@ const Informacije = () => {
                             </div>
                         </div>
                     )}
+                    <UploadFile onUploadFinished={handleUploadFinished} /> 
                 </Card>
             </div>
 
