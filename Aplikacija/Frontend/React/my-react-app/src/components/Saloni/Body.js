@@ -93,13 +93,13 @@ const Body = () => {
             {/* {console.error(salon.id)} */}
             {/*Link sluzi da svaka Salon kartica moze da se otvori na novu stranu gde ce se detaljno citati o salonima*/}
             {!klijent && !admin && <Link to={`/saloni/${salon.id}`} key={salon.id} >
-              <SalonCard salon={salon} />
+              <SalonCard salon={salon} slika={salon.slika}/>
             </Link>}
             {klijent && <Link to={`/klijent/${salon.id}`} key={salon.id} >
-              <SalonCard salon={salon} />
+              <SalonCard salon={salon} slika={salon.slika}/>
             </Link>}
             {admin && <Link to={`/admin/saloni/${salon.id}`} key={salon.id} >
-              <SalonCard salon={salon} />
+              <SalonCard salon={salon} slika={salon.slika}/>
             </Link>}
           </div>
         ))}
