@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Card from '../UI/Card';
+import Button from '../UI/Button';
 
 const FormDodajProizvod = ({ dodajProizvod, kategorije }) => {
     //fali slika
@@ -38,25 +39,28 @@ const FormDodajProizvod = ({ dodajProizvod, kategorije }) => {
     return (
         <Card>
             <form onSubmit={handleFormSubmit}>
-                <label>
-                    Naziv:
-                    <input type="text" value={naziv} onChange={(e) => setNaziv(e.target.value)} />
-                </label>
-                <br />
-                <label>
-                    Cena:
-                    <input type="number" value={cena} onChange={(e) => setCena(e.target.value)} />
-                </label>
-                <br />
-                <label>
-                    Dostupnost:
-                    <input
-                        type="checkbox"
-                        checked={dostupnost === true}
-                        onChange={(e) => setDostupnost(e.target.checked)}
-                    />
-                </label>
-                <br />
+                <div>
+                    <label>
+                        Naziv:
+                        <input type="text" value={naziv} onChange={(e) => setNaziv(e.target.value)} />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Cena:
+                        <input type="number" value={cena} onChange={(e) => setCena(e.target.value)} />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Dostupnost:
+                        <input
+                            type="checkbox"
+                            checked={dostupnost === true}
+                            onChange={(e) => setDostupnost(e.target.checked)}
+                        />
+                    </label>
+                </div>
                 <div>
                     Kategorija:
                     <select value={odabranaKategorija} onChange={handleKategorijaChange}>
@@ -69,7 +73,7 @@ const FormDodajProizvod = ({ dodajProizvod, kategorije }) => {
                     </select>
                 </div>
                 <br />
-                <button type="submit">Dodaj proizvod</button>
+                <Button type="submit" naziv={"Dodaj proizvod"}>Dodaj proizvod</Button>
             </form>
         </Card>
     );
