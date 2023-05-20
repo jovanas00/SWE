@@ -89,7 +89,8 @@ const Body = () => {
         {/*tj za svaki salon se pravi Salon kartica*/}
         {/*col-md-4 mb-3 samo se koristi bootstrap klasa za definisanje prostora izmedju karitca i kolko kartica ima u jednom redu*/}
         {filtriraniSaloni.map(salon => (
-          <div className="col-md-4 mb-3">  {/*treba jos da se cacka ovaj prikaz nije flex*/}
+          // <div className="col-md-4 mb-3">  {/*treba jos da se cacka ovaj prikaz nije flex*/}
+          <div className="col-lg-4 col-md-6 col-12 mb-3">
             {/* {console.error(salon.id)} */}
             {/*Link sluzi da svaka Salon kartica moze da se otvori na novu stranu gde ce se detaljno citati o salonima*/}
             {!klijent && !admin && <Link to={`/saloni/${salon.id}`} key={salon.id} >
