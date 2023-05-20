@@ -37,36 +37,42 @@ const FormDodajUslugu = ({ dodajUslugu }) => {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>
-                        Naziv:
+                        Naziv: &nbsp;
                         <input
                             type="text"
                             value={naziv}
                             onChange={(e) => setNaziv(e.target.value)}
+                            placeholder="Naziv usluge"
+                            style={{ width: "350px" }}
                         />
                     </label>
                 </div>
                 <div>
                     <label>
-                        Cena:
+                        Cena: &nbsp;
                         <input
                             type="number"
                             value={cena}
                             onChange={(e) => setCena(e.target.value)}
+                            placeholder=" Cena usluge"
                         />
                     </label>
                 </div>
                 <div>
-                    <label>
-                        Opis:
-                        <textarea
-                            value={opis}
-                            onChange={(e) => setOpis(e.target.value)}
-                        ></textarea>
-                    </label>
+                <label>
+                    Opis: <br />
+                    <textarea
+                        value={opis}
+                        onChange={(e) => setOpis(e.target.value)}
+                        placeholder=" Opis usluge"
+                        style={{ width: "397px" }} 
+                    ></textarea>
+                </label>
+
                 </div>
                 <div>
                     <label>
-                        Dostupnost:
+                        Dostupnost: &nbsp;
                         <input
                             type="checkbox"
                             checked={dostupnost}
