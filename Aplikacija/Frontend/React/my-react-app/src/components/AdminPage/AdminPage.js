@@ -269,8 +269,8 @@ const AdminPage = () => {
                               <img src={icon} alt="Ikona" />
                             )}
                           </div>
-                          <p>Korisničko ime: {user.korisnickoIme}</p>
-                          <p>Tip korisnika: {user.tip}</p>
+                          <p><strong>Korisničko ime:</strong> {user.korisnickoIme}</p>
+                          <p><strong>Tip korisnika:</strong> {user.tip}</p>
                           {selectedImage === user.slika && isModalOpen && (
                             <div className="modal">
                               <div className="modal-overlay" onClick={handleCloseModal} />
