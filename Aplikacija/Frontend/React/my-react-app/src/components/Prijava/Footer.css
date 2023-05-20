@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: top;
     margin-top: 10px;
-    height: 40vh;
+    height: 48vh;
     background-color: #ccf5ff;
 }
 
@@ -76,4 +76,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.registration-login{
+    margin-top: 40px;
 }
