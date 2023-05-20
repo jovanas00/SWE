@@ -11,11 +11,13 @@ import product from "../../images/item.jpg";
 import api from "../Auth/Interceptor";
 import UploadFile from "../SalonPage/UploadProizvodSlika";
 import '../UI/Button.css';
+import { obavestenja } from '../UI/Obavestenja';
 
 const Proizvodi = ({ id }) => {
     const [proizvodi, setProizvodi] = useState([]);
     const [proizvodID, setProizvodID] = useState();
     const [kategorije, setKategorije] = useState([]);
+    const [odabranaKategorija, setOdabranaKategorija] = useState("");
 
     const token = Cookies.get('token');
     const config = {
@@ -41,7 +43,8 @@ const Proizvodi = ({ id }) => {
     const ucitajKategorije = () => {
         axios.get(`http://localhost:5169/Admin/SveKategorije`)
             .then((response) => {
-                setKategorije(response.data);
+                setKategorije(response.data)
+                setOdabranaKategorija(null);
             })
             .catch((error) => {
                 console.log(error);
@@ -70,7 +73,7 @@ const Proizvodi = ({ id }) => {
     const obrisiProizvod = (proizvodId) => {
         axios.delete(`http://localhost:5169/Proizvod/ObrisiProizvod/${proizvodId}`)
             .then((response) => {
-                window.alert('Proizvod uspešno obrisan.');
+                obavestenja('Proizvod uspešno obrisan.', 'success');
                 ucitajProizvode();
             })
             .catch((error) => {
@@ -151,12 +154,14 @@ const Proizvodi = ({ id }) => {
         });
     };
 
-    //ovde bi mozda moglo da se podesi da se filtrira po kategorije, nije dovrseno
-    // const handleFilterSubmit = (selektovaneKategorije) => {
-    //     axios.get()
-    //     .then((response) => setProizvodi(response.data))
-    //     .catch((error) => console.log(error));
-    // };
+    const filtrirajProizvode = () => {
+        if (odabranaKategorija) {
+            const filtriraniProizvodi = proizvodi.filter((proizvod) => proizvod.kategorijaNaziv === odabranaKategorija);
+            return filtriraniProizvodi;
+        }
+        return proizvodi;
+    };
+
     const role = vratiRole();
     const klijent = role === "Klijent" ? "Klijent" : null
     return (
@@ -164,8 +169,21 @@ const Proizvodi = ({ id }) => {
             <div>
                 {role === "Salon" && <FormDodajProizvod dodajProizvod={dodajProizvod} kategorije={kategorije} />}
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(500px, 1fr))", gap: "10px", marginTop: "10px"}}>
-                {proizvodi.map((proizvod) => (
+            <div>
+                <select
+                    value={odabranaKategorija}
+                    onChange={(e) => setOdabranaKategorija(e.target.value)}
+                >
+                    <option value="">Sve kategorije</option>
+                    {kategorije.map((kategorija) => (
+                        <option key={kategorija.id} value={kategorija.naziv}>
+                            {kategorija.naziv}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(500px, 1fr))", gap: "10px", marginTop: "10px" }}>
+                {filtrirajProizvode().map((proizvod) => (
                     <div className="product-item">
                         <div className="image-container">
                             <img src={proizvod.slika ? proizvod.slika : product} alt={proizvod.naziv} className="image-item" />
@@ -182,7 +200,7 @@ const Proizvodi = ({ id }) => {
                             )}
 
                             {role === "Salon" && (
-                                <div style={{ display: "flex", justifyContent: "space-evenly", alignItems: "center", topMargin:"20px"}}>
+                                <div style={{ display: "flex", justifyContent: "space-evenly", alignItems: "center", topMargin: "20px" }}>
                                     <FormIzmeniProizvod proizvod={proizvod} izmeniProizvod={izmeniProizvod} kategorije={kategorije} />
                                     <UploadFile id={proizvod.id} onUploadFinished={(response) => handleUploadFinished(response, proizvod.id)} />
                                     <button onClick={() => obrisiProizvod(proizvod.id)} className="customButton">Obriši</button>
