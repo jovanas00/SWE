@@ -137,10 +137,10 @@ const Informacije = () => {
                                     alt="Salon"
                                     className="image"
                                 />
-                                <h5>Naziv: {salon.naziv}</h5>
-                                <p>Adresa: {salon.adresa}</p>
-                                <p>Grad: {salon.grad}</p>
-                                <p>Broj telefona: {salon.brojTelefona}</p>
+                                <h5><strong>Naziv: {salon.naziv}</strong></h5>
+                                <p><strong>Adresa:</strong> {salon.adresa}</p>
+                                <p><strong>Grad:</strong> {salon.grad}</p>
+                                <p><strong>Broj telefona:</strong> {salon.brojTelefona}</p>
                                 {/* <p>Prosecna ocena: {salon.prosecnaOcena}</p> */}
                             </div>
                         )}
