@@ -41,19 +41,23 @@ const FormDodajProizvod = ({ dodajProizvod, kategorije }) => {
             <form onSubmit={handleFormSubmit}>
                 <div>
                     <label>
-                        Naziv:
-                        <input type="text" value={naziv} onChange={(e) => setNaziv(e.target.value)} />
+                        Naziv: &nbsp;
+                        <input type="text" value={naziv} onChange={(e) => setNaziv(e.target.value)} 
+                        placeholder="Naziv proizvoda" 
+                        style={{ width: "350px" }}/>
+                        
                     </label>
                 </div>
                 <div>
-                    <label>
-                        Cena:
-                        <input type="number" value={cena} onChange={(e) => setCena(e.target.value)} />
-                    </label>
+                <label>
+                    Cena: &nbsp; 
+                    <input type="number" value={cena} onChange={(e) => setCena(e.target.value)} 
+                    placeholder=" Cena proizvoda" />
+                </label>
                 </div>
                 <div>
                     <label>
-                        Dostupnost:
+                        Dostupnost: &nbsp;
                         <input
                             type="checkbox"
                             checked={dostupnost === true}
@@ -62,7 +66,7 @@ const FormDodajProizvod = ({ dodajProizvod, kategorije }) => {
                     </label>
                 </div>
                 <div>
-                    Kategorija:
+                    Kategorija: &nbsp;
                     <select value={odabranaKategorija} onChange={handleKategorijaChange}>
                         <option value="">Odaberite kategoriju</option>
                         {kategorije.map((kategorija) => (
