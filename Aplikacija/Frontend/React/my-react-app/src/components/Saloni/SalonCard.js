@@ -28,7 +28,7 @@ const SalonCard = ({ salon, slika }) => {
                 <img src={slika ? slika : icon} alt={salon.naziv} />
             </div>
             <div className="salon-card__text">
-                <h5>Naziv: {salon.naziv}</h5>
+                <h5><strong>Naziv: {salon.naziv}</strong></h5>
                 <p>Adresa: {salon.adresa}</p>
                 <p>Grad: {salon.grad}</p>
                 <p>Broj telefona: {salon.brojTelefona}</p>
