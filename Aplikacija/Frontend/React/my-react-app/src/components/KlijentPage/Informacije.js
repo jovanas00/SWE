@@ -64,11 +64,11 @@ const Informacije = () => {
               alt="User"
               className="image"
             />
-            <p>Ime: {userInfo.ime}</p>
-            <p>Prezime: {userInfo.prezime}</p>
-            <p>Adresa: {userInfo.adresa}</p>
-            <p>Grad: {userInfo.grad}</p>
-            <p>Broj telefona: {userInfo.brojTelefona}</p>
+            <p><strong>Ime:</strong> {userInfo.ime}</p>
+            <p><strong>Prezime:</strong> {userInfo.prezime}</p>
+            <p><strong>Adresa:</strong> {userInfo.adresa}</p>
+            <p><strong>Grad:</strong> {userInfo.grad}</p>
+            <p><strong>Broj telefona:</strong> {userInfo.brojTelefona}</p>
           </div>
         )}
       </div>
