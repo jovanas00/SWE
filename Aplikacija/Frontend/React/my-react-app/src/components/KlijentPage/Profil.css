@@ -8,7 +8,7 @@
   border-right: 1px solid #ccc; /* Dodato: linija na desnoj strani sidebara */
 }
 
-.obrisi-zahtev-button, .sviProizvodi-button {
+.obrisi-zahtev-button, .sviProizvodi-button, .zatvori-button {
     padding: 6px 10px;
     font-size: 15px;
     border: 1px solid black;
@@ -16,27 +16,86 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
+
+.sviProizvodi-button{
+  margin-left: 22px;
+}
   
-.obrisi-zahtev-button:hover, .sviProizvodi-button:hover {
+.obrisi-zahtev-button:hover, .sviProizvodi-button:hover, .zatvori-button:hover {
     background-color: #fc6c6c;
     /*ovo da pocrveni kad se pređe mišem*/
 }
 
-/* .container {
-    display: flex;
-} */
-
-.left-side {
-    flex: 1;
-    border-right: 1px solid #ccc;
-    padding-right: 10px;
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
 }
-  
-.right-side {
-    flex: 1;
-    padding-left: 10px;
+
+.modal-content {
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 4px;
+  max-width: 100%;
+  width: auto; 
+  max-height: 100vh;
+  overflow-y: auto;
+
+}
+
+.modal-content h5 {
+  font-weight: bold;
+  font-style: italic;
+}
+
+.modal-content ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
+}
+
+.modal-content li {
+  margin-bottom: 10px;
+
+}
+
+.modal-content .proizvodi-brojac {
+  font-weight: bold;
+}
+
+.modal-content p {
+  margin: 0;
+  margin: 10px;
+}
+
+.modal-content button {
+  margin-top: 10px;
+}
+
+.image{
+  margin-left: 9px;
+}
+
+.narudzbina-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.narudzbina-info {
+  flex-basis: 50%;
+}
+
+.salon-info {
+  flex-basis: 50%;
 }  
-  
 
 .button-list button {
     display: block;
@@ -54,8 +113,10 @@
 
 .narudzbine-container {
     flex: 1;
-    max-height: 500px; /* Definiše maksimalnu visinu kontejnera */
+    max-height: 1000px; /* Definiše maksimalnu visinu kontejnera */
     overflow-y: auto; /* Omogućava vertikalnu skrol traku ako je sadržaj veći od maksimalne visine */
+    margin-left: 220px;
+    margin-top: 20px;
 }
 
 .proizvodi-container {
@@ -66,9 +127,20 @@
 
 .narudzbina-brojac, .zahtev-brojac, .proizvodi-brojac {
     font-weight: bold;
-    font-size: 16px;
+    font-size: 18px;
+    color: #FF3333;
 }
-  
+
+.podaci-salona {
+  font-size: 17px;
+  color: #FF3333;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 10px;
+}
   
 /* Dodati stilovi za prikaz ispod dugmića */
 .content {
@@ -90,7 +162,10 @@
   
 /* Dodati stilove za responsivnost */
 @media screen and (max-width: 768px) {
-  /* Kada se prozor smanji */
+  .card {
+    flex-basis: calc(100% - 20px);
+    /* Ostali stilovi za kartice */
+  }
   .button-list {
     float: none;
     width: auto;
@@ -102,6 +177,12 @@
     margin-left: 0; /* Resetuj margine za smanjeni prozor */
     padding-left: 20px; /* Dodaj unutrašnji razmak na levoj strani */
   }
+
+  .narudzbine-container {
+    margin-left: 5px;
+    margin-top: 8px;
+  }
+  
 }
   
   
