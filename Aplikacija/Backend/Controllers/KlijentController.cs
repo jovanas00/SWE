@@ -382,7 +382,7 @@ public class KlijentController : ControllerBase
             k.ukupnaCena = 0;
 
             await Context.SaveChangesAsync();
-            return Ok($"Uspesna narudzbina,ukupna cena {cena}");
+            return Ok($"Uspešna narudžbina, ukupna cena je: {cena}");
         }
         catch (Exception e)
         {
