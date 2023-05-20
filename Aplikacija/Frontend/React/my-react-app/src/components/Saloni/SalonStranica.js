@@ -69,11 +69,11 @@ const SalonStranica = () => {
                         <img className="slika" src={salon.korisnik.slika ? salon.korisnik.slika : icon} alt={salon.naziv}/>
                     </div>
                     <div className="salon-card__text1">
-                        <h5>Naziv: {salon.naziv}</h5>
-                        <p>Adresa: {salon.adresa}</p>
-                        <p>Grad: {salon.grad}</p>
-                        <p>Broj telefona: {salon.brojTelefona}</p>
-                        <p>Prosecna ocena: {prosecnaOcena}</p>
+                        <h5><strong>Naziv: {salon.naziv}</strong></h5>
+                        <p><strong>Adresa:</strong> {salon.adresa}</p>
+                        <p><strong>Grad:</strong> {salon.grad}</p>
+                        <p><strong>Broj telefona:</strong> {salon.brojTelefona}</p>
+                        <p><strong>Prosecna ocena:</strong> {prosecnaOcena}</p>
                     </div>
                 </div>
                 <div className="salon-info__items">
