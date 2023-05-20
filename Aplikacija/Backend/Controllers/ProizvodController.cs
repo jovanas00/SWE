@@ -140,7 +140,7 @@ public class ProizvodController : ControllerBase
                 }
 
                 var baseUrl = $"{Request.Scheme}://{Request.Host.Value}";
-                dbPath = $"{baseUrl}/{dbPath.Replace("\\", "/")}";  
+                dbPath = $"{baseUrl}/{dbPath.Replace("\\", "/")}";
 
                 retVal.slika = dbPath;
                 await Context.SaveChangesAsync();
@@ -163,14 +163,19 @@ public class ProizvodController : ControllerBase
     //[AllowAnonymous]
     public async Task<ActionResult<IEnumerable<object>>> VratiProizvodeSalona(int id_salon)
     {
-        var proizvodi = await Context.Proizvodi.Where(p => p.Salon.ID == id_salon).ToListAsync();
+        var proizvodi = await Context.Proizvodi
+            .Where(p => p.Salon.ID == id_salon)
+            .Include(p => p.Kategorija)
+            .ToListAsync();
+
         var result = proizvodi.Select(p => new
         {
             ID = p.ID,
             slika = p.slika,
             naziv = p.naziv,
             cena = p.cena,
-            dostupnost = p.dostupnost
+            dostupnost = p.dostupnost,
+            kategorijaNaziv = p.Kategorija.naziv
         });
         return Ok(result);
     }
