@@ -74,7 +74,7 @@ const Body = () => {
   const klijent = role === "Klijent" ? "Klijent" : null;
   const admin = role === "Admin" ? "Admin" : null
   return (
-    <div className="container">
+    <div className="container1">
       {/* za filter */}
       <select value={selektovaniGrad} onChange={e => setSelektovaniGrad(e.target.value)}>
         <option value="">Svi gradovi</option> {/*pravimo selektor i vrednosti su gradovi*/}
