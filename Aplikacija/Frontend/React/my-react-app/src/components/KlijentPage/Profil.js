@@ -4,19 +4,24 @@ import { Navigate } from 'react-router-dom';
 import { vratiRole } from '../Auth/VratiRole';
 import { vratiKorisnickoIme } from '../Auth/VratIKorisnickoIme';
 import axios from 'axios';
+import iconP from "../../images/nemaSlike.gif";
 import Header from '../Pocetna/Header';
 import Informacije from './Informacije';
 import './Profil.css';
 import Cookies from 'js-cookie';
 import TokenChecker from '../Auth/TokenChecker';
 import api from '../Auth/Interceptor';
+import { formatirajDatum } from "../UI/FormatirajDatum";
+import { Card } from "react-bootstrap";
 
 
 const Profil = () => {
   const [narudzbine, setNarudzbine] = useState([]);
   const [prikazNarudzbina, setPrikazNarudzbina] = useState(true);
   const [zahtevi, setZahtevi] = useState([]);
-  const [proizvodi, setProizvodi] = useState([]);
+  const [prikazProizvoda, setPrikazProizvoda] = useState(false);
+  const [prikaziModal, setPrikaziModal] = useState(false);
+  const [modalProizvodi, setModalProizvodi] = useState([]);
 
 
   // Autorizacija
@@ -44,21 +49,23 @@ const Profil = () => {
     try {
       const response = await api.get(`/Klijent/VratiProizvodeNarudzbina/${idNarudzbine}`);
       const proizvodiNarudzbine = response.data;
-      const updatedNarudzbine = narudzbine.map((narudzbina) => {
-        if (narudzbina.id === idNarudzbine) {
-          return {
-            ...narudzbina,
-            proizvodi: proizvodiNarudzbine,
-          };
-        }
-        return narudzbina;
-      });
-      setNarudzbine(updatedNarudzbine);
+      setModalProizvodi(proizvodiNarudzbine); // Ažuriranje modalProizvodi stanja
     } catch (error) {
       console.error(error);
     }
   };
+  
 
+  const handleShowProizvodi = (idNarudzbine) => {
+    handleFetchProizvodi(idNarudzbine);
+    setPrikaziModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setPrikaziModal(false);
+  };
+
+  
   useEffect(() => {
     if (isKlijent()) {
       const fetchData = async () => {
@@ -100,50 +107,64 @@ const Profil = () => {
         <Header />
         <Informacije />
         <div className="button-list">
-          <button onClick={handleNarudzbineClick}>Narudžbine</button>
-          <button onClick={handleZahteviClick}>Zahtevi</button>
+          <button onClick={handleNarudzbineClick}><strong>Narudžbine</strong></button>
+          <button onClick={handleZahteviClick}><strong>Zahtevi</strong></button>
         </div>
         <div className="content"></div>
         <div className="narudzbine-container">
           {prikazNarudzbina ? (
             <>
-              <h5 style={{ marginLeft: '14px' }}>Informacije o narudžbinama:</h5>
+              <h5 style={{ marginLeft: '14px', fontWeight: 'bold', fontStyle: 'italic' }}>Informacije o narudžbinama:</h5>
               {narudzbine.length > 0 ? (
                 <ul>
-                  {narudzbine.map((narudzbina, index) => (
-                    <li key={narudzbina.id}>
-                      <p className="narudzbina-brojac">Narudžbina {index + 1}.</p>
-                      <p>Status narudžbine: {narudzbina.status}</p>
-                      <p>Komentar salona: {narudzbina.komentarSalona}</p>
-                      <p>Ukupna cena: {narudzbina.ukupnaCena}</p>
-                      <p>Datum: {narudzbina.datumVreme}</p>
-                      <p><strong>Vaši podaci:</strong></p>
-                      <p>Korisničko ime: {narudzbina.korisnickoIme}</p>
-                      <p>Grad klijenta: {narudzbina.grad}</p>
-                      <p>Adresa klijenta: {narudzbina.adresa}</p>
-                      <p><strong>Podaci salona:</strong></p>
-                      <p>Naziv salona: {narudzbina.salon.naziv}</p>
-                      <p>Adresa salona: {narudzbina.salon.adresa}</p>
-                      <p>Grad salona: {narudzbina.salon.grad}</p>
-                      <p>Broj telefona salona: {narudzbina.salon.brojTelefona}</p>
-                      <button className="sviProizvodi-button" onClick={() => handleFetchProizvodi(narudzbina.id)}>Svi proizvodi</button>
+                  {narudzbine
+                  .sort((a, b) => new Date(b.datumVreme) - new Date(a.datumVreme)) // Sortiranje po opadajućem redosledu datuma
+                  .map((narudzbina, index) => (
 
-                      {narudzbina.proizvodi && narudzbina.proizvodi.length > 0 && (
-                        <div className="proizvodi-container">
-                          <h5>Svi proizvodi:</h5>
+                    <li key={narudzbina.id}>
+                      <div className="container">
+                        <div className="card">
+                          <p className="narudzbina-brojac">Narudžbina {index + 1}.</p>
+                          <p><strong>Status narudžbine:</strong> {narudzbina.status}</p>
+                          <p><strong>Komentar salona:</strong> {narudzbina.komentarSalona}</p>
+                          <p><strong>Ukupna cena:</strong> {narudzbina.ukupnaCena}</p>
+                          <p><strong>Datum:</strong> {formatirajDatum(narudzbina.datumVreme)}</p>
+                        </div>
+                        <div className="card">
+                          <p className="podaci-salona"><strong>Podaci salona:</strong></p>
+                          <p><strong>Naziv salona:</strong> {narudzbina.salon.naziv}</p>
+                          <p><strong>Adresa salona:</strong> {narudzbina.salon.adresa}</p>
+                          <p><strong>Grad salona:</strong> {narudzbina.salon.grad}</p>
+                          <p><strong>Broj telefona salona:</strong> {narudzbina.salon.brojTelefona}</p>
+                        </div>
+                      </div>
+
+                      <button className="sviProizvodi-button" onClick={() => handleShowProizvodi(narudzbina.id)}>Svi proizvodi</button>
+                      {prikaziModal && (
+                        <div className="modal">
+                          <div className="modal-content">
+                            {/* Ovde dodajte prikaz proizvoda u modalu */}
+                              <div className="proizvodi-container">
+                          <h5 style={{fontWeight: 'bold', fontStyle: 'italic' }}>Svi proizvodi:</h5>
                           <ul>
-                            {narudzbina.proizvodi.map((proizvod, index2) => (
+                            {modalProizvodi.map((proizvod, index2) => (
                               <li key={index2}>
                                 <p className="proizvodi-brojac">Proizvod {index2 + 1}.</p>
-                                <p>Naziv proizvoda: {proizvod.nazivProizvoda}</p>
-                                <p>Slika proizvoda: {proizvod.slikaProizvoda}</p>
-                                <p>Količina: {proizvod.kolicina}</p>
+                                <img
+                                  src={proizvod.slikaProizvoda ? proizvod.slikaProizvoda : iconP}
+                                  alt="Proizvod"
+                                  className="image"
+                                />
+                                <p><strong>Naziv proizvoda:</strong> {proizvod.nazivProizvoda}</p>
+                                <p><strong>Količina:</strong> {proizvod.kolicina}</p>
                               </li>
                             ))}
                           </ul>
                         </div>
-                      )}
-
+                      <button className="zatvori-button" onClick={handleCloseModal}>Zatvori</button>
+                    </div>
+                  </div>
+                )}
                       <hr /> {/* Linija na kraju narudžbine */}
                     </li>
                   ))}
@@ -154,23 +175,29 @@ const Profil = () => {
             </>
           ) : (
             <>
-              <h5 style={{ marginLeft: '14px' }}>Informacije o zahtevima:</h5>
+              <h5 style={{ marginLeft: '14px', fontWeight: 'bold', fontStyle: 'italic' }}>Informacije o zahtevima:</h5>
               {zahtevi.length > 0 ? (
                 <ul>
                   {zahtevi.map((zahtev, index) => (
                     <li key={zahtev.id}>
-                      <p className="zahtev-brojac">Zahtev {index + 1}.</p>
-                      <p>Ime ljubimca: {zahtev.imeLjubimca}</p>
-                      <p>Životinja: {zahtev.zivotinja}</p>
-                      <p>Cena zahteva: {zahtev.cena}</p>
-                      <p>Datum i vreme: {zahtev.datumVreme}</p>
-                      <p>Status zahteva: {zahtev.status}</p>
-                      <p>Komentar salona: {zahtev.komentarSalona}</p>
-                      <p><strong>Podaci salona:</strong></p>
-                      <p>Naziv salona: {zahtev.salon.naziv}</p>
-                      <p>Adresa salona: {zahtev.salon.adresa}</p>
-                      <p>Grad salona: {zahtev.salon.grad}</p>
-                      <p>Kontakt telefon salona: {zahtev.salon.brojTelefona}</p>
+                      <div className="container">
+                        <div className="card">
+                          <p className="zahtev-brojac">Zahtev {index + 1}.</p>
+                          <p><strong>Ime ljubimca:</strong> {zahtev.imeLjubimca}</p>
+                          <p><strong>Životinja:</strong> {zahtev.zivotinja}</p>
+                          <p><strong>Cena zahteva:</strong> {zahtev.cena}</p>
+                          <p><strong>Datum i vreme:</strong> {zahtev.datumVreme}</p>
+                          <p><strong>Status zahteva:</strong> {zahtev.status}</p>
+                          <p><strong>Komentar salona:</strong> {zahtev.komentarSalona}</p>
+                        </div>
+                        <div className="card">
+                          <p className="podaci-salona"><strong>Podaci salona:</strong></p>
+                          <p><strong>Naziv salona:</strong> {zahtev.salon.naziv}</p>
+                          <p><strong>Adresa salona:</strong> {zahtev.salon.adresa}</p>
+                          <p><strong>Grad salona:</strong> {zahtev.salon.grad}</p>
+                          <p><strong>Kontakt telefon salona:</strong> {zahtev.salon.brojTelefona}</p>
+                        </div>
+                      </div>
                       {zahtev.status == "Neobrađen" && <button className="obrisi-zahtev-button" onClick={() => handleDeleteZahtev(zahtev.id)}>Obriši zahtev</button>}
                       <hr /> {/* Linija na kraju zahteva */}
 
@@ -194,3 +221,5 @@ const Profil = () => {
 };
 
 export default Profil;
+
+
