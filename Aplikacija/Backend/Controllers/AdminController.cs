@@ -88,10 +88,7 @@ public class AdminController : ControllerBase
     public async Task<ActionResult> DodajKategoriju(string naziv)
     {
         try
-            {  
-                Kategorija postojeca = Context.Kategorije.Where(k=>k.naziv==naziv).FirstOrDefault();
-                if(postojeca!=null)
-                    return Ok("Vec postoji ta kategorija!");
+            {
                 Kategorija k = new Kategorija{
                     naziv=naziv
                 };
@@ -112,6 +109,12 @@ public class AdminController : ControllerBase
         try
             {  
                 Kategorija k = await Context.Kategorije.FindAsync(id_kategorija);
+                List<Proizvod> proizvodi = await Context.Proizvodi.Include(k=>k.Kategorija).Where(p=>p.Kategorija.ID==id_kategorija).ToListAsync();
+                foreach(Proizvod p in proizvodi)
+                {
+                    p.Kategorija=null;
+                    Context.Proizvodi.Update(p);
+                }
                 Context.Kategorije.Remove(k);
                 await Context.SaveChangesAsync();
                 return Ok("Uspesno obrisana kategorija");
