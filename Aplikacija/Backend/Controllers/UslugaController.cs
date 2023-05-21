@@ -58,7 +58,9 @@ public class UslugaController : ControllerBase
                 List<Zahtev> zahtevi =await Context.Zahtevi.Include(u=>u.Usluga).Where(z=>z.Usluga.ID==id_usluga).ToListAsync();
                 foreach(Zahtev z in zahtevi)
                 {
-                    Context.Zahtevi.Remove(z);
+                    z.Usluga=null;
+                    Context.Zahtevi.Update(z);
+                    //Context.Zahtevi.Remove(z);
                 }
                 Context.Usluge.Remove(u);
                 await Context.SaveChangesAsync();
