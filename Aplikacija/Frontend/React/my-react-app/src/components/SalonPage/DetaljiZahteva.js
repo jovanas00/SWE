@@ -76,6 +76,7 @@ const DetaljiZahteva = ({ zahtev, ucitajZahteve }) => {
                     <p>Status: {zahtev.status}</p>
                     <p>Komentar: {zahtev.komentarSalona}</p>
                     <p>Ukupna cena: {zahtev.cena}</p>
+                    <p>Usluga:{zahtev.ime_usluge}</p>
                     <p>Datum: {formatirajDatum(zahtev.datumVreme)}</p>
 
                     {obradaOpen && (

@@ -185,6 +185,7 @@ const Profil = () => {
                           <p className="zahtev-brojac">Zahtev {index + 1}.</p>
                           <p><strong>Ime ljubimca:</strong> {zahtev.imeLjubimca}</p>
                           <p><strong>Životinja:</strong> {zahtev.zivotinja}</p>
+                          <p><strong>Usluga:</strong> {zahtev.ime_usluge}</p>
                           <p><strong>Cena zahteva:</strong> {zahtev.cena}</p>
                           <p><strong>Datum i vreme:</strong> {formatirajDatum(zahtev.datumVreme)}</p>
                           <p><strong>Status zahteva:</strong> {zahtev.status}</p>

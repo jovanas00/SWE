@@ -18,6 +18,7 @@ public class AdminController : ControllerBase
         _config=config;
     }
 
+
     [Route("DodajAdmina/{korisnicko_ime}/{lozinka}/{email}/{ime}/{prezime}")]
     [HttpPost]
     public async Task<ActionResult> AddAdmin(string korisnicko_ime,string lozinka, string email,string ime, string prezime)
