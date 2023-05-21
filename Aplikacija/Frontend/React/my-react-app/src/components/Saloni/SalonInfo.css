@@ -1,38 +1,29 @@
 .salon-items {
-    /* display: flex;
-    flex-direction: column;
-    align-items: flex-end; */
-    /* flex: 0 0 auto; */
-    /* margin-top: auto; */
     display: flex;
     flex-wrap: wrap;
-    /* align-items: flex-start; */
-}
-
-.span-header {
+    justify-content: center; /* Center horizontally */
+  }
+  
+  .span-header {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     margin: 10px 10px 50px 10px;
-}
-
-.span-header * {
+  }
+  
+  .span-header * {
     flex: 1 1 100%;
-}
-
-@media (min-width: 768px) {
+  }
+  
+  @media (min-width: 768px) {
     .span-header * {
-        flex: 0 0 auto;
-        width: auto;
-        max-width: 400px;
+      flex: 0 0 auto;
+      width: auto;
+      max-width: 400px;
     }
-}
-
-span {
-    /* display: flex;
-    justify-content: center;
-    margin-right: 10px; */
-    /* position:absolute; */
+  }
+  
+  span {
     display: inline-block;
     padding: 8px 16px;
     background-color: #29335c;
@@ -40,17 +31,16 @@ span {
     border-radius: 4px;
     margin-bottom: 0;
     margin-right: 8px;
-    /* border-right: 1px solid #000; */
-}
-
-span.selected {
+  }
+  
+  span.selected {
     color: black;
     background-color: transparent;
-    /* text-decoration: underline; */
     border: 1px solid #29335c;
-}
-
-.items {
+  }
+  
+  .items {
     width: 100%;
     flex: 1 1 100%;
-}
+  }
+  

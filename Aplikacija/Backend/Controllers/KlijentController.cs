@@ -268,6 +268,8 @@ public class KlijentController : ControllerBase
             }
             else
             {
+                if(proizvod.dostupnost==true)
+                {
                 var kp = new KorpaProizvod
                 {
                     proizvodID = proizvodID,
@@ -283,7 +285,12 @@ public class KlijentController : ControllerBase
                 }
                 Context.KorpeProizvodi.Add(kp);
                 await Context.SaveChangesAsync();
-                return Ok($"ID dodatog proizvoda je: {proizvod.ID}");
+                return Ok("Uspesno ste dodali proizvod u korpu!");
+                }
+                else
+                {
+                    return Ok($"Proizvod nije dostupan,nije moguce dodati ga u korpu!");
+                }
             }
         }
         catch (Exception e)

@@ -22,12 +22,13 @@ const Usluge = ({ id }) => {
     }
     useEffect(() => {
         ucitajUsluge();
-    }, [id]);
+    }, []);
 
     const dodajUslugu = (novaUsluga) => {
         axios.post(`http://localhost:5169/Usluga/DodajUslugu/${novaUsluga.naziv}/${novaUsluga.cena}/${novaUsluga.opis}/${novaUsluga.dostupnost}/${id}`)
             .then((response) => {
-                console.log('Usluga uspešno dodata.');
+                alert(response.data)
+                // console.log('Usluga uspešno dodata.');
                 ucitajUsluge();
             })
             .catch((error) => {
@@ -83,7 +84,8 @@ const Usluge = ({ id }) => {
             axios
                 .put(putanjaSaParametrima)
                 .then((response) => {
-                    console.log('Usluga je uspešno izmenjena!');
+                    alert(response.data)
+                    // console.log('Usluga je uspešno izmenjena!');
                     ucitajUsluge();
                     setTrenutnoIzmenjenRed(null);
                     setIzmenjeneVrednosti({});

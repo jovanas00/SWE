@@ -89,6 +89,9 @@ public class AdminController : ControllerBase
     {
         try
             {  
+                Kategorija postojeca = Context.Kategorije.Where(k=>k.naziv==naziv).FirstOrDefault();
+                if(postojeca!=null)
+                    return Ok("Vec postoji ta kategorija!");
                 Kategorija k = new Kategorija{
                     naziv=naziv
                 };

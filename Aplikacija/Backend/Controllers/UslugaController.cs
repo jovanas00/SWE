@@ -20,6 +20,9 @@ public class UslugaController : ControllerBase
     {
         //preko korisnika nalazis salon
         Salon s = await Context.Saloni.FindAsync(id_salon);
+        Usluga postojeca = Context.Usluge.Include(s=>s.Salon).Where(u=>u.Naziv==naziv && u.Salon.ID==id_salon).FirstOrDefault();
+        if(postojeca!=null)
+            return Ok("Vec postoji usluga sa tim imenom!");
         if(s==null)
                 return NotFound();
         try
@@ -67,19 +70,22 @@ public class UslugaController : ControllerBase
     //[Authorize(Roles ="Salon")]
     public async Task<ActionResult<Usluga>> IzmeniUslugu(int id_usluga, string naziv, float cena, string opis, bool dostupnost)
     {
-        Usluga u = await Context.Usluge.FindAsync(id_usluga);
-        if(u == null)
+        Usluga usluga = await Context.Usluge.Include(s=>s.Salon).Where(u=>u.ID==id_usluga).FirstOrDefaultAsync();
+        if(usluga == null)
             return NotFound();
+        Usluga postojeca = Context.Usluge.Include(s=>s.Salon).Where(u=>u.Naziv==naziv && u.Salon.ID==usluga.Salon.ID).FirstOrDefault();
+        if(postojeca!=null)
+            return Ok("Vec postoji usluga sa tim imenom!");
         try{ 
             if (!string.IsNullOrEmpty(naziv))  
-                u.Naziv = naziv;
+                usluga.Naziv = naziv;
             if (cena != default(float) || cena>0)
-                u.cena = cena;
+                usluga.cena = cena;
             if (!string.IsNullOrEmpty(opis))
-                u.opis = opis;
-            u.dostupnost = dostupnost;
+                usluga.opis = opis;
+            usluga.dostupnost = dostupnost;
             await Context.SaveChangesAsync();
-            return Ok(u);
+            return Ok(usluga);
         }
         catch(Exception e)
         {
