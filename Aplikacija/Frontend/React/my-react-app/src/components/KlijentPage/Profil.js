@@ -186,7 +186,7 @@ const Profil = () => {
                           <p><strong>Ime ljubimca:</strong> {zahtev.imeLjubimca}</p>
                           <p><strong>Životinja:</strong> {zahtev.zivotinja}</p>
                           <p><strong>Cena zahteva:</strong> {zahtev.cena}</p>
-                          <p><strong>Datum i vreme:</strong> {zahtev.datumVreme}</p>
+                          <p><strong>Datum i vreme:</strong> {formatirajDatum(zahtev.datumVreme)}</p>
                           <p><strong>Status zahteva:</strong> {zahtev.status}</p>
                           <p><strong>Komentar salona:</strong> {zahtev.komentarSalona}</p>
                         </div>
