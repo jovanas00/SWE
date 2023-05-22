@@ -100,22 +100,24 @@ const AdminPage = () => {
   // Funkcija za dodavanje kategorije preko Axios
   const addCategory = async (naziv) => {
     try {
-      const response = await api.post(`/Admin/DodajKategoriju/${naziv}`);
-      console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
+      const response = await api.post(`/Admin/DodajKategoriju/${naziv}`);   
       fetchCategories(); // osvežava listu kategorija u prozoru
+      alert("Uspešno dodata kategorija!");
     } catch (error) {
       handleError();
+      alert("Greška pri dodavanju kategorije!");
     }
   };
 
   // Funkcija za brisanje kategorije preko Axios
   const deleteCategory = async (id_kategorija) => {
     try {
-      const response = await api.post(`/Admin/ObrisiKategoriju/${id_kategorija}`);
-      console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
+      const response = await api.post(`/Admin/ObrisiKategoriju/${id_kategorija}`);     
       fetchCategories(); // osvežava listu kategorija u prozoru
+      alert("Uspešno obrisana kategorija!");
     } catch (error) {
       handleError();
+      alert("Greška pri brisanju kategorije!");
     }
   };
 
@@ -189,7 +191,7 @@ const AdminPage = () => {
                       <img
                         src={adminInfo.korisnik?.slika ? adminInfo.korisnik.slika : icon}
                         alt="User"
-                        className="image"
+                        className="image1"
                       />
                     </div>
                     <div className="admin-info-details">
@@ -276,9 +278,9 @@ const AdminPage = () => {
                               <div className="modal-overlay" onClick={handleCloseModal} />
                               <div className="modal-content">
                                 {user.slika ? (
-                                  <img src={user.slika} alt="Profilna slika" />
+                                  <img src={user.slika} alt="Profilna slika" className="image2" />
                                 ) : (
-                                  <img src={icon} alt="Ikona" />
+                                  <img src={icon} alt="Ikona" className="image2" />
                                 )}
                                 <button className="close-button" onClick={handleCloseModal}>
                                   Zatvori
@@ -313,7 +315,14 @@ const AdminPage = () => {
                     onChange={(e) => setCategoryName(e.target.value)}
                     placeholder="Naziv kategorije"
                   />
-                  <button onClick={() => addCategory(categoryName)}> Dodaj </button>
+                    <button
+                      onClick={() => {
+                        addCategory(categoryName);
+                        setCategoryName(""); // Očisti polje za unos
+                      }}
+                    >
+                      Dodaj
+                    </button>
                 </div>
                 <h5>Obriši kategoriju:</h5>
                 <div className="input-container">
@@ -323,7 +332,14 @@ const AdminPage = () => {
                     onChange={(e) => setCategoryId(e.target.value)}
                     placeholder="ID kategorije"
                   />
-                  <button onClick={() => deleteCategory(categoryId)}> Obriši </button>
+                    <button
+                      onClick={() => {
+                        deleteCategory(categoryId);
+                        setCategoryId(""); // Očisti polje za unos
+                      }}
+                    >
+                      Obriši
+                    </button>
                 </div>
                 <h5>Sve kategorije:</h5>
                 <div className="scrollable-window">
