@@ -88,6 +88,7 @@ const Proizvodi = ({ id }) => {
 
         let parametri = [];
 
+
         if (izmenjenProizvod.naziv !== undefined) {
             parametri.push(`naziv=${izmenjenProizvod.naziv}`);
         }
@@ -101,7 +102,7 @@ const Proizvodi = ({ id }) => {
         }
 
         if (izmenjenProizvod.kategorija !== undefined) {
-            parametri.push(`kategorija=${izmenjenProizvod.kategorija}`);
+            parametri.push(`kategorijaId=${izmenjenProizvod.kategorija}`);
         }
 
         if (parametri.length > 0) {

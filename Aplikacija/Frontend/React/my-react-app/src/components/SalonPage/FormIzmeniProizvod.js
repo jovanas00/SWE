@@ -8,7 +8,7 @@ const FormIzmeniProizvod = ({ proizvod, izmeniProizvod, kategorije }) => {
     const [naziv, setNaziv] = useState(proizvod.naziv);
     const [cena, setCena] = useState(proizvod.cena);
     const [dostupnost, setDostupnost] = useState(proizvod.dostupnost);
-    const [kategorija, setKategorija] = useState(proizvod.kategorija);
+    const [kategorija, setKategorija] = useState(proizvod.kategorijaId); //treba da se salje id, a ne naziv
 
     const [showModal, setShowModal] = useState(false);
 
@@ -26,7 +26,7 @@ const FormIzmeniProizvod = ({ proizvod, izmeniProizvod, kategorije }) => {
             setNaziv(proizvod.naziv);
             setCena(proizvod.cena);
             setDostupnost(proizvod.dostupnost);
-            setKategorija(proizvod.kategorija);
+            setKategorija(proizvod.kategorijaId);
         }
         else {
             izmeniProizvod(izmenjenProizvod);
@@ -89,7 +89,7 @@ const FormIzmeniProizvod = ({ proizvod, izmeniProizvod, kategorije }) => {
                             >
                                 <option value="">Odaberite kategoriju</option>
                                 {kategorije.map((k) => (
-                                    <option key={k.id} value={k.id}>{k.naziv}</option>
+                                    <option key={k.id} value={k.id} selected={proizvod.kategorijaNaziv === k.naziv}>{k.naziv}</option>
                                 ))}
                             </Form.Control>
                         </Form.Group>

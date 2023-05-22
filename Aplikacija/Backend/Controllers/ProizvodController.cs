@@ -175,6 +175,7 @@ public class ProizvodController : ControllerBase
             naziv = p.naziv,
             cena = p.cena,
             dostupnost = p.dostupnost,
+            kategorijaId = p.Kategorija?.ID,
             kategorijaNaziv = p.Kategorija?.naziv
         });
         return Ok(result);
