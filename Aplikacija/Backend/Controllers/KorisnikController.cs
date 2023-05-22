@@ -313,7 +313,7 @@ public class KorisnikController : ControllerBase
         }
         else return Ok("Nisu unete dobre lozinke!");
     }
-    
+
     [HttpPost]
     [Route("Upload/{korisnicko_ime}")]
     [Authorize]
@@ -329,9 +329,10 @@ public class KorisnikController : ControllerBase
 
             if (file.Length > 0)
             {
-                var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                var fullPath = Path.Combine(pathToSave, fileName);
-                var dbPath = Path.Combine(folderName, fileName);
+                // var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                var uniqueFileName = GetUniqueFileName(file.FileName);
+                var fullPath = Path.Combine(pathToSave, uniqueFileName);
+                var dbPath = Path.Combine(folderName, uniqueFileName);
                 using (var stream = new FileStream(fullPath, FileMode.Create))
                 {
                     file.CopyTo(stream);
@@ -353,6 +354,15 @@ public class KorisnikController : ControllerBase
         {
             return StatusCode(500, $"Internal server error: {e}");
         }
+    }
+
+    private string GetUniqueFileName(string fileName)
+    {
+        // Generate a unique file name using timestamp and random string
+        var timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+        var randomString = Path.GetRandomFileName().Replace(".", "");
+        var extension = Path.GetExtension(fileName);
+        return $"{timestamp}_{randomString}{extension}";
     }
 
     [HttpGet]

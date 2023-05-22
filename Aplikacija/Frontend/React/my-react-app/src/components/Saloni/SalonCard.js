@@ -25,7 +25,7 @@ const SalonCard = ({ salon, slika }) => {
     return (
         <Card className="salon-card">
             <div className="salon-card__image">
-                <img src={slika ? slika : icon} alt={salon.naziv} />
+                <img src={slika ? slika : icon} alt={salon.naziv} className="image_salon" />
             </div>
             <div className="salon-card__text">
                 <h5><strong>Naziv: {salon.naziv}</strong></h5>
