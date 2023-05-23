@@ -15,7 +15,7 @@ public class UslugaController : ControllerBase
 
     [Route("DodajUslugu/{naziv}/{cena}/{opis}/{dostupnost}/{id_salon}")]
     [HttpPost]
-    //[Authorize(Roles ="Salon")]
+    [Authorize(Roles ="Salon")]
     public async Task<ActionResult<Usluga>> DodajUslugu(string naziv, float cena, string opis, bool dostupnost, int id_salon)
     {
         //preko korisnika nalazis salon
@@ -47,7 +47,7 @@ public class UslugaController : ControllerBase
 
     [Route("ObrisiUslugu/{id_usluga}")]
     [HttpDelete]
-    //[Authorize(Roles ="Salon")]
+    [Authorize(Roles ="Salon")]
     public async Task<ActionResult<Usluga>> ObrisiUslugu(int id_usluga)
     {
         Usluga u = await Context.Usluge.FindAsync(id_usluga);
@@ -100,55 +100,9 @@ public class UslugaController : ControllerBase
         }    
     }
 
-    // [Route("IzmeniDostupnost/{id_usluga}")]
-    // [HttpPut]
-    // //[Authorize(Roles ="Salon")]
-    // public async Task<ActionResult<Usluga>> IzmeniDostupnost(int id_usluga)
-    // {
-    //     Usluga u = await Context.Usluge.FindAsync(id_usluga);
-    //     if(u == null)
-    //         return NotFound();
-    //     try{   
-    //         if(u.dostupnost==true)
-    //         {
-    //             u.dostupnost=false;
-    //         }
-    //         else
-    //             u.dostupnost=true;
-    //         await Context.SaveChangesAsync();
-    //         return Ok(u);
-    //     }
-    //     catch(Exception e)
-    //     {
-    //         return BadRequest(e.Message);
-    //     }    
-    // } 
-
-    // [Route("VratiUslugeSalona/{id_salon}")]
-    // [HttpGet]
-    // //[AllowAnonymous]
-    // public async Task<ActionResult<IEnumerable<Usluga>>> VratiUslugeSalona(int id_salon)
-    // {
-    //     var usluge = await Context.Usluge.Where(u => u.Salon.ID == id_salon).ToListAsync();
-    //     return usluge;
-    // }
-
-    // [Route("VratiUsluge/{id_salon}")]
-    // [HttpGet]
-    // //[AllowAnonymous]
-    // public async Task<ActionResult<IEnumerable<object>>> VratiUsluge(int id_salon)
-    // {
-    //     var usluge = await Context.Usluge.Where(u => u.Salon.ID == id_salon).ToListAsync();
-    //     var p = usluge.Select(p=>new{
-    //         naziv=p.Naziv,
-    //         ID=p.ID
-    //     });
-    //     return Ok(p);
-    // }
-
     [Route("VratiUslugeSalona/{id_salon}")]
     [HttpGet]
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<object>>> VratiUslugeSalona(int id_salon)
     {
         var usluge = await Context.Usluge.Where(u => u.Salon.ID == id_salon).ToListAsync();

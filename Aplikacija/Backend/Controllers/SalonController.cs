@@ -4,7 +4,7 @@ namespace BackEnd.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-//[Authorize(Roles ="Salon")]
+[Authorize(Roles ="Salon")]
 public class SalonController : ControllerBase
 {
     public PPContext Context { get; set; }
@@ -15,7 +15,7 @@ public class SalonController : ControllerBase
 
     [Route("VratiSveSalone")]
     [HttpGet]
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<object>>> VratiSveSalone()
     {
         var saloni = await Context.Saloni.Include(s => s.Korisnik).ToListAsync();
@@ -35,7 +35,7 @@ public class SalonController : ControllerBase
 
     [Route("VratiSalon/{id_salon}")]
     [HttpGet]
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public async Task<ActionResult<Salon>> VratiSalon(int id_salon)
     {
         var salon = await Context.Saloni.Include(s => s.Korisnik).FirstOrDefaultAsync(s => s.ID == id_salon);
@@ -275,7 +275,7 @@ public class SalonController : ControllerBase
             ZahtevID = z.ID,
             ImeLjubimca = z.imeLjubimca,
             Zivotinja = z.zivotinja,
-            ime_usluge = z.ime_usluge,
+            // ime_usluge = z.ime_usluge,
             Cena = z.cena,
             DatumVreme = z.datumVreme,
             Status = z.status,
@@ -297,6 +297,7 @@ public class SalonController : ControllerBase
 
     [Route("ProsecnaOcena/{id_salon}")]
     [HttpGet]
+    [AllowAnonymous]
     public async Task<ActionResult<object>> ProsecnaOcena(int id_salon)
     {
         var salon = await Context.Saloni.Include(s => s.Recenzije).FirstOrDefaultAsync(s => s.ID == id_salon);
@@ -318,7 +319,4 @@ public class SalonController : ControllerBase
 
         return rezultat;
     }
-
-
-
 }
