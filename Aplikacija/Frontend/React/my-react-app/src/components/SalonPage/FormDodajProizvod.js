@@ -40,13 +40,16 @@ const FormDodajProizvod = ({ dodajProizvod, kategorije }) => {
         <Card>
             <form onSubmit={handleFormSubmit}>
                 <div>
-                    <label>
-                        Naziv: &nbsp;
-                        <input type="text" value={naziv} onChange={(e) => setNaziv(e.target.value)} 
-                        placeholder="Naziv proizvoda" 
-                        style={{ width: "350px" }}/>
-                        
-                    </label>
+                <label>
+                    Naziv: &nbsp;
+                    <input
+                        type="text"
+                        value={naziv}
+                        onChange={(e) => setNaziv(e.target.value)}
+                        placeholder="Naziv proizvoda"
+                        style={{ width: "100%", maxWidth: "350px" }}
+                    />
+                </label>
                 </div>
                 <div>
                 <label>
