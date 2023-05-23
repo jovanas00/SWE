@@ -18,9 +18,9 @@ namespace BackEnd.Models
         [Required()]
         public string zivotinja { get; set; }
 
-        [Column("Usluga_Naziv")]
-        [Required()]
-        public string ime_usluge { get; set;}
+        // [Column("Usluga_Naziv")]
+        // [Required()]
+        // public string ime_usluge { get; set;}
 
         [Column("Cena")]
         [Required()]

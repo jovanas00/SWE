@@ -5,6 +5,7 @@ import { vratiRole } from '../Auth/VratiRole';
 import Header from '../Pocetna/Header';
 import Informacije from "./Informacije";
 import TokenChecker from "../Auth/TokenChecker";
+import SalonUpravljanje from "./SalonUpravljanje";
 
 const SalonProfil = () => {
     if (isSalon()) {
@@ -12,6 +13,7 @@ const SalonProfil = () => {
             <div>
                 <Informacije />
                 <TokenChecker/>
+                <SalonUpravljanje/>
             </div>     
         );
     }

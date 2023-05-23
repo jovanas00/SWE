@@ -22,7 +22,7 @@ const SalonUpravljanje = () => {
     const [salon, setSalon] = useState(null);
     const [salonId, setSalonId] = useState(null);
 
-    const [selectedSection, setSelectedSection] = useState(null);
+    const [selectedSection, setSelectedSection] = useState('products-management');
 
     const handleSectionChange = (section) => {
         setSelectedSection(section);
@@ -50,7 +50,6 @@ const SalonUpravljanje = () => {
 
         return (
             <div>
-                <Header />
                 <TokenChecker/>
                 <div className='salon-page'>
                     <aside className='salon-sidebar'>
