@@ -224,6 +224,7 @@ public class AdminController : ControllerBase
                             //Console.WriteLine(z.ID);
                         }
                     }
+                    Context.Saloni.Remove(salon);
                     break;
 
                     case "Klijent":
