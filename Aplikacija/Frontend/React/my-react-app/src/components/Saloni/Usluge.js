@@ -5,6 +5,7 @@ import Card from "../UI/Card";
 import FormDodajUslugu from "../SalonPage/FormDodajUslugu";
 import { vratiRole } from "../Auth/VratiRole";
 import '../UI/Button.css';
+import api from "../Auth/Interceptor";
 
 const Usluge = ({ id }) => {
     const [usluge, setUsluge] = useState([]);
@@ -12,7 +13,7 @@ const Usluge = ({ id }) => {
     const [izmenjeneVrednosti, setIzmenjeneVrednosti] = useState({});
 
     const ucitajUsluge = () => {
-        axios.get(`http://localhost:5169/Usluga/VratiUslugeSalona/${id}`)
+        api.get(`/Usluga/VratiUslugeSalona/${id}`)
             .then((response) => {
                 setUsluge(response.data);
             })
@@ -25,7 +26,7 @@ const Usluge = ({ id }) => {
     }, []);
 
     const dodajUslugu = (novaUsluga) => {
-        axios.post(`http://localhost:5169/Usluga/DodajUslugu/${novaUsluga.naziv}/${novaUsluga.cena}/${novaUsluga.opis}/${novaUsluga.dostupnost}/${id}`)
+        api.post(`/Usluga/DodajUslugu/${novaUsluga.naziv}/${novaUsluga.cena}/${novaUsluga.opis}/${novaUsluga.dostupnost}/${id}`)
             .then((response) => {
                 alert(response.data)
                 // console.log('Usluga uspešno dodata.');
@@ -40,8 +41,8 @@ const Usluge = ({ id }) => {
     };
 
     const obrisiUslugu = (idUsluge) => {
-        axios
-            .delete(`http://localhost:5169/Usluga/ObrisiUslugu/${idUsluge}`)
+        api
+            .delete(`/Usluga/ObrisiUslugu/${idUsluge}`)
             .then((response) => {
                 console.log('Usluga je uspešno obrisana!');
                 ucitajUsluge();
@@ -53,7 +54,7 @@ const Usluge = ({ id }) => {
     };
 
     const izmeniUslugu = (id, index) => {
-        const putanja = `http://localhost:5169/Usluga/IzmeniUslugu/${id}?`;
+        const putanja = `/Usluga/IzmeniUslugu/${id}?`;
 
         let parametri = [];
         const naziv = izmenjeneVrednosti.naziv;
@@ -81,7 +82,7 @@ const Usluge = ({ id }) => {
         if (parametri.length > 0) {
             const putanjaSaParametrima = putanja + parametri.join("&");
 
-            axios
+            api
                 .put(putanjaSaParametrima)
                 .then((response) => {
                     alert(response.data)

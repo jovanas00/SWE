@@ -14,7 +14,7 @@ const Recenzije = ({ id }) => {
     const [recenzije, setRecenzije] = useState([]);
     const [inputText, setInputText] = useState("");
     useEffect(() => {
-        axios.get(`http://localhost:5169/Salon/VratiRecenzijeSalona/${id}`)
+        api.get(`/Salon/VratiRecenzijeSalona/${id}`)
             .then((response) => {
                 setRecenzije(response.data);
                 console.log(response.data)

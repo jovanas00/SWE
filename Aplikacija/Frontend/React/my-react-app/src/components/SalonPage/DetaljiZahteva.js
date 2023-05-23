@@ -4,6 +4,7 @@ import { formatirajDatum } from "../UI/FormatirajDatum";
 import axios from "axios";
 import './Modal.css';
 import '../UI/Button.css';
+import api from "../Auth/Interceptor";
 
 const DetaljiZahteva = ({ zahtev, ucitajZahteve }) => {
     const [modalOpen, setModalOpen] = useState(false);
@@ -14,8 +15,8 @@ const DetaljiZahteva = ({ zahtev, ucitajZahteve }) => {
 
     const obradiZahtev = async () => {
         try {
-            const response = await axios.put(
-                `http://localhost:5169/Salon/ObradiZahtev/${zahtev.zahtevID}/${status}/${komentarSalona}`
+            const response = await api.put(
+                `/Salon/ObradiZahtev/${zahtev.zahtevID}/${status}/${komentarSalona}`
             );
             console.log(response.data);
             ucitajZahteve();

@@ -27,7 +27,7 @@ const Proizvodi = ({ id }) => {
     };
 
     const ucitajProizvode = () => {
-        axios.get(`http://localhost:5169/Proizvod/VratiProizvodeSalona/${id}`)
+        api.get(`/Proizvod/VratiProizvodeSalona/${id}`)
             .then((response) => {
                 setProizvodi(response.data);
             })
@@ -57,7 +57,7 @@ const Proizvodi = ({ id }) => {
 
 
     const dodajProizvod = (noviProizvod) => {
-        axios.post(`http://localhost:5169/Proizvod/DodajProizvod/${noviProizvod.naziv}/${noviProizvod.cena}/${noviProizvod.dostupnost}/${noviProizvod.kategorija}/${id}`)
+        api.post(`/Proizvod/DodajProizvod/${noviProizvod.naziv}/${noviProizvod.cena}/${noviProizvod.dostupnost}/${noviProizvod.kategorija}/${id}`)
             .then((response) => {
                 console.log('Proizvod uspešno dodat.');
                 ucitajProizvode();
@@ -71,7 +71,7 @@ const Proizvodi = ({ id }) => {
     };
 
     const obrisiProizvod = (proizvodId) => {
-        axios.delete(`http://localhost:5169/Proizvod/ObrisiProizvod/${proizvodId}`)
+        api.delete(`/Proizvod/ObrisiProizvod/${proizvodId}`)
             .then((response) => {
                 obavestenja('Proizvod uspešno obrisan.', 'success');
                 ucitajProizvode();
@@ -84,7 +84,7 @@ const Proizvodi = ({ id }) => {
     };
 
     const izmeniProizvod = (izmenjenProizvod) => {
-        const putanja = `http://localhost:5169/Proizvod/IzmeniProizvod/${izmenjenProizvod.id}?`;
+        const putanja = `/Proizvod/IzmeniProizvod/${izmenjenProizvod.id}?`;
 
         let parametri = [];
 
@@ -107,7 +107,7 @@ const Proizvodi = ({ id }) => {
 
         if (parametri.length > 0) {
             const putanjaSaParametrima = putanja + parametri.join("&");
-            axios
+            api
                 .put(putanjaSaParametrima)
                 .then((response) => {
                     console.log("Proizvod je uspešno izmenjen:", response.data);

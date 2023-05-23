@@ -5,23 +5,15 @@ import { vratiKorisnickoIme } from "../Auth/VratIKorisnickoIme";
 import { formatirajDatum } from "../UI/FormatirajDatum";
 import DetaljiZahteva from "./DetaljiZahteva";
 import Card from "../UI/Card";
+import api from "../Auth/Interceptor";
 
 const Zahtevi = () => {
     const korisnicko_ime = vratiKorisnickoIme();
     const [zahtevi, setZahtevi] = useState([]);
 
-    // const ucitajZahteve = async () => {
-    //     try {
-    //         const response = await axios.get(`http://localhost:5169/Salon/VratiZahteveSalona/${korisnicko_ime}`);
-    //         setZahtevi(response.data);
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // };
-
     const ucitajZahteve = async () => {
         try {
-            const response = await axios.get(`http://localhost:5169/Salon/VratiZahteveSalona/${korisnicko_ime}`);
+            const response = await api.get(`/Salon/VratiZahteveSalona/${korisnicko_ime}`);
             const noveZahteve = response.data;
             const sortiraniZahtevi = noveZahteve.sort((a, b) => {
                 if (a.status === "Neobrađen" && b.status !== "Neobrađen") {

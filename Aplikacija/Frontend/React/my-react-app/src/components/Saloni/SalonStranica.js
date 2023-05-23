@@ -21,7 +21,7 @@ const SalonStranica = () => {
 
     useEffect(() => {
         if (id) {
-            axios.get(`http://localhost:5169/Salon/VratiSalon/${id}`)
+            api.get(`/Salon/VratiSalon/${id}`)
                 .then(response => {
                     console.log(response.data);
                     setSalon(response.data);

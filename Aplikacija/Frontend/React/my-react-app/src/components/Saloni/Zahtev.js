@@ -19,7 +19,7 @@ const Zahtev = ({ id }) => {
     // Fetch usluga list from server
     const fetchUslugaList = async (id) => {
         try {
-            const response = await axios.get(`http://localhost:5169/Usluga/VratiUslugeSalona/${id}`);
+            const response = await api.get(`/Usluga/VratiUslugeSalona/${id}`);
             setUslugaList(response.data);
         } catch (error) {
             console.log(error);

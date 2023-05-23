@@ -19,7 +19,7 @@ const Odgovori = ({ id }) => {
     // const navigate = useNavigate();
 
     const UcitajPitanja = () => {
-        axios.get(`http://localhost:5169/Salon/VratiPitanjaSalona/${id}`)
+        api.get(`/Salon/VratiPitanjaSalona/${id}`)
             .then((response) => {
                 setOdgovori(response.data);
                 console.log(response.data)
@@ -53,7 +53,7 @@ const Odgovori = ({ id }) => {
     };
 
     const odgovoriNaPitanje = (idPitanje, tekst) => {
-        axios.put(`http://localhost:5169/Salon/OdgovoriNaPitanje/${idPitanje}/${tekst}`)
+        api.put(`/Salon/OdgovoriNaPitanje/${idPitanje}/${tekst}`)
             .then((response) => {
                 console.log("Pitanje je uspešno odgovoreno:", response.data);
                 UcitajPitanja();
