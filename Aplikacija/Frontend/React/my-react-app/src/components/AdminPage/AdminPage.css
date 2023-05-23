@@ -208,6 +208,13 @@
     max-width: calc(100vw - 40px);
     max-height: calc(100vh - 40px);
   }
+
+  .user-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
 }
 
 .user-list li {
