@@ -43,7 +43,7 @@ const FormDodajUslugu = ({ dodajUslugu }) => {
                             value={naziv}
                             onChange={(e) => setNaziv(e.target.value)}
                             placeholder="Naziv usluge"
-                            style={{ width: "350px" }}
+                            style={{ width: "100%", maxWidth: "350px" }}
                         />
                     </label>
                 </div>
@@ -65,7 +65,7 @@ const FormDodajUslugu = ({ dodajUslugu }) => {
                         value={opis}
                         onChange={(e) => setOpis(e.target.value)}
                         placeholder=" Opis usluge"
-                        style={{ width: "397px" }} 
+                        style={{ width: "100%", maxWidth: "397px" }} 
                     ></textarea>
                 </label>
 
