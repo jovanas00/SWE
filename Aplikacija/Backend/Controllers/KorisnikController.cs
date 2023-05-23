@@ -371,7 +371,17 @@ public class KorisnikController : ControllerBase
     {
         try
         {
-            var korisnici = Context.Korisnici.ToList();
+            var korisnici = Context.Korisnici.Select(k => new
+            {
+                k.ID,
+                k.email,
+                k.korisnickoIme,
+                k.sifra,
+                k.salt_value,
+                k.tip,
+                k.slika
+            }).ToList();
+
             return Ok(korisnici);
         }
         catch (Exception)
@@ -379,5 +389,8 @@ public class KorisnikController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
+
+
+    
 
 }
