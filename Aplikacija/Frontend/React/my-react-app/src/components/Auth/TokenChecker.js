@@ -24,7 +24,7 @@ const TokenChecker = () => {
   useEffect(() => {
     checkToken();
 
-    const interval = setInterval(checkToken, 1000); // Adjust the interval as needed
+    const interval = setInterval(checkToken, 1800*1000); // Adjust the interval as needed
 
     return () => {
       clearInterval(interval);
