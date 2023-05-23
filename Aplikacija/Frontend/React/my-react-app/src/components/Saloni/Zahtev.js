@@ -133,7 +133,7 @@ const Zahtev = ({ id }) => {
                 </select>
             </label>
 
-            <button type="submit">Submit</button>
+            <button type="submit">Pošalji zahtev</button>
         </form>
     );
 };
