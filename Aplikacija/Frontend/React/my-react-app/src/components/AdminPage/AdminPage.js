@@ -31,6 +31,7 @@ const AdminPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
 
+
   // Autorizacija
   const token = Cookies.get('token');
   const config = {
@@ -85,6 +86,7 @@ const AdminPage = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+
 
 
   //Funkcija za prikaz svih kategorija preko Axios
@@ -265,14 +267,18 @@ const AdminPage = () => {
                       .map((user) => (
                         <div key={user.id} className="user-card">
                           <div className="profile-picture">
-                            {user.slika ? (
-                              <img src={user.slika ? user.slika : icon} alt="Profilna slika" />
-                            ) : (
-                              <img src={icon} alt="Ikona" />
-                            )}
+                          {user.slika ? (
+                            <img
+                              src={user.slika ? user.slika : icon}
+                              alt="Profilna slika"
+                            />
+                          ) : (
+                            <img src={icon} alt="Ikona"/>
+                          )}
                           </div>
                           <p><strong>Korisničko ime:</strong> {user.korisnickoIme}</p>
                           <p><strong>Tip korisnika:</strong> {user.tip}</p>
+                          <p><strong>Email:</strong> {user.email}</p>
                           {selectedImage === user.slika && isModalOpen && (
                             <div className="modal">
                               <div className="modal-overlay" onClick={handleCloseModal} />
