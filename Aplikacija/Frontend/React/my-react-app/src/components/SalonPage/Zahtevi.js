@@ -50,7 +50,7 @@ const Zahtevi = () => {
                     {zahtevi.map((zahtev) => (
                         <tr>
                             <td>{zahtev.zivotinja}</td>
-                            <td>{zahtev.status}</td>
+                            <td style={{ color: zahtev.status === 'Neobrađen' ? 'red' : 'inherit' }}>{zahtev.status}</td>
                             <td>{zahtev.komentarSalona}</td>
                             <td>{formatirajDatum(zahtev.datumVreme)}</td>
                             <td>
