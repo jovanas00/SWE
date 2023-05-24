@@ -20,7 +20,8 @@ const Zahtev = ({ id }) => {
     const fetchUslugaList = async (id) => {
         try {
             const response = await api.get(`/Usluga/VratiUslugeSalona/${id}`);
-            setUslugaList(response.data);
+            const filteredUslugaList = response.data.filter(item => item.dostupnost === true);
+            setUslugaList(filteredUslugaList);
         } catch (error) {
             console.log(error);
         }
