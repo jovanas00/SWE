@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { vratiKorisnickoIme } from '../Auth/VratIKorisnickoIme';
 import Cookies from 'js-cookie';
 import '../UI/Button.css';
+import api from '../Auth/Interceptor';
 
 const UploadFile = ({id}) => {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -22,19 +23,13 @@ const UploadFile = ({id}) => {
         const formData = new FormData();
         formData.append('file', file);
 
-        fetch(`http://localhost:5169/Proizvod/UploadProizvodSlika/${id}`, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                Authorization: `Bearer ${Cookies.get('token')}`,
-            },
-        })
+        api.post(`/Proizvod/UploadProizvodSlika/${id}`, formData)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
+                window.location.reload();
             })
             .catch((error) => {
-                // Handle any errors
             });
     };
 

@@ -49,6 +49,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import SalonCard from './SalonCard';
 import { vratiRole } from '../Auth/VratiRole';
+import api from '../Auth/Interceptor';
 
 const Body = () => {
   const [saloni, setSaloni] = useState([]); //saloni se inicijalizuje se na prazan niz

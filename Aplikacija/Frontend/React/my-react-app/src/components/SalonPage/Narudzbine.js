@@ -6,24 +6,15 @@ import { isSalon } from "../Auth/AuthSalon";
 import { formatirajDatum } from "../UI/FormatirajDatum";
 import DetaljiNarudzbine from "./DetaljiNarudzbine";
 import Card from "../UI/Card";
+import api from "../Auth/Interceptor";
 
 const Narudzbine = () => {
     const korisnicko_ime = vratiKorisnickoIme();
     const [narudzbine, setNarudzbine] = useState([]);
 
-    // const ucitajNarudzbine = async () => {
-    //     try {
-    //         const response = await axios.get(`http://localhost:5169/Salon/VratiNarudzbineSalona/${korisnicko_ime}`);
-    //         const noveNarudzbine = response.data;
-    //         setNarudzbine(noveNarudzbine.sort((a, b) => b.status.localeCompare(a.status)));
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // };
-
     const ucitajNarudzbine = async () => {
         try {
-            const response = await axios.get(`http://localhost:5169/Salon/VratiNarudzbineSalona/${korisnicko_ime}`);
+            const response = await api.get(`/Salon/VratiNarudzbineSalona/${korisnicko_ime}`);
             const noveNarudzbine = response.data;
             const sortiraneNarudzbine = noveNarudzbine.sort((a, b) => {
                 if (a.status === "Neobrađena" && b.status !== "Neobrađena") {
@@ -61,7 +52,7 @@ const Narudzbine = () => {
                     {narudzbine.map((narudzbina) => (
                         <tr>
                             <td>{narudzbina.korisnickoIme}</td>
-                            <td>{narudzbina.status}</td>
+                            <td style={{ color: narudzbina.status === 'Neobrađena' ? 'red' : 'inherit' }}>{narudzbina.status}</td>
                             <td>{narudzbina.komentarSalona}</td>
                             <td>{narudzbina.ukupnaCena}</td>
                             <td>{formatirajDatum(narudzbina.datum)}</td>

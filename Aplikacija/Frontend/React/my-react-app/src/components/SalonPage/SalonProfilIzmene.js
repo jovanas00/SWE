@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from 'axios';
 import './SalonProfilIzmene.css';
+import api from "../Auth/Interceptor";
 
 const SalonProfilIzmene = ({ salon, fetchSalon }) => {
     console.log("Iz izmene: " + salon.naziv);
@@ -11,8 +12,8 @@ const SalonProfilIzmene = ({ salon, fetchSalon }) => {
     const [brojTelefona, setBrojTelefona] = useState(salon.brojTelefona);
 
     const izmeniProfilSalona = (korisnickoIme, naziv, adresa, grad, brojTelefona) => {
-        axios
-            .put(`http://localhost:5169/Salon/IzmeniProfilSalona/${korisnickoIme}/${naziv}/${adresa}/${grad}/${brojTelefona}`)
+        api
+            .put(`/Salon/IzmeniProfilSalona/${korisnickoIme}/${naziv}/${adresa}/${grad}/${brojTelefona}`)
             .then((response) => {
                 console.log("Profil salona je uspešno izmenjen:", response.data);
                 fetchSalon();

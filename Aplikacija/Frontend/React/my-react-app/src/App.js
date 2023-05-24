@@ -44,7 +44,7 @@ function App() {
             <Route path="/klijent/:id" element={<SalonStranicaKlijent />} />
             {/* <Route path="/klijent/saloni/:id" element={<SalonStranica />} /> */}
             <Route path="/klijent/profil" element={<Profil />} />
-            <Route path="/salon/upravljanje" element={<SalonUpravljanje />} />
+            {/* <Route path="/salon/upravljanje" element={<SalonUpravljanje />} /> */}
           </Routes>
         </div>
       </Router>

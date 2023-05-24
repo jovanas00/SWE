@@ -15,7 +15,7 @@ public class ProizvodController : ControllerBase
 
     [Route("DodajProizvod/{naziv}/{cena}/{dostupnost}/{id_kategorija}/{id_salon}")]
     [HttpPost]
-    //[Authorize(Roles ="Salon")]
+    [Authorize(Roles ="Salon")]
     public async Task<ActionResult<Proizvod>> DodajProizvod(string naziv, float cena, bool dostupnost, int id_kategorija, int id_salon)
     {
         //Salon preko korisnikID
@@ -48,7 +48,7 @@ public class ProizvodController : ControllerBase
 
     [Route("ObrisiProizvod/{id_proizvod}")]
     [HttpDelete]
-    //[Authorize(Roles ="Salon")]
+    [Authorize(Roles ="Salon")]
     public async Task<ActionResult<Proizvod>> ObrisiProizvod(int id_proizvod)
     {
         try
@@ -68,7 +68,7 @@ public class ProizvodController : ControllerBase
 
     [Route("IzmeniProizvod/{id_proizvod}")]
     [HttpPut]
-    //[Authorize(Roles ="Salon")]
+    [Authorize(Roles ="Salon")]
     public async Task<ActionResult<Proizvod>> IzmeniProizvod(int id_proizvod, string naziv, float cena, bool dostupnost, int kategorijaId)
     {
         var p = await Context.Proizvodi.FindAsync(id_proizvod);
@@ -92,32 +92,9 @@ public class ProizvodController : ControllerBase
         }
     }
 
-    // [Route("IzmeniDostupnost/{id_proizvod}")]
-    // [HttpPut]
-    // //[Authorize(Roles ="Salon")]
-    //  public async Task<ActionResult<Proizvod>> IzmeniProizvod(int id_proizvod)
-    // {
-    //     try
-    //     {
-    //      var p = await Context.Proizvodi.FindAsync(id_proizvod);
-    //      if(p == null)
-    //         return NotFound();
-    //         if(p.dostupnost==true)
-    //             p.dostupnost = false;
-    //         else
-    //             p.dostupnost = true;
-    //         await Context.SaveChangesAsync();
-    //         return Ok(p);
-    //     }
-    //     catch(Exception e)
-    //     {
-    //         return BadRequest(e.Message);
-    //     }    
-    // }
-
     [Route("UploadProizvodSlika/{id_proizvod}")]
     [HttpPost]
-    //[Authorize(Roles ="Salon")]
+    [Authorize(Roles ="Salon")]
     public async Task<ActionResult> UploadProizvodSlika(int id_proizvod)
     {
         //frontend za testiranje
@@ -160,7 +137,7 @@ public class ProizvodController : ControllerBase
 
     [Route("VratiProizvodeSalona/{id_salon}")]
     [HttpGet]
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<object>>> VratiProizvodeSalona(int id_salon)
     {
         var proizvodi = await Context.Proizvodi

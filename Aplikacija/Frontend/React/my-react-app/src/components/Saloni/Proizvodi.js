@@ -57,7 +57,7 @@ const Proizvodi = ({ id }) => {
 
 
     const dodajProizvod = (noviProizvod) => {
-        axios.post(`http://localhost:5169/Proizvod/DodajProizvod/${noviProizvod.naziv}/${noviProizvod.cena}/${noviProizvod.dostupnost}/${noviProizvod.kategorija}/${id}`)
+        api.post(`/Proizvod/DodajProizvod/${noviProizvod.naziv}/${noviProizvod.cena}/${noviProizvod.dostupnost}/${noviProizvod.kategorija}/${id}`)
             .then((response) => {
                 console.log('Proizvod uspešno dodat.');
                 ucitajProizvode();
@@ -71,7 +71,7 @@ const Proizvodi = ({ id }) => {
     };
 
     const obrisiProizvod = (proizvodId) => {
-        axios.delete(`http://localhost:5169/Proizvod/ObrisiProizvod/${proizvodId}`)
+        api.delete(`/Proizvod/ObrisiProizvod/${proizvodId}`)
             .then((response) => {
                 obavestenja('Proizvod uspešno obrisan.', 'success');
                 ucitajProizvode();
@@ -84,7 +84,7 @@ const Proizvodi = ({ id }) => {
     };
 
     const izmeniProizvod = (izmenjenProizvod) => {
-        const putanja = `http://localhost:5169/Proizvod/IzmeniProizvod/${izmenjenProizvod.id}?`;
+        const putanja = `/Proizvod/IzmeniProizvod/${izmenjenProizvod.id}?`;
 
         let parametri = [];
 
@@ -107,7 +107,7 @@ const Proizvodi = ({ id }) => {
 
         if (parametri.length > 0) {
             const putanjaSaParametrima = putanja + parametri.join("&");
-            axios
+            api
                 .put(putanjaSaParametrima)
                 .then((response) => {
                     console.log("Proizvod je uspešno izmenjen:", response.data);
@@ -171,50 +171,53 @@ const Proizvodi = ({ id }) => {
             <div>
                 {role === "Salon" && <FormDodajProizvod dodajProizvod={dodajProizvod} kategorije={kategorije} />}
             </div>
-            <div>
-                <select
-                    value={odabranaKategorija}
-                    onChange={(e) => setOdabranaKategorija(e.target.value)}
-                >
-                    <option value="">Sve kategorije</option>
-                    {kategorije.map((kategorija) => (
-                        <option key={kategorija.id} value={kategorija.naziv}>
-                            {kategorija.naziv}
-                        </option>
-                    ))}
-                </select>
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(500px, 1fr))", gap: "10px", marginTop: "10px" }}>
-                {filtrirajProizvode().map((proizvod) => (
-                    <div className="product-item">
-                        <div className="image-container">
-                            <img src={proizvod.slika ? proizvod.slika : product} alt={proizvod.naziv} className="image-item" />
-                        </div>
-                        <div className="product-details">
-                            <h3>Naziv: {proizvod.naziv}</h3>
-                            <p>Cena: {proizvod.cena}</p>
-                            <p className="dostupnost">Dostupnost: {proizvod.dostupnost ? "NA STANJU" : "NEMA NA STANJU"}</p>
-                            {klijent && (
-                                <button className="btn-cart" onClick={() => handleButtonClick(proizvod.id)}>
-                                    <BsCart className="btn-cart__icon" />
-                                    Dodaj u korpu
-                                </button>
-                            )}
-
-                            {role === "Salon" && (
-                                <div style={{ display: "flex", justifyContent: "space-evenly", alignItems: "center", topMargin: "20px" }}>
-                                    <FormIzmeniProizvod proizvod={proizvod} izmeniProizvod={izmeniProizvod} kategorije={kategorije} />
-                                    <UploadFile id={proizvod.id} onUploadFinished={(response) => handleUploadFinished(response, proizvod.id)} />
-                                    <button onClick={() => obrisiProizvod(proizvod.id)} className="customButton">Obriši</button>
+            <div className="container">
+                <div>
+                    <select
+                        value={odabranaKategorija}
+                        onChange={(e) => setOdabranaKategorija(e.target.value)}
+                    >
+                        <option value="">Sve kategorije</option>
+                        {kategorije.map((kategorija) => (
+                            <option key={kategorija.id} value={kategorija.naziv}>
+                                {kategorija.naziv}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className="card-grid">
+                    {filtrirajProizvode().map((proizvod) => (
+                        <div className="card-item" key={proizvod.id}>
+                            <Card>
+                                <div className="image-container">
+                                    <img src={proizvod.slika ? proizvod.slika : product} alt={proizvod.naziv} className="image-item" />
                                 </div>
-                            )}
-                        </div>
-                    </div>
-                ))}
-            </div>
+                                <div className="product-details">
+                                    <h3>Naziv: {proizvod.naziv}</h3>
+                                    <p>Cena: {proizvod.cena}</p>
+                                    <p>Dostupnost: {proizvod.dostupnost ? "NA STANJU" : "NEMA NA STANJU"}</p>
+                                    {klijent && (
+                                        <button className="btn-cart" onClick={() => handleButtonClick(proizvod.id)}>
+                                            <BsCart className="btn-cart__icon" />
+                                            Dodaj u korpu
+                                        </button>
+                                    )}
 
+                                    {role === "Salon" && (
+                                        <div style={{ display: "flex", justifyContent: "space-evenly", alignItems: "center", topMargin: "20px" }}>
+                                            <FormIzmeniProizvod proizvod={proizvod} izmeniProizvod={izmeniProizvod} kategorije={kategorije} />
+                                            <UploadFile id={proizvod.id} onUploadFinished={(response) => handleUploadFinished(response, proizvod.id)} />
+                                            <button onClick={() => obrisiProizvod(proizvod.id)} className="customButton">Obriši</button>
+                                        </div>
+                                    )}
+                                </div>
+                            </Card>
+                        </div>
+                    ))}
+                </div>
+
+            </div>
         </div>
-        // </div>
     );
 };
 

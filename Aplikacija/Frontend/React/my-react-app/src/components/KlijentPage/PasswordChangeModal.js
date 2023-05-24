@@ -7,16 +7,19 @@ import api from "../Auth/Interceptor";
 const ChangePasswordModal = ({ korisnicko_ime, showModal, setShowModal }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  
 
   const handlePasswordChange = async () => {
     try {
+      //checkToken()
       const response = await api.put(`/Korisnik/IzmeniLozinku/${korisnicko_ime}/${currentPassword}/${newPassword}`, {});
       setShowModal(false);
       setCurrentPassword("");
       setNewPassword("");
       alert(response.data);
     } catch (error) {
+      if (error.request) {
+        console.log(error.request.status)
+      }
       console.error('Greška pri izmeni lozinke', error);
     }
   };

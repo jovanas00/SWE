@@ -9,6 +9,7 @@ import { vratiKorisnickoIme } from "../Auth/VratIKorisnickoIme";
 import './Informacije.css';
 import UploadFile from "../KlijentPage/Upload";
 import '../UI/Button.css';
+import api from "../Auth/Interceptor";
 
 
 const Informacije = () => {
@@ -31,11 +32,7 @@ const Informacije = () => {
 
     const fetchSalon = async () => {
         try {
-            const response = await axios.get(`http://localhost:5169/Salon/VratiSalonPrekoKI/${korisnicko_ime}`, {
-                headers: {
-                    'Authorization': `Bearer ${Cookies.get('token')}`,
-                },
-            });
+            const response = await api.get(`/Salon/VratiSalonPrekoKI/${korisnicko_ime}`);
             const data = response.data.salon;
             setSalon(data);
         } catch (error) {

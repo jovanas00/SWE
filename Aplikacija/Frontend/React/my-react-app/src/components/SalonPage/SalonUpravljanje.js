@@ -15,13 +15,14 @@ import { vratiKorisnickoIme } from "../Auth/VratIKorisnickoIme";
 import Zahtevi from './Zahtevi';
 import Narudzbine from './Narudzbine';
 import TokenChecker from '../Auth/TokenChecker';
+import api from '../Auth/Interceptor';
 
 const SalonUpravljanje = () => {
     const korisnicko_ime = vratiKorisnickoIme();
     const [salon, setSalon] = useState(null);
     const [salonId, setSalonId] = useState(null);
 
-    const [selectedSection, setSelectedSection] = useState(null);
+    const [selectedSection, setSelectedSection] = useState('products-management');
 
     const handleSectionChange = (section) => {
         setSelectedSection(section);
@@ -34,11 +35,7 @@ const SalonUpravljanje = () => {
 
     const fetchSalon = async () => {
         try {
-            const response = await axios.get(`http://localhost:5169/Salon/VratiSalonPrekoKI/${korisnicko_ime}`, {
-                headers: {
-                    'Authorization': `Bearer ${Cookies.get('token')}`,
-                },
-            });
+            const response = await api.get(`/Salon/VratiSalonPrekoKI/${korisnicko_ime}`);
             const data = response.data.salonId;
             setSalonId(data);
         } catch (error) {
@@ -53,7 +50,6 @@ const SalonUpravljanje = () => {
 
         return (
             <div>
-                <Header />
                 <TokenChecker/>
                 <div className='salon-page'>
                     <aside className='salon-sidebar'>

@@ -43,6 +43,7 @@ const SalonStranica = () => {
                 const id_salon = id;
                 const response = await axios.get(`http://localhost:5169/Salon/ProsecnaOcena/${id_salon}`);
                 const data = response.data;
+                console.log(response.data)
                 setProsecnaOcena(data.prosecnaOcena);
             } catch (error) {
                 console.log(error);
