@@ -52,7 +52,7 @@ const Narudzbine = () => {
                     {narudzbine.map((narudzbina) => (
                         <tr>
                             <td>{narudzbina.korisnickoIme}</td>
-                            <td>{narudzbina.status}</td>
+                            <td style={{ color: narudzbina.status === 'Neobrađena' ? 'red' : 'inherit' }}>{narudzbina.status}</td>
                             <td>{narudzbina.komentarSalona}</td>
                             <td>{narudzbina.ukupnaCena}</td>
                             <td>{formatirajDatum(narudzbina.datum)}</td>
