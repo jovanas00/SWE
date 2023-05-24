@@ -1,0 +1,90 @@
+.recenzije-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.recenzije-list .col-lg-4 {
+    flex: 0 0 calc(33.33% - 2rem);
+    margin-bottom: 2rem;
+    display: flex;
+}
+
+.recenzije-list .col-md-6 {
+    flex: 0 0 calc(50% - 2rem);
+    margin-bottom: 2rem;
+    display: flex;
+}
+
+.recenzije-list .col-12 {
+    flex: 0 0 100%;
+    margin-bottom: 2rem;
+    display: flex;
+}
+
+@media (max-width: 1200px) {
+    .recenzije-list .col-lg-4 {
+        flex: 0 0 calc(50% - 2rem);
+    }
+}
+
+@media (max-width: 992px) {
+
+    .recenzije-list .col-lg-4,
+    .recenzije-list .col-md-6 {
+        flex: 0 0 calc(50% - 2rem);
+    }
+}
+
+@media (max-width: 768px) {
+
+    .recenzije-list .col-lg-4,
+    .recenzije-list .col-md-6,
+    .recenzije-list .col-12 {
+        flex: 0 0 100%;
+    }
+}
+
+.recenzije-list .card {
+    flex: 1 1 calc(33.33% - 2rem);
+    margin-bottom: 2rem;
+    display: flex;
+    min-height: 0;
+}
+
+@media (max-width: 1200px) {
+    .recenzije-list .card {
+        flex: 1 1 calc(50% - 2rem);
+    }
+}
+
+@media (max-width: 992px) {
+    .recenzije-list .card {
+        flex: 1 1 calc(50% - 2rem);
+    }
+}
+
+@media (max-width: 768px) {
+    .recenzije-list .card {
+        flex: 1 1 100%;
+    }
+}
+
+.recenzije-list .card .text-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+}
+
+.recenzije-list .card .recenzija-slika {
+    width: 50px;
+    height: 50px;
+    align-self: center;
+}
+
+.recenzije-grupa {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
