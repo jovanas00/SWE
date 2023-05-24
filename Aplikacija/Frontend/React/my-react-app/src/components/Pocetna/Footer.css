@@ -10,3 +10,14 @@
     justify-content: center;
     
 }
+
+.footer-icons {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .footer-icon {
+    font-size: 20px;
+    margin-left: 10px;
+    color: #fff; /* Customize the icon color */
+  }
