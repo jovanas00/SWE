@@ -46,14 +46,8 @@ const Informacije = () => {
     const handlePasswordChange = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(
-                `http://localhost:5169/Korisnik/IzmeniLozinku/${korisnicko_ime}/${currentPassword}/${newPassword}`,
-                {},
-                {
-                    headers: {
-                        Authorization: `Bearer ${Cookies.get('token')}`,
-                    },
-                }
+            const response = await api.put(
+                `/Korisnik/IzmeniLozinku/${korisnicko_ime}/${currentPassword}/${newPassword}`
             );
             setShowModal(false);
             setCurrentPassword('');
@@ -78,14 +72,8 @@ const Informacije = () => {
             return;
         }
         try {
-            const response = await axios.put(
-                `http://localhost:5169/Salon/IzmeniProfilSalona/${korisnicko_ime}/${naziv}/${adresa}/${grad}/${brojTelefona}`,
-                {},
-                {
-                    headers: {
-                        Authorization: `Bearer ${Cookies.get("token")}`,
-                    },
-                }
+            const response = await api.put(
+                `/Salon/IzmeniProfilSalona/${korisnicko_ime}/${naziv}/${adresa}/${grad}/${brojTelefona}`,
             );
             setShowInfoModal(false);
             setNaziv("");
