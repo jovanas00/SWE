@@ -1,8 +1,62 @@
 .input-text {
-    margin-right: 10px;
-  }
+  margin-right: 10px;
+}
 
-  .btn-primary {
-    background-color: #8881d8;
-    border-radius: 14px;
+.btn-primary {
+  background-color: #8881d8;
+  border-radius: 14px;
+}
+
+.odgovori-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.odgovor-card {
+  height: 100%;
+}
+
+.odgovor-card-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.odgovor-card-header {
+  display: flex;
+  align-items: center;
+}
+
+.odgovor-card-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.odgovor-card-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  background-color: #fc6c6c;
+  border: 1px solid black;
+  border-radius: 14px;
+}
+
+.odgovor-card-avatar {
+  flex-shrink: 0;
+}
+
+.odgovor-card-text {
+  flex-grow: 1;
+  margin-left: 10px;
+}
+
+
+@media (min-width: 768px) {
+  .odgovor-card {
+    /*ne brisi ovo, nema da se dobro rasporedi*/
   }
+}

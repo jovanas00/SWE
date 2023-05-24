@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-//import Card from "../UI/Card";
-import { Card } from "react-bootstrap";
+import Card from "../UI/Card";
 import salonChat from '../../images/salon.jpg';
 import user from '../../images/user.webp';
 import { vratiRole } from '../Auth/VratiRole';
@@ -10,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../Auth/Interceptor";
 import { formatirajDatum } from "../UI/FormatirajDatum";
 import '../UI/Button.css';
+import './Odgovori.css';
 
 
 const Odgovori = ({ id }) => {
@@ -33,6 +33,13 @@ const Odgovori = ({ id }) => {
         UcitajPitanja();
     }, [id]);
 
+    const sortirajOdgovore = (odgovori) => {
+        const neodgovoreni = odgovori.filter((odgovor) => odgovor.tekstO === null);
+        const odgovoreni = odgovori.filter((odgovor) => odgovor.tekstO !== null);
+        const sortiraniOdgovori = [...neodgovoreni, ...odgovoreni];
+        return sortiraniOdgovori;
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
         if (inputText === "") {
@@ -53,6 +60,10 @@ const Odgovori = ({ id }) => {
     };
 
     const odgovoriNaPitanje = (idPitanje, tekst) => {
+        if (typeof tekst === 'undefined' || odgovorInput === "") {
+            window.alert("Niste uneli tekst odgovora!");
+            return;
+        }
         api.put(`/Salon/OdgovoriNaPitanje/${idPitanje}/${tekst}`)
             .then((response) => {
                 console.log("Pitanje je uspešno odgovoreno:", response.data);
@@ -60,8 +71,6 @@ const Odgovori = ({ id }) => {
             })
             .catch((error) => {
                 console.error("Greška pri odgovaranju na pitanje:", error);
-                if (tekst == "" || tekst == null)
-                    window.alert("Niste uneli tekst odgovora!");
                 if (idPitanje == null)
                     window.alert("Pitanje ne postoji!");
             });
@@ -69,103 +78,72 @@ const Odgovori = ({ id }) => {
 
     const role = vratiRole();
     return (
-        <div>
+        <div className="container">
             <form onSubmit={handleSubmit}>
                 {role === "Klijent" && (
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" }}>
                         <input type="text" value={inputText} onChange={(event) => setInputText(event.target.value)} placeholder="Unesite svoje pitanje" class="input-text" />
                         <button type="submit" class="btn btn-primary">Pitaj</button>
                     </div>
-                )
-                }
+                )}
             </form >
-            {odgovori.map((odgovor) => (
-                <Card>
-                    <div className="row" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                            <img
-                                src={odgovor.slikaKlijenta ? odgovor.slikaKlijenta : user}
-                                alt={user}
-                                style={{ width: '50px', height: '50px', marginRight: '10px' }}
-                            />
-                            <div>
-                                <h5>{odgovor.klijentImePrezime}</h5>
-                                <p>Postavljeno: {formatirajDatum(odgovor.datumPostavljanja)}</p>
-                                <h4><strong>{odgovor.tekstP}</strong></h4>
-                            </div>
-                        </div>
-                        <div style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            border: "1px solid black",
-                            backgroundColor: "#fc6c6c",
-                            borderRadius: "14px"
-                        }}>
-                            <img
-                                src={odgovor.slikaSalona ? odgovor.slikaSalona : salonChat}
-                                alt={user}
-                                style={{ width: '50px', height: '50px', marginRight: '10px' }}
-                            />
-                            <div>
-                                {role === "Salon" && odgovor.tekstO === null && odgovor.datumOdgovaranja === null && (
+            <div className="row odgovori-row">
+                {sortirajOdgovore(odgovori).map((odgovor) => (
+                    <div className="col-lg-4 col-md-6 mb-4">
+                        <Card className="odgovor-card" style={{ position: "relative" }}>
+                            <div className="row odgovor-card-content">
+                                <div className="odgovor-card-header">
+                                    <img
+                                        src={odgovor.slikaKlijenta ? odgovor.slikaKlijenta : user}
+                                        alt={user}
+                                        className="odgovor-card-image"
+                                    />
                                     <div>
-                                        <input
-                                            type="text"
-                                            value={odgovorInput[odgovor.id] || ""}
-                                            onChange={(e) => setOdgovorInput({ ...odgovorInput, [odgovor.id]: e.target.value })}
+                                        <h5>{odgovor.klijentImePrezime}</h5>
+                                        <p>Postavljeno: {formatirajDatum(odgovor.datumPostavljanja)}</p>
+                                        <h4><strong>{odgovor.tekstP}</strong></h4>
+                                    </div>
+                                </div>
+                                <div className="odgovor-card-body">
+                                    <div className="odgovor-card-avatar">
+                                        <img
+                                            src={odgovor.slikaSalona ? odgovor.slikaSalona : salonChat}
+                                            alt={user}
+                                            className="odgovor-card-image"
                                         />
-                                        <button onClick={() => odgovoriNaPitanje(odgovor.id, odgovorInput[odgovor.id])} className="customButton">Odgovori</button>
                                     </div>
-                                )}
-                                {role === "Salon" && odgovor.tekstO != null && odgovor.datumOdgovaranja != null && (
-                                    <div>
-                                        <p>Postavljeno: {(formatirajDatum(odgovor.datumOdgovaranja))}</p>
-                                        <h4><strong>{(odgovor.tekstO)}</strong></h4>
+                                    <div className="odgovor-card-text">
+                                        {role === "Salon" && odgovor.tekstO === null && odgovor.datumOdgovaranja === null && (
+                                            <div style={{ display: "flex" }}>
+                                                <input
+                                                    type="text"
+                                                    value={odgovorInput[odgovor.id] || ""}
+                                                    onChange={(e) => setOdgovorInput({ ...odgovorInput, [odgovor.id]: e.target.value })}
+                                                />
+                                                <button onClick={() => odgovoriNaPitanje(odgovor.id, odgovorInput[odgovor.id])} className="customButton">Odgovori</button>
+                                            </div>
+                                        )}
+                                        {role === "Salon" && odgovor.tekstO != null && odgovor.datumOdgovaranja != null && (
+                                            <div>
+                                                <p>Postavljeno: {formatirajDatum(odgovor.datumOdgovaranja)}</p>
+                                                <h4><strong>{odgovor.tekstO}</strong></h4>
+                                            </div>
+                                        )}
+                                        {role !== "Salon" && (
+                                            <div>
+                                                <p>Postavljeno: {(odgovor.datumOdgovaranja !== null) ? formatirajDatum(odgovor.datumOdgovaranja) : "Datum nije dostupan"}</p>
+                                                <h4><strong>{(odgovor.tekstO !== null) ? odgovor.tekstO : "Još uvek nije odgovoreno..."}</strong></h4>
+                                            </div>
+                                        )}
                                     </div>
-                                )}
-                                {role !== "Salon" && (
-                                    <div>
-                                        <p>Postavljeno: {(odgovor.datumOdgovaranja !== null) ? formatirajDatum(odgovor.datumOdgovaranja) : "Datum nije dostupan"}</p>
-                                        <h4><strong>{(odgovor.tekstO !== null) ? odgovor.tekstO : "Još uvek nije odgovoreno..."}</strong></h4>
-                                    </div>
-                                )}
+                                </div>
                             </div>
-                        </div>
+                        </Card>
                     </div>
-                </Card>
-            ))
-            }
+                ))}
+            </div>
         </div >
     );
 };
-
-// function formatirajDatum(datum) {
-//     const formatiran = new Date(datum);
-//     const opcije = {
-//         year: 'numeric',
-//         month: 'long',
-//         day: 'numeric',
-//         hour: 'numeric',
-//         minute: 'numeric',
-//         hour12: true
-//     };
-//     return formatiran.toLocaleString('en-US', opcije);
-// }
-
-{/* <div className="proizvodi-items" style={{display: "flex", flexDirection: "column"}}>
-                        <div style={{marginBottom: "0.5rem", border: "1px solid black", borderRadius: "5px"}}>
-                            <h6>{odgovor.klijentImePrezime}</h6>
-                            <h6>{odgovor.datumPostavljanja}</h6>
-                            <h5><strong>Pitanje: {odgovor.tekstP}</strong></h5>
-                        </div>
-                        <div style={{marginLeft: "1.5rem", border: "1px solid black", borderRadius: "5px"}}>
-                            <h6>{odgovor.salonNaziv}</h6>
-                            <h6>{odgovor.datumOdgovaranja}</h6 >
-                            <h5><strong>Odgovor: {(odgovor.tekstO !== null)? odgovor.tekstO : "Jos uvek nije odgovoreno..."}</strong></h5>
-                        </div>
-                    </div> */}
-
-
 
 export default Odgovori;
