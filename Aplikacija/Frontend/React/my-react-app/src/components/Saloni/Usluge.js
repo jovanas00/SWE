@@ -13,7 +13,7 @@ const Usluge = ({ id }) => {
     const [izmenjeneVrednosti, setIzmenjeneVrednosti] = useState({});
 
     const ucitajUsluge = () => {
-        api.get(`/Usluga/VratiUslugeSalona/${id}`)
+        axios.get(`http://localhost:5169/Usluga/VratiUslugeSalona/${id}`)
             .then((response) => {
                 setUsluge(response.data);
             })

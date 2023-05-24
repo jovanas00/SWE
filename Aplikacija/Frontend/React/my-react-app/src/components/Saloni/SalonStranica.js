@@ -21,7 +21,7 @@ const SalonStranica = () => {
 
     useEffect(() => {
         if (id) {
-            api.get(`/Salon/VratiSalon/${id}`)
+            axios.get(`http://localhost:5169/Salon/VratiSalon/${id}`)
                 .then(response => {
                     console.log(response.data);
                     setSalon(response.data);
@@ -43,6 +43,7 @@ const SalonStranica = () => {
                 const id_salon = id;
                 const response = await axios.get(`http://localhost:5169/Salon/ProsecnaOcena/${id_salon}`);
                 const data = response.data;
+                console.log(response.data)
                 setProsecnaOcena(data.prosecnaOcena);
             } catch (error) {
                 console.log(error);

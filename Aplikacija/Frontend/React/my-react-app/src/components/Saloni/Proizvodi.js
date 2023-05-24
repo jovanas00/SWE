@@ -27,7 +27,7 @@ const Proizvodi = ({ id }) => {
     };
 
     const ucitajProizvode = () => {
-        api.get(`/Proizvod/VratiProizvodeSalona/${id}`)
+        axios.get(`http://localhost:5169/Proizvod/VratiProizvodeSalona/${id}`)
             .then((response) => {
                 setProizvodi(response.data);
             })

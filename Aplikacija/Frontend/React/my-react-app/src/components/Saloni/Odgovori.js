@@ -19,7 +19,7 @@ const Odgovori = ({ id }) => {
     // const navigate = useNavigate();
 
     const UcitajPitanja = () => {
-        api.get(`/Salon/VratiPitanjaSalona/${id}`)
+        axios.get(`http://localhost:5169/Salon/VratiPitanjaSalona/${id}`)
             .then((response) => {
                 setOdgovori(response.data);
                 console.log(response.data)
