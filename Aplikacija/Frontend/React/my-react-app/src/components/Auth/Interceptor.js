@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { obavestenja } from '../UI/Obavestenja';
 
 let initialToken = Cookies.get('token');
 
@@ -13,7 +14,7 @@ api.interceptors.request.use(
     // Modify the request config here, such as adding headers
     const token = Cookies.get('token');
     if (!token || token != initialToken) {
-      alert('Neautorizovan pristup,molimo prijavite se!')
+      obavestenja('Neautorizovan pristup,molimo prijavite se!','danger')
       Cookies.remove('token')
       window.location.href = '/prijava';
     }

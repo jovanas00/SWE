@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../Auth/Interceptor";
 import { formatirajDatum } from "../UI/FormatirajDatum";
 import './Recenzije.css';
+import { obavestenja } from "../UI/Obavestenja";
 
 const Recenzije = ({ id }) => {
     const [recenzije, setRecenzije] = useState([]);
@@ -43,7 +44,7 @@ const Recenzije = ({ id }) => {
         event.preventDefault();
 
         if (inputText === "") {
-            alert("Niste uneli tekst recenzije!");
+            obavestenja('Niste uneli tekst recenzije!','warning');
             return;
         }
 
@@ -59,12 +60,12 @@ const Recenzije = ({ id }) => {
             }
         )
             .then((response) => {
-                alert(response.data);
+                obavestenja(response.data,'success');
                 window.location.reload();
             })
             .catch((error) => {
                 if (error.response && error.response.data === false) {
-                    alert("Već ste ocenili salon!");
+                    obavestenja('Već ste ocenili salon!','warning');
                 }
             });
     };

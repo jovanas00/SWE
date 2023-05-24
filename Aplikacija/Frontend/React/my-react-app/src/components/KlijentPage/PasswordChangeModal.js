@@ -3,6 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import "./Informacije.css";
 import api from "../Auth/Interceptor";
+import { obavestenja } from "../UI/Obavestenja";
 
 const ChangePasswordModal = ({ korisnicko_ime, showModal, setShowModal }) => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -10,16 +11,12 @@ const ChangePasswordModal = ({ korisnicko_ime, showModal, setShowModal }) => {
 
   const handlePasswordChange = async () => {
     try {
-      //checkToken()
       const response = await api.put(`/Korisnik/IzmeniLozinku/${korisnicko_ime}/${currentPassword}/${newPassword}`, {});
       setShowModal(false);
       setCurrentPassword("");
       setNewPassword("");
-      alert(response.data);
+      obavestenja(response.data);
     } catch (error) {
-      if (error.request) {
-        console.log(error.request.status)
-      }
       console.error('Greška pri izmeni lozinke', error);
     }
   };

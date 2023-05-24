@@ -13,6 +13,7 @@ import TokenChecker from '../Auth/TokenChecker';
 import api from '../Auth/Interceptor';
 import { formatirajDatum } from "../UI/FormatirajDatum";
 import { Card } from "react-bootstrap";
+import { obavestenja } from '../UI/Obavestenja';
 
 
 const Profil = () => {
@@ -36,7 +37,7 @@ const Profil = () => {
     try {
       await api.delete(`/Klijent/ObrisiZahtev/${idZahteva}`);
       // Zahtev je uspešno obrisan, možete ažurirati listu zahteva ako je potrebno
-      alert('Uspešno ste obrisali zahtev!');
+      obavestenja('Uspešno ste obrisali zahtev!','success');
       const updatedZahtevi = zahtevi.filter((zahtev) => zahtev.id !== idZahteva);
       setZahtevi(updatedZahtevi);
     } catch (error) {

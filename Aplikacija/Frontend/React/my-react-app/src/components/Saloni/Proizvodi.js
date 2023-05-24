@@ -122,8 +122,9 @@ const Proizvodi = ({ id }) => {
     const handleDodajKorpa = async (proizvodID) => {
         try {
             const response = await api.put(`http://localhost:5169/Klijent/DodajUKorpu/${proizvodID}`, {});
-            console.log(response.data); // Response message
-            alert(response.data);
+            //console.log(response.data); // Response message
+            //alert(response.data);
+            obavestenja(response.data,'success')
             //alert("Uspešno ste dodali proizvod u korpu! Možete pregledati svoju korpu i naručiti proizvode.");
         } catch (error) {
             console.error('There was a problem with the PUT request:', error);

@@ -286,7 +286,7 @@ public class KlijentController : ControllerBase
                 }
                 Context.KorpeProizvodi.Add(kp);
                 await Context.SaveChangesAsync();
-                return Ok("Uspesno ste dodali proizvod u korpu!");
+                return Ok("Uspesno dodat proizvod!");
                 }
                 else
                 {

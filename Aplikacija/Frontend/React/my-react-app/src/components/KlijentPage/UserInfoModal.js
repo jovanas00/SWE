@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import "./Informacije.css"
 import api from "../Auth/Interceptor";
 import { vratiKorisnickoIme } from "../Auth/VratIKorisnickoIme";
+import { obavestenja } from "../UI/Obavestenja";
 
 const UserInfoModal = ({ userInfo, onClose }) => {
     const [ime, setIme] = useState('');
@@ -16,7 +17,7 @@ const UserInfoModal = ({ userInfo, onClose }) => {
 
     const handleChangeUserInfo = async () => {
         if (ime === "" || prezime === "" || adresa === "" || grad === "" || brojTelefona === "") {
-            alert("Niste popunili sva polja!");
+            obavestenja("Niste popunili sva polja!","danger");
             return;
         }
         try {
@@ -24,6 +25,7 @@ const UserInfoModal = ({ userInfo, onClose }) => {
                 `/Klijent/IzmeniProfilKlijenta/${korisnicko_ime}/${ime}/${prezime}/${adresa}/${grad}/${brojTelefona}`
             );
             onClose();
+            obavestenja('Uspesno izmenjene informacije!','success')
             window.location.reload();
         } catch (error) {
             console.error("Error changing user info:", error);
