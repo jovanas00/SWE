@@ -37,6 +37,7 @@ const Proizvodi = ({ id }) => {
     }
 
     useEffect(() => {
+        if(id!=null)
         ucitajProizvode();
     }, [id]);
 
