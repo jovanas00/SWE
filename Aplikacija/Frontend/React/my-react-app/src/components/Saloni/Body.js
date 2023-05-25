@@ -49,66 +49,85 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import SalonCard from './SalonCard';
 import { vratiRole } from '../Auth/VratiRole';
-import api from '../Auth/Interceptor';
+import "./Body.css"
 
 const Body = () => {
-  const [saloni, setSaloni] = useState([]); //saloni se inicijalizuje se na prazan niz
-  //za filter
+  const [saloni, setSaloni] = useState([]);
   const [selektovaniGrad, setSelektovaniGrad] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => { //pravimo http get zahtev na navedenu adresu 
-    axios.get('http://localhost:5169/Salon/VratiSveSalone') //axios je bibilioteka koja se koristi da se odradi taj zahtev
-      .then(response => { //kad se dobije odgovor setujemo novu vrednost saloni promenljive
+  useEffect(() => {
+    axios
+      .get("http://localhost:5169/Salon/VratiSveSalone")
+      .then((response) => {
         setSaloni(response.data);
       })
-      .catch(error => { //u slucaju da se javi greska kod http zahteva
-        console.log(error); //prikaz greske 
+      .catch((error) => {
+        console.log(error);
       });
-  }, []); //useEffect zahteva 2 argumenta, prvi argument je ovaj http zahtev,
-  //drugi argument je [] i time naglasavamo da ce axios zahtev da se izvrsi samo jednom
+  }, []);
 
-  //filtriraju se po gradu
-  const filtriraniSaloni = selektovaniGrad ? saloni.filter(salon => salon.grad === selektovaniGrad) : saloni;
-  const gradovi = [...new Set(saloni.map(salon => salon.grad))];//uzimamo sve gradove koje postoje, ali necemo da se ponavljaju pa koristimo set
+  const filteredSaloni = selektovaniGrad
+    ? saloni.filter(
+      (salon) =>
+        salon.grad === selektovaniGrad &&
+        salon.naziv.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    : saloni.filter((salon) =>
+      salon.naziv.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  const gradovi = [...new Set(saloni.map((salon) => salon.grad))];
 
   const role = vratiRole();
   const klijent = role === "Klijent" ? "Klijent" : null;
-  const admin = role === "Admin" ? "Admin" : null
+  const admin = role === "Admin" ? "Admin" : null;
+
   return (
     <div className="container">
-      {/* za filter */}
-      <select value={selektovaniGrad} onChange={e => setSelektovaniGrad(e.target.value)}>
-        <option value="">Svi gradovi</option> {/*pravimo selektor i vrednosti su gradovi*/}
-        {gradovi.map(grad => (
-          <option key={grad} value={grad}>
-            {grad}
-          </option>
-        ))}
-      </select>
+      <div className="filter-container">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Pretrazite salone..."
+          className="input_salon"
+        />
+        <select
+          className="filter-select"
+          value={selektovaniGrad}
+          onChange={(e) => setSelektovaniGrad(e.target.value)}
+        >
+          <option value="">Svi gradovi</option>
+          {gradovi.map((grad) => (
+            <option key={grad} value={grad}>
+              {grad}
+            </option>
+          ))}
+        </select>
+      </div>
       <div className="row">
-        {/*saloni je niz pa mozemo da primenimo map funkciju, fja se primanjuje nad svakim elementom niza*/}
-        {/*tj za svaki salon se pravi Salon kartica*/}
-        {/*col-md-4 mb-3 samo se koristi bootstrap klasa za definisanje prostora izmedju karitca i kolko kartica ima u jednom redu*/}
-        {filtriraniSaloni.map(salon => (
-          // <div className="col-md-4 mb-3">  {/*treba jos da se cacka ovaj prikaz nije flex*/}
+        {filteredSaloni.map((salon) => (
           <div className="col-lg-4 col-md-6 col-12 mb-3">
-            {/* {console.error(salon.id)} */}
-            {/*Link sluzi da svaka Salon kartica moze da se otvori na novu stranu gde ce se detaljno citati o salonima*/}
-            {!klijent && !admin && <Link to={`/saloni/${salon.id}`} key={salon.id} >
-              <SalonCard salon={salon} slika={salon.slika}/>
-            </Link>}
-            {klijent && <Link to={`/klijent/${salon.id}`} key={salon.id} >
-              <SalonCard salon={salon} slika={salon.slika}/>
-            </Link>}
-            {admin && <Link to={`/admin/saloni/${salon.id}`} key={salon.id} >
-              <SalonCard salon={salon} slika={salon.slika}/>
-            </Link>}
+            {!klijent && !admin && (
+              <Link to={`/saloni/${salon.id}`} key={salon.id}>
+                <SalonCard salon={salon} slika={salon.slika} />
+              </Link>
+            )}
+            {klijent && (
+              <Link to={`/klijent/${salon.id}`} key={salon.id}>
+                <SalonCard salon={salon} slika={salon.slika} />
+              </Link>
+            )}
+            {admin && (
+              <Link to={`/admin/saloni/${salon.id}`} key={salon.id}>
+                <SalonCard salon={salon} slika={salon.slika} />
+              </Link>
+            )}
           </div>
         ))}
       </div>
     </div>
   );
-
 };
 
 export default Body;

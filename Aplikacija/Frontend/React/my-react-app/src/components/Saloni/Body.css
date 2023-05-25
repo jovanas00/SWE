@@ -1,4 +1,4 @@
-.saloni-container {
+/* .saloni-container {
     margin: 2rem auto;
     max-width: 800px;
   }
@@ -16,4 +16,48 @@
   
   th {
     background-color: #ddd;
+  } */
+
+  .filter-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem; ;
+    margin-bottom: 1rem;
   }
+  
+  .filter-select {
+    margin-right: 0.5rem;
+    height: 40px;
+  }
+  
+  .input_salon {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .col-lg-4 {
+    flex: 0 0 33.33%;
+    max-width: 33.33%;
+  }
+  
+  @media (max-width: 1200px) {
+    .col-lg-4 {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .col-lg-4 {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+
