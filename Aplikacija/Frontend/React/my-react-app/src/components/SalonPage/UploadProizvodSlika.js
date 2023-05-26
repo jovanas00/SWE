@@ -27,10 +27,10 @@ const UploadFile = ({id}) => {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                window.location.reload();
             })
             .catch((error) => {
             });
+            window.location.reload();
     };
 
     const handleClickUpload = () => {
