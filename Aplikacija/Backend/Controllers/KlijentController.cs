@@ -398,6 +398,7 @@ public class KlijentController : ControllerBase
         }
     }
 
+    [AllowAnonymous]
     [HttpGet("VratiProizvodeNarudzbina/{id_narudzbine}")]
     public async Task<ActionResult<List<NaruceniProizvod>>> VratiProizvodeNarudzbina(int id_narudzbine)
     {

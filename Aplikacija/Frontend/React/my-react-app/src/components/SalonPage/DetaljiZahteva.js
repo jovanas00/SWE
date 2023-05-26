@@ -60,7 +60,7 @@ const DetaljiZahteva = ({ zahtev, ucitajZahteve }) => {
 
             <Modal show={modalOpen} onHide={closeModal}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Detalji narudžbine</Modal.Title>
+                    <Modal.Title>Detalji zahteva</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
 

@@ -14,6 +14,7 @@ import ChangePasswordModal from "../KlijentPage/PasswordChangeModal";
 import AdminInfoModal from "./AdminInfoModal";
 import TokenChecker from '../Auth/TokenChecker';
 import api from '../Auth/Interceptor';
+import { obavestenja } from '../UI/Obavestenja';
 
 const AdminPage = () => {
   const [selectedSection, setSelectedSection] = useState(null);
@@ -107,24 +108,21 @@ const AdminPage = () => {
   // Funkcija za dodavanje kategorije preko Axios
   const addCategory = async (naziv) => {
     try {
-      const response = await api.post(`/Admin/DodajKategoriju/${naziv}`);   
+      const response = await api.post(`/Admin/DodajKategoriju/${naziv}`);
       fetchCategories(); // osvežava listu kategorija u prozoru
-      alert("Uspešno dodata kategorija!");
+      obavestenja(response.data);
     } catch (error) {
       handleError();
-      alert("Greška pri dodavanju kategorije!");
     }
   };
 
   // Funkcija za brisanje kategorije preko Axios
   const deleteCategory = async (id_kategorija) => {
     try {
-      const response = await api.post(`/Admin/ObrisiKategoriju/${id_kategorija}`);     
+      const response = await api.post(`/Admin/ObrisiKategoriju/${id_kategorija}`);
       fetchCategories(); // osvežava listu kategorija u prozoru
       alert("Uspešno obrisana kategorija!");
     } catch (error) {
-      handleError();
-      alert("Greška pri brisanju kategorije!");
     }
   };
 
@@ -133,7 +131,7 @@ const AdminPage = () => {
     try {
       const response = await api.delete(`/Admin/ObrisiKorisnika/${unosKorisnickogImena}`);
       console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
-  
+
       if (response.data == true) {
         alert('Korisnik je uspešno obrisan.');
       } else {
@@ -145,7 +143,7 @@ const AdminPage = () => {
       handleError();
     }
   };
-  
+
 
   // Funkcija za prikaz svih korisnika preko Axios
   const fetchUsers = async () => {
@@ -355,14 +353,14 @@ const AdminPage = () => {
                     onChange={(e) => setCategoryName(e.target.value)}
                     placeholder="Naziv kategorije"
                   />
-                    <button
-                      onClick={() => {
-                        addCategory(categoryName);
-                        setCategoryName(""); // Očisti polje za unos
-                      }}
-                    >
-                      Dodaj
-                    </button>
+                  <button
+                    onClick={() => {
+                      addCategory(categoryName);
+                      setCategoryName(""); // Očisti polje za unos
+                    }}
+                  >
+                    Dodaj
+                  </button>
                 </div>
                 <h5>Obriši kategoriju:</h5>
                 <div className="input-container">
@@ -372,14 +370,14 @@ const AdminPage = () => {
                     onChange={(e) => setCategoryId(e.target.value)}
                     placeholder="ID kategorije"
                   />
-                    <button
-                      onClick={() => {
-                        deleteCategory(categoryId);
-                        setCategoryId(""); // Očisti polje za unos
-                      }}
-                    >
-                      Obriši
-                    </button>
+                  <button
+                    onClick={() => {
+                      deleteCategory(categoryId);
+                      setCategoryId(""); // Očisti polje za unos
+                    }}
+                  >
+                    Obriši
+                  </button>
                 </div>
                 <h5>Sve kategorije:</h5>
                 <div className="scrollable-window">
