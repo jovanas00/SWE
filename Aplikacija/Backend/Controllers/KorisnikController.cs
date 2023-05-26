@@ -371,18 +371,76 @@ public class KorisnikController : ControllerBase
     {
         try
         {
-            var korisnici = Context.Korisnici.Select(k => new
-            {
-                k.ID,
-                k.email,
-                k.korisnickoIme,
-                k.sifra,
-                k.salt_value,
-                k.tip,
-                k.slika
-            }).ToList();
+            var korisnici = Context.Korisnici.ToList(); // Preuzmi sve korisnike iz baze
 
-            return Ok(korisnici);
+            var rezultat = new List<object>();
+
+            foreach (var k in korisnici)
+            {
+                if (k.tip == "Klijent")
+                {
+                    var klijent = Context.Klijenti.FirstOrDefault(kl => kl.Korisnik.ID == k.ID);
+                    if (klijent != null)
+                    {
+                        var obj = new
+                        {
+                            k.ID,
+                            k.email,
+                            k.korisnickoIme,
+                            k.sifra,
+                            k.salt_value,
+                            k.tip,
+                            k.slika,
+                            klijent.ime,
+                            klijent.prezime,
+                            klijent.adresa,
+                            klijent.grad,
+                            klijent.brojTelefona
+                        };
+
+                        rezultat.Add(obj);
+                    }
+                }
+                else if (k.tip == "Salon")
+                {
+                    var salon = Context.Saloni.FirstOrDefault(kl => kl.Korisnik.ID == k.ID);
+                    if (salon != null)
+                    {
+                        var obj = new
+                        {
+                            k.ID,
+                            k.email,
+                            k.korisnickoIme,
+                            k.sifra,
+                            k.salt_value,
+                            k.tip,
+                            k.slika,
+                            salon.naziv,
+                            salon.adresa,
+                            salon.grad,
+                            salon.brojTelefona
+                        };
+
+                        rezultat.Add(obj);
+                    }
+                }
+                else {
+                    var obj = new
+                    {
+                        k.ID,
+                        k.email,
+                        k.korisnickoIme,
+                        k.sifra,
+                        k.salt_value,
+                        k.tip,
+                        k.slika
+                    };
+
+                    rezultat.Add(obj);
+                }
+            }
+
+            return Ok(rezultat);
         }
         catch (Exception)
         {
