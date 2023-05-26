@@ -7,6 +7,7 @@ import { vratiRole } from '../Auth/VratiRole';
 import './Korpa.css'
 import api from '../Auth/Interceptor';
 import item from "../../images/item.jpg"
+import { obavestenja } from '../UI/Obavestenja';
 
 const Korpa = ({ id }) => {
     const [korpaId, setKorpaId] = useState(null);
@@ -56,7 +57,7 @@ const Korpa = ({ id }) => {
         try {
             const response = await api.delete(`/Klijent/IzbaciIzKorpe/${proizvodID}/${korpaId}`);
             console.log('Product removed from cart successfully!');
-            alert(response.data);
+            obavestenja(response.data,'success');
             setProizvodi(prevProizvodi => prevProizvodi.filter(proizvod => proizvod.proizvodID !== proizvodID));
             // Optionally, you can update the local state or perform any other necessary actions after successfully removing the product
         } catch (error) {
@@ -68,7 +69,7 @@ const Korpa = ({ id }) => {
     const handleNaruciClick = async (proizvodID) => {
         try {
             const response = await api.post(`/Klijent/Naruci/${korpaId}/${id}`, null);
-            alert(response.data);
+            obavestenja(response.data,'success');
             setProizvodi([]);
             // Optionally, you can perform any necessary actions after placing the order
         } catch (error) {

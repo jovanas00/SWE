@@ -10,6 +10,7 @@ import api from "../Auth/Interceptor";
 import { formatirajDatum } from "../UI/FormatirajDatum";
 import '../UI/Button.css';
 import './Odgovori.css';
+import { obavestenja } from "../UI/Obavestenja";
 
 
 const Odgovori = ({ id }) => {
@@ -43,15 +44,16 @@ const Odgovori = ({ id }) => {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (inputText === "") {
-            alert("Niste postavili pitanje!");
+            obavestenja("Niste postavili pitanje!","warning");
             return;
         }
 
         api
             .post(`http://localhost:5169/Klijent/PostaviPitanje/${encodeURIComponent(inputText)}/${id}`)
             .then((response) => {
-                console.log(response.data);
-                alert(response.data);
+                // console.log(response.data);
+                // alert(response.data);
+                obavestenja(response.data,'success')
                 window.location.reload();
             })
             .catch((error) => {

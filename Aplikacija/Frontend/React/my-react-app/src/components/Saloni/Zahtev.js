@@ -3,6 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import './Zahtev.css'
 import api from '../Auth/Interceptor';
+import { obavestenja } from '../UI/Obavestenja';
 
 const Zahtev = ({ id }) => {
     const [imeLjubimca, setImeLjubimca] = useState('');
@@ -31,7 +32,7 @@ const Zahtev = ({ id }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!imeLjubimca || !zivotinja || !selectedUslugaId || !selectedDate || !selectedTime) {
-            alert('Popunite sva polja!');
+            obavestenja('Popunite sva polja!','danger');
             return;
         }
 
@@ -54,7 +55,7 @@ const Zahtev = ({ id }) => {
             console.error('Error submitting the form:', error);
             if (error.response) {
                 console.log('Error response:', error.response.data);
-                alert(error.response.data);
+                obavestenja(error.response.data,'danger');
             }
         }
     };

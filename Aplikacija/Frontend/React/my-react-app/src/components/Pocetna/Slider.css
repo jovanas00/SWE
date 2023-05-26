@@ -1,0 +1,19 @@
+.carousel-caption {
+    text-align: center;
+    bottom: 10%;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+}
+
+.carousel-caption h3 {
+    font-family: Arial, sans-serif;
+    font-weight: initial;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    line-height: 1.2;
+    margin: 0;
+}
+
+

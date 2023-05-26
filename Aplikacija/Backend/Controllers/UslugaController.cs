@@ -74,7 +74,7 @@ public class UslugaController : ControllerBase
 
     [Route("IzmeniUslugu/{id_usluga}")]
     [HttpPut]
-    //[Authorize(Roles ="Salon")]
+    [Authorize(Roles ="Salon")]
     public async Task<ActionResult<Usluga>> IzmeniUslugu(int id_usluga, string naziv, float cena, string opis, bool dostupnost)
     {
         Usluga usluga = await Context.Usluge.Include(s=>s.Salon).Where(u=>u.ID==id_usluga).FirstOrDefaultAsync();
