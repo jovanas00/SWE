@@ -30,6 +30,8 @@ const AdminPage = () => {
   const [isAdminInfoLoaded, setIsAdminInfoLoaded] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
 
   // Autorizacija
@@ -87,7 +89,10 @@ const AdminPage = () => {
     setIsModalOpen(false);
   };
 
-
+  const handleOpenModal = (user) => {
+    setSelectedUser(user);
+    setModalOpen(true);
+  };
 
   //Funkcija za prikaz svih kategorija preko Axios
   const fetchCategories = async () => {
@@ -267,14 +272,16 @@ const AdminPage = () => {
                       .map((user) => (
                         <div key={user.id} className="user-card">
                           <div className="profile-picture">
-                          {user.slika ? (
-                            <img
-                              src={user.slika ? user.slika : icon}
-                              alt="Profilna slika"
-                            />
-                          ) : (
-                            <img src={icon} alt="Ikona"/>
-                          )}
+                            {user.slika ? (
+                              <img
+                                src={user.slika ? user.slika : icon}
+                                alt="Profilna slika"
+                                onClick={() => handleShowImage(user.slika)}
+                              />
+
+                            ) : (
+                              <img src={icon} alt="Ikona" onClick={() => handleShowImage(user.slika)} />
+                            )}
                           </div>
                           <p><strong>Korisničko ime:</strong> {user.korisnickoIme}</p>
                           <p><strong>Tip korisnika:</strong> {user.tip}</p>
@@ -294,17 +301,44 @@ const AdminPage = () => {
                               </div>
                             </div>
                           )}
-                          <button className="povecaj-button" onClick={() => handleShowImage(user.slika)}>
-                            Povećaj sliku
+                          {modalOpen && (
+                            <div className="modal">
+                              <div className="modal-content">
+                                <span className="close" onClick={() => setModalOpen(false)}>
+                                  &times;
+                                </span>
+                                <h2>Podaci korisnika:</h2>
+                                {selectedUser && (
+                                  <div>
+                                    {selectedUser.tip === "Salon" && (
+                                      <div>
+                                        <p><strong>Naziv salona: </strong>{selectedUser.naziv}</p>
+                                        <p><strong>Adresa salona: </strong>{selectedUser.adresa}</p>
+                                        <p><strong>Grad: </strong>{selectedUser.grad}</p>
+                                        <p><strong>Kontakt telefon: </strong>{selectedUser.brojTelefona}</p>
+                                      </div>
+                                    )}
+                                    {selectedUser.tip === "Klijent" && (
+                                      <div>
+                                        <p><strong>Ime klijenta: </strong>{selectedUser.ime}</p>
+                                        <p><strong>Prezime klijenta: </strong>{selectedUser.prezime}</p>
+                                        <p><strong>Adresa: </strong>{selectedUser.adresa}</p>
+                                        <p><strong>Grad: </strong>{selectedUser.grad}</p>
+                                        <p><strong>Kontakt telefon: </strong>{selectedUser.brojTelefona}</p>
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                          <button className="povecaj-button" onClick={() => handleOpenModal(user)}>
+                            Dodatne informacije
                           </button>
                         </div>
                       ))}
                   </div>
                 </div>
-
-
-
-
               </div>
             )}
 
