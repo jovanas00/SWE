@@ -332,7 +332,7 @@ const AdminPage = () => {
                               </div>
                             </div>
                           )}
-                          <button className="povecaj-button" onClick={() => handleOpenModal(user)}>
+                          <button className="dodatneInformacije-button" onClick={() => handleOpenModal(user)}>
                             Dodatne informacije
                           </button>
                         </div>

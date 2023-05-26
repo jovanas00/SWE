@@ -140,7 +140,7 @@
   background-color: #e0e0e0; /* Promena boje na hover */
 }
 
-.povecaj-button{
+.dodatneInformacije-button{
   padding: 3px 5px;
   font-size: 15px;
   border: 0.8px solid black;
@@ -149,7 +149,7 @@
   transition: background-color 0.3s ease;
 }
 
-.close-button:hover, .povecaj-button:hover {
+.close-button:hover, .dodatneInformacije-button:hover {
   background-color: #fc6c6c; /* Promenite boju po želji */
 }
 
