@@ -23,7 +23,7 @@ const Slider = ({ slides }) => {
         };
     }, []);
 
-    const isPhoneScreen = windowWidth < 1320;
+    const isPhoneScreen = windowWidth < 1513;
     const images = isPhoneScreen
         ? [slider1Phone, slider2Phone, slider3Phone]
         : [slider1, slider2, slider3];

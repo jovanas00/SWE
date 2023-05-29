@@ -1,7 +1,7 @@
 .salon-page {
     display: flex;
     /* flex-direction: column; */
-    /* height: 100vh; */
+    height: 100vh;
 }
 
 .salon-content {
@@ -16,7 +16,7 @@
     overflow-x: hidden;
     position: sticky;
     top: 0;
-    height: 270px;
+    height: 100%;
 }
 
 .salon-sidebar ul {
@@ -48,6 +48,7 @@
 @media (max-width: 768px) {
     .salon-page {
         flex-direction: column;
+        height: auto;
     }
 
     .salon-sidebar {
