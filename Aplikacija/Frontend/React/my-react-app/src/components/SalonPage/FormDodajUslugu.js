@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Card from '../UI/Card';
 import Button from '../UI/Button';
+import { obavestenja } from "../UI/Obavestenja";
 
 const FormDodajUslugu = ({ dodajUslugu }) => {
     const [naziv, setNaziv] = useState('');
@@ -19,7 +20,7 @@ const FormDodajUslugu = ({ dodajUslugu }) => {
             dostupnost
         };
         if (!naziv || !cena || !opis) {
-            alert('Molimo popunite sva polja');
+            obavestenja('Molimo popunite sva polja', 'danger');
             return;
         }
         // Prosleđivanje nove usluge funkciji za dodavanje

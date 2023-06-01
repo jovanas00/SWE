@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Card from '../UI/Card';
 import Button from '../UI/Button';
+import { obavestenja } from "../UI/Obavestenja";
 
 const FormDodajProizvod = ({ dodajProizvod, kategorije }) => {
     //fali slika
@@ -20,7 +21,7 @@ const FormDodajProizvod = ({ dodajProizvod, kategorije }) => {
             kategorija: odabranaKategorija,
         };
         if (!naziv || !cena || !odabranaKategorija) {
-            alert('Molimo popunite sva polja');
+            obavestenja('Molimo popunite sva polja', 'danger');
             return;
         }
         dodajProizvod(noviProizvod);
@@ -32,7 +33,6 @@ const FormDodajProizvod = ({ dodajProizvod, kategorije }) => {
     };
 
     const handleKategorijaChange = (e) => {
-        // console.log("ID:", e.target.value);
         setOdabranaKategorija(e.target.value);
     };
 

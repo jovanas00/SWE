@@ -1,8 +1,7 @@
 import React from "react";
 import { isSalon } from "../Auth/AuthSalon";
-import { Navigate } from 'react-router-dom';
-import { vratiRole } from '../Auth/VratiRole';
-import Header from '../Pocetna/Header';
+import { Navigate } from "react-router-dom";
+import { vratiRole } from "../Auth/VratiRole";
 import Informacije from "./Informacije";
 import TokenChecker from "../Auth/TokenChecker";
 import SalonUpravljanje from "./SalonUpravljanje";

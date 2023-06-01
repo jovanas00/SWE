@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Modal, Button } from 'react-bootstrap';
 import { formatirajDatum } from "../UI/FormatirajDatum";
-import axios from "axios";
 import './Modal.css';
 import '../UI/Button.css';
 import api from "../Auth/Interceptor";
+import { obavestenja } from "../UI/Obavestenja";
 
 const DetaljiZahteva = ({ zahtev, ucitajZahteve }) => {
     const [modalOpen, setModalOpen] = useState(false);
@@ -24,9 +24,9 @@ const DetaljiZahteva = ({ zahtev, ucitajZahteve }) => {
         } catch (error) {
             console.error(error);
             if (status === "" || komentarSalona === "")
-                window.alert("Niste uneli sva polja!");
+                obavestenja("Niste uneli sva polja!", "danger");
             if (zahtev.status === "Obrađen")
-                window.alert("Zahtev je već obrađen!");
+                obavestenja("Zahtev je već obrađen!", "danger");
         }
     };
 
@@ -42,7 +42,7 @@ const DetaljiZahteva = ({ zahtev, ucitajZahteve }) => {
         if (zahtev.status !== "Obrađen") {
             setObradaOpen(true);
         } else {
-            window.alert("Zahtev je već obrađen!");
+            obavestenja("Zahtev je već obrađen!", "danger");
         }
     };
 

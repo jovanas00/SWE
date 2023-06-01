@@ -60,13 +60,13 @@ const Proizvodi = ({ id }) => {
     const dodajProizvod = (noviProizvod) => {
         api.post(`/Proizvod/DodajProizvod/${noviProizvod.naziv}/${noviProizvod.cena}/${noviProizvod.dostupnost}/${noviProizvod.kategorija}/${id}`)
             .then((response) => {
-                console.log('Proizvod uspešno dodat.');
+                obavestenja('Proizvod uspešno dodat.', 'success');
                 ucitajProizvode();
             })
             .catch((error) => {
                 console.log('Greška prilikom dodavanja proizvoda:', error);
                 if (noviProizvod == null)
-                    window.alert("Proizvod ne postoji!");
+                    obavestenja("Proizvod ne postoji!", "danger");
             });
 
     };
@@ -80,7 +80,7 @@ const Proizvodi = ({ id }) => {
             .catch((error) => {
                 window.alert('Greška prilikom brisanja proizvoda:', error);
                 if (proizvodId == null)
-                    window.alert("Proizvod ne postoji!");
+                    obavestenja("Proizvod ne postoji!", "danger");
             });
     };
 
@@ -125,8 +125,8 @@ const Proizvodi = ({ id }) => {
             const response = await api.put(`http://localhost:5169/Klijent/DodajUKorpu/${proizvodID}`, {});
             //console.log(response.data); // Response message
             //alert(response.data);
-            obavestenja(response.data,'success')
-            //alert("Uspešno ste dodali proizvod u korpu! Možete pregledati svoju korpu i naručiti proizvode.");
+            // obavestenja(response.data,'success')
+            obavestenja("Uspešno ste dodali proizvod u korpu! Možete pregledati svoju korpu i naručiti proizvode.", "success");
         } catch (error) {
             console.error('There was a problem with the PUT request:', error);
         }

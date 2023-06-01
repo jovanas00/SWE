@@ -13,7 +13,7 @@ const SalonCard = ({ salon, slika }) => {
                 const id_salon=salon.id;
                 const response = await axios.get(`http://localhost:5169/Salon/ProsecnaOcena/${id_salon}`);
                 const data = response.data;
-                setProsecnaOcena(data.prosecnaOcena); // Ispravljeno ime polja
+                setProsecnaOcena(data.prosecnaOcena);
             } catch (error) {
                 console.log(error);
             }

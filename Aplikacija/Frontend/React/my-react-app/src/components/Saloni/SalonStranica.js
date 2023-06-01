@@ -60,11 +60,7 @@ const SalonStranica = () => {
     return (
         <div>
             <Header />
-
             <div className="salon-info">
-                {/* <div className="salon-card__div">
-                    <SalonCard salon={salon} slika={salon.korisnik.slika} />
-                </div> */}
                 <div className="salon-card1">
                     <div className="salon-card__image1">
                         <img className="slika" src={salon.korisnik.slika ? salon.korisnik.slika : icon} alt={salon.naziv}/>

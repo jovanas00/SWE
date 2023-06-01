@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Table } from "react-bootstrap";
 import { vratiKorisnickoIme } from "../Auth/VratIKorisnickoIme";
 import { formatirajDatum } from "../UI/FormatirajDatum";
@@ -17,11 +16,11 @@ const Zahtevi = () => {
             const noveZahteve = response.data;
             const sortiraniZahtevi = noveZahteve.sort((a, b) => {
                 if (a.status === "Neobrađen" && b.status !== "Neobrađen") {
-                    return -1; // Ako je a neobrađen, a b nije, a treba biti ispred b u sortiranju
+                    return -1;
                 } else if (a.status !== "Neobrađen" && b.status === "Neobrađen") {
-                    return 1; // Ako je a obrađen, a b neobrađen, a treba biti iza b u sortiranju
+                    return 1;
                 } else {
-                    return 0; // Ako su oba statusa ista, ne menjamo redosled
+                    return 0;
                 }
             });
             setZahtevi(sortiraniZahtevi);

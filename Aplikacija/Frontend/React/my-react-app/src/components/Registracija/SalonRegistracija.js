@@ -67,7 +67,7 @@ const SalonRegistracija = () => {
         <input type="text" id="grad" name="grad" onChange={handleChange} value={salon.grad} required />
         <label htmlFor="adresa">Adresa:</label>
         <input type="text" id="adresa" name="adresa" onChange={handleChange} value={salon.adresa} required />
-        <label htmlFor="broj">Broj:</label>
+        <label htmlFor="broj">Broj telefona:</label>
         <input type="text" id="broj" name="broj" onChange={handleChange} value={salon.broj} required />
         <button type="submit">Registruj se</button>
         <p className="registration-login">Već imaš nalog? <Link to="/prijava">Prijavi se</Link></p>

@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './Footer.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./Footer.css";
 
 const Footer = () => {
   const [saloni, setSaloni] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/salon')
+    axios.get("http://localhost:3000/salon")
       .then(res => {
         setSaloni(res.data);
       })

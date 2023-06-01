@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Card from "../UI/Card";
-import salonChat from '../../images/salon.jpg';
-import user from '../../images/user.webp';
-import { vratiRole } from '../Auth/VratiRole';
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import salonChat from "../../images/salon.jpg";
+import user from "../../images/user.webp";
+import { vratiRole } from "../Auth/VratiRole";
 import api from "../Auth/Interceptor";
 import { formatirajDatum } from "../UI/FormatirajDatum";
-import '../UI/Button.css';
-import './Odgovori.css';
+import "../UI/Button.css";
+import "./Odgovori.css";
 import { obavestenja } from "../UI/Obavestenja";
 
 
@@ -17,7 +15,6 @@ const Odgovori = ({ id }) => {
     const [odgovori, setOdgovori] = useState([]);
     const [inputText, setInputText] = useState("");
     const [odgovorInput, setOdgovorInput] = useState("");
-    // const navigate = useNavigate();
 
     const UcitajPitanja = () => {
         axios.get(`http://localhost:5169/Salon/VratiPitanjaSalona/${id}`)
@@ -44,15 +41,13 @@ const Odgovori = ({ id }) => {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (inputText === "") {
-            obavestenja("Niste postavili pitanje!","warning");
+            obavestenja("Niste postavili pitanje!","danger");
             return;
         }
 
         api
             .post(`http://localhost:5169/Klijent/PostaviPitanje/${encodeURIComponent(inputText)}/${id}`)
             .then((response) => {
-                // console.log(response.data);
-                // alert(response.data);
                 obavestenja(response.data,'success')
                 window.location.reload();
             })
@@ -63,18 +58,19 @@ const Odgovori = ({ id }) => {
 
     const odgovoriNaPitanje = (idPitanje, tekst) => {
         if (typeof tekst === 'undefined' || odgovorInput === "") {
-            window.alert("Niste uneli tekst odgovora!");
+            obavestenja("Niste uneli tekst odgovora!", "danger");
             return;
         }
         api.put(`/Salon/OdgovoriNaPitanje/${idPitanje}/${tekst}`)
             .then((response) => {
                 console.log("Pitanje je uspešno odgovoreno:", response.data);
+                obavestenja("Uspešno ste odgovorili na pitanje!", "success");
                 UcitajPitanja();
             })
             .catch((error) => {
                 console.error("Greška pri odgovaranju na pitanje:", error);
                 if (idPitanje == null)
-                    window.alert("Pitanje ne postoji!");
+                    obavestenja("Pitanje ne postoji!", "danger");
             });
     };
 
@@ -85,7 +81,7 @@ const Odgovori = ({ id }) => {
                 {role === "Klijent" && (
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" }}>
                         <input type="text" value={inputText} onChange={(event) => setInputText(event.target.value)} placeholder="Unesite svoje pitanje" class="input-text" />
-                        <button type="submit" class="btn btn-primary">Pitaj</button>
+                        <button type="submit" className="btn btn-primary">Pitaj</button>
                     </div>
                 )}
             </form >

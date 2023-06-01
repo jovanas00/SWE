@@ -5,6 +5,7 @@ import axios from "axios";
 import './Modal.css';
 import '../UI/Button.css';
 import api from "../Auth/Interceptor";
+import { obavestenja } from '../UI/Obavestenja';
 
 const DetaljiNarudzbine = ({ narudzbina, ucitajNarudzbine }) => {
     const [modalOpen, setModalOpen] = useState(false);
@@ -39,9 +40,9 @@ const DetaljiNarudzbine = ({ narudzbina, ucitajNarudzbine }) => {
         } catch (error) {
             console.error(error);
             if (status === "" || komentarSalona === "")
-                window.alert("Niste uneli sva polja!");
+                obavestenja("Niste uneli sva polja!", "danger");
             if (narudzbina.status === "Obrađena")
-                window.alert("Narudžbina je već obrađena!");
+                obavestenja("Narudžbina je već obrađena!", "danger");
         }
     };
 
@@ -57,7 +58,7 @@ const DetaljiNarudzbine = ({ narudzbina, ucitajNarudzbine }) => {
         if (narudzbina.status !== "Obrađena") {
             setObradaOpen(true);
         } else {
-            window.alert("Narudžbina je već obrađena!");
+            obavestenja("Narudžbina je već obrađena!", "danger");
         }
     };
 

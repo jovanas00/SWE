@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import './Modal.css';
 import '../UI/Button.css';
+import { obavestenja } from "../UI/Obavestenja";
 
 const FormIzmeniProizvod = ({ proizvod, izmeniProizvod, kategorije }) => {
-    //slika
     const [naziv, setNaziv] = useState(proizvod.naziv);
     const [cena, setCena] = useState(proizvod.cena);
     const [dostupnost, setDostupnost] = useState(proizvod.dostupnost);
-    const [kategorija, setKategorija] = useState(proizvod.kategorijaId); //treba da se salje id, a ne naziv
+    const [kategorija, setKategorija] = useState(proizvod.kategorijaId);
 
     const [showModal, setShowModal] = useState(false);
 
@@ -22,7 +22,7 @@ const FormIzmeniProizvod = ({ proizvod, izmeniProizvod, kategorije }) => {
             kategorija
         };
         if (naziv === "" || cena === "" || kategorija === "") {
-            window.alert("Niste uneli sva polja!");
+            obavestenja("Niste uneli sva polja!", "danger");
             setNaziv(proizvod.naziv);
             setCena(proizvod.cena);
             setDostupnost(proizvod.dostupnost);
@@ -30,13 +30,12 @@ const FormIzmeniProizvod = ({ proizvod, izmeniProizvod, kategorije }) => {
         }
         else {
             izmeniProizvod(izmenjenProizvod);
-            window.alert("Uspesno ste promenili proizvod!");
             setShowModal(false);
+            obavestenja("Uspesno ste promenili proizvod!", "success");
         }
     };
 
     const handleOdustaniOdIzmene = () => {
-        // window.alert("Odustali ste od izmene proizvoda!");
         setShowModal(false);
     };
 

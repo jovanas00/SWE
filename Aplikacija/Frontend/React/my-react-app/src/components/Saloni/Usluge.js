@@ -6,6 +6,7 @@ import FormDodajUslugu from "../SalonPage/FormDodajUslugu";
 import { vratiRole } from "../Auth/VratiRole";
 import '../UI/Button.css';
 import api from "../Auth/Interceptor";
+import { obavestenja } from '../UI/Obavestenja';
 
 const Usluge = ({ id }) => {
     const [usluge, setUsluge] = useState([]);
@@ -28,14 +29,14 @@ const Usluge = ({ id }) => {
     const dodajUslugu = (novaUsluga) => {
         api.post(`/Usluga/DodajUslugu/${novaUsluga.naziv}/${novaUsluga.cena}/${novaUsluga.opis}/${novaUsluga.dostupnost}/${id}`)
             .then((response) => {
-                alert(response.data)
-                // console.log('Usluga uspešno dodata.');
+                // alert(response.data)
+                obavestenja('Usluga uspešno dodata.', 'success');
                 ucitajUsluge();
             })
             .catch((error) => {
                 console.log('Greška prilikom dodavanja usluge:', error);
                 if (novaUsluga == null)
-                    window.alert("Usluga ne postoji!");
+                    obavestenja("Usluga ne postoji!", "danger");
             });
 
     };
@@ -44,7 +45,7 @@ const Usluge = ({ id }) => {
         api
             .delete(`/Usluga/ObrisiUslugu/${idUsluge}`)
             .then((response) => {
-                console.log('Usluga je uspešno obrisana!');
+                obavestenja('Usluga je uspešno obrisana!', 'success');
                 ucitajUsluge();
             })
             .catch((error) => {
@@ -85,8 +86,8 @@ const Usluge = ({ id }) => {
             api
                 .put(putanjaSaParametrima)
                 .then((response) => {
-                    alert(response.data)
-                    // console.log('Usluga je uspešno izmenjena!');
+                    // alert(response.data)
+                    obavestenja('Usluga je uspešno izmenjena!', 'success');
                     ucitajUsluge();
                     setTrenutnoIzmenjenRed(null);
                     setIzmenjeneVrednosti({});
@@ -96,7 +97,7 @@ const Usluge = ({ id }) => {
                     console.log('Detalji greške:', error.response.data);
                 });
         } else {
-            console.log('Nema izmenjenih vrednosti.');
+            obavestenja('Nema izmenjenih vrednosti.', 'danger');
             ucitajUsluge();
             setTrenutnoIzmenjenRed(null);
             setIzmenjeneVrednosti({});

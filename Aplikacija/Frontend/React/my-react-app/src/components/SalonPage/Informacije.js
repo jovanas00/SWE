@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, setError } from "react";
-import axios from "axios";
 import Cookies from "js-cookie";
 import Card from "../UI/Card";
 import icon from '../../images/salonIcon.png';
@@ -10,6 +9,7 @@ import './Informacije.css';
 import UploadFile from "../KlijentPage/Upload";
 import '../UI/Button.css';
 import api from "../Auth/Interceptor";
+import { obavestenja } from "../UI/Obavestenja";
 
 
 const Informacije = () => {
@@ -52,7 +52,8 @@ const Informacije = () => {
             setShowModal(false);
             setCurrentPassword('');
             setNewPassword('');
-            alert(response.data); // Display the response status code
+            // alert(response.data); // Display the response status code
+            obavestenja("Uspešno ste promenili lozinku!", "success");
         } catch (error) {
             console.error('Error changing password:', error);
             setError('An error occurred while changing the password. Please try again.');
@@ -68,7 +69,7 @@ const Informacije = () => {
     const handleChangeUserInfo = async (e) => {
         e.preventDefault();
         if (naziv == "" || adresa == "" || grad == "" || brojTelefona == "") {
-            alert("Niste popunili sva polja!")
+            obavestenja("Niste popunili sva polja!", "danger")
             return;
         }
         try {
@@ -81,7 +82,7 @@ const Informacije = () => {
             setGrad("");
             setBrojTelefona("");
             setSalon(response.data);
-            alert("Izmenjene informacije!"); // Display success message
+            obavestenja("Uspešno ste izmenili informacije!", "success"); // Display success message
             window.location.reload()
         } catch (error) {
             console.error("Error changing user info:", error);
@@ -113,7 +114,6 @@ const Informacije = () => {
         <div>
             <div>
                 <Card className="container-i">
-                    {/* <img src={icon} alt="Salon" className="image" /> */}
                     <div className="salon-details">
                         {salon && (
                             <div>
@@ -130,9 +130,7 @@ const Informacije = () => {
                             </div>
                         )}
                     </div>
-                    {/* Password change section */}
                     <div className="password-change">
-                        {/* Change password button */}
                         <button
                             onClick={() => setShowModal(true)}
                             className="button-primary"
@@ -140,7 +138,6 @@ const Informacije = () => {
                             Promeni lozinku
                         </button>
                     </div>
-                    {/* Modal */}
                     {showModal && (
                         <div className="modal">
                             <div className="modal-content">
@@ -174,7 +171,6 @@ const Informacije = () => {
                     <button onClick={() => setShowInfoModal(true)} className="button-primary">
                         Izmeni informacije
                     </button>
-                    {/* Modal for changing user information */}
                     {showInfoModal && (
                         <div className="modal">
                             <div className="modal-content">

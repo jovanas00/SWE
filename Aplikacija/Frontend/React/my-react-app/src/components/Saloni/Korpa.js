@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Cookies from 'js-cookie';
-import { vratiKorisnickoIme } from '../Auth/VratIKorisnickoIme';
-import { isKlijent } from '../Auth/AuthKlijent';
-import { vratiRole } from '../Auth/VratiRole';
-import './Korpa.css'
-import api from '../Auth/Interceptor';
+import React, { useState, useEffect } from "react";
+import { vratiKorisnickoIme } from "../Auth/VratIKorisnickoIme";
+import { vratiRole } from "../Auth/VratiRole";
+import "./Korpa.css";
+import api from "../Auth/Interceptor";
 import item from "../../images/item.jpg"
-import { obavestenja } from '../UI/Obavestenja';
+import { obavestenja } from "../UI/Obavestenja";
 
 const Korpa = ({ id }) => {
     const [korpaId, setKorpaId] = useState(null);
@@ -30,7 +27,7 @@ const Korpa = ({ id }) => {
                     setKorpaId(korpaId); // Pass the korpaId to the parent component
                 }
             } catch (error) {
-                console.error('Error retrieving Korpa ID:', error);
+                console.error("Error retrieving Korpa ID:", error);
             }
         };
         fetchKorpaId();
@@ -49,13 +46,11 @@ const Korpa = ({ id }) => {
     const handleDeleteClick = async (proizvodID) => {
         try {
             const response = await api.delete(`/Klijent/IzbaciIzKorpe/${proizvodID}/${korpaId}`);
-            console.log('Product removed from cart successfully!');
+            obavestenja('Proizvod je uspešno izbačen iz korpe!', 'success');
             obavestenja(response.data,'success');
             setProizvodi(prevProizvodi => prevProizvodi.filter(proizvod => proizvod.proizvodID !== proizvodID));
-            // Optionally, you can update the local state or perform any other necessary actions after successfully removing the product
         } catch (error) {
             console.error('Error removing product from cart:', error);
-            // Handle error case if the product could not be removed from the cart
         }
     };
 

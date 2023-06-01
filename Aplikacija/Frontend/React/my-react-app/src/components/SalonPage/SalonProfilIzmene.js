@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import axios from 'axios';
 import './SalonProfilIzmene.css';
 import api from "../Auth/Interceptor";
+import { obavestenja } from "../UI/Obavestenja";
 
 const SalonProfilIzmene = ({ salon, fetchSalon }) => {
-    console.log("Iz izmene: " + salon.naziv);
     const [korisnickoIme, setKorisnickoIme] = useState(salon.korisnik.korisnickoIme);
     const [naziv, setNaziv] = useState(salon.naziv);
     const [adresa, setAdresa] = useState(salon.adresa);
@@ -16,12 +15,13 @@ const SalonProfilIzmene = ({ salon, fetchSalon }) => {
             .put(`/Salon/IzmeniProfilSalona/${korisnickoIme}/${naziv}/${adresa}/${grad}/${brojTelefona}`)
             .then((response) => {
                 console.log("Profil salona je uspešno izmenjen:", response.data);
+                obavestenja("Uspešno ste izmenili svoje podatke!", "success");
                 fetchSalon();
             })
             .catch((error) => {
                 console.error("Greška pri izmeni profila salona:", error);
                 if (korisnickoIme || naziv || adresa || grad || brojTelefona === null) {
-                    window.alert("Niste uneli sva polja!")
+                    obavestenja("Niste uneli sva polja!", "danger")
                 }
             });
     };

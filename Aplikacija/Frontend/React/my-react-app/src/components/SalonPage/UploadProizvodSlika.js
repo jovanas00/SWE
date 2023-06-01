@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { vratiKorisnickoIme } from '../Auth/VratIKorisnickoIme';
-import Cookies from 'js-cookie';
 import '../UI/Button.css';
 import api from '../Auth/Interceptor';
 

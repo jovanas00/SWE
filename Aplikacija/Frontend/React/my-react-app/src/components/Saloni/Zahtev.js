@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Cookies from 'js-cookie';
 import './Zahtev.css'
 import api from '../Auth/Interceptor';
 import { obavestenja } from '../UI/Obavestenja';
@@ -55,7 +53,7 @@ const Zahtev = ({ id }) => {
             console.error('Error submitting the form:', error);
             if (error.response) {
                 console.log('Error response:', error.response.data);
-                obavestenja(error.response.data,'danger');
+                // obavestenja(error.response.data,'danger');
             }
         }
     };

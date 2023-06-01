@@ -69,7 +69,7 @@ const KlijentRegistracija = () => {
         <input type="text" id="prezime" name="prezime" onChange={handleChange} value={client.prezime} required />
         <label htmlFor="adresa">Adresa:</label>
         <input type="text" id="adresa" name="adresa" onChange={handleChange} value={client.adresa} required />
-        <label htmlFor="brojTelefona">Broj:</label>
+        <label htmlFor="brojTelefona">Broj telefona:</label>
         <input type="text" id="brojTelefona" name="brojTelefona" onChange={handleChange} value={client.brojTelefona} required />
         <label htmlFor="grad">Grad:</label>
         <input type="text" id="grad" name="grad" onChange={handleChange} value={client.grad} required />
