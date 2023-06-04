@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../Pocetna/Header';
-import axios from 'axios';
 import './AdminPage.css';
 import { isAdmin } from '../Auth/AuthAdmin';
 import { vratiRole } from '../Auth/VratiRole';
@@ -9,9 +8,6 @@ import { Navigate } from 'react-router-dom';
 import { Card } from "react-bootstrap";
 import icon from "../../images/user.webp";
 import Cookies from 'js-cookie';
-import UploadFile from "../KlijentPage/Upload";
-import ChangePasswordModal from "../KlijentPage/PasswordChangeModal";
-import AdminInfoModal from "./AdminInfoModal";
 import TokenChecker from '../Auth/TokenChecker';
 import api from '../Auth/Interceptor';
 import { obavestenja } from '../UI/Obavestenja';
@@ -96,7 +92,7 @@ const AdminPage = () => {
     setModalOpen(true);
   };
 
-  //Funkcija za prikaz svih kategorija preko Axios
+  //Funkcija za prikaz svih kategorija  
   const fetchCategories = async () => {
     try {
       const response = await api.get('/Admin/SveKategorije');
@@ -106,7 +102,7 @@ const AdminPage = () => {
     }
   };
 
-  // Funkcija za dodavanje kategorije preko Axios
+  // Funkcija za dodavanje kategorije 
   const addCategory = async (naziv) => {
     try {
       const response = await api.post(`/Admin/DodajKategoriju/${naziv}`);
@@ -117,7 +113,7 @@ const AdminPage = () => {
     }
   };
 
-  // Funkcija za brisanje kategorije preko Axios
+  // Funkcija za brisanje kategorije 
   const deleteCategory = async (id_kategorija) => {
     try {
       const response = await api.post(`/Admin/ObrisiKategoriju/${id_kategorija}`);
@@ -128,7 +124,7 @@ const AdminPage = () => {
     }
   };
 
-  // Funkcija za brisanje korisnika preko Axios
+  // Funkcija za brisanje korisnika
   const deleteUser = async () => {
     try {
       const response = await api.delete(`/Admin/ObrisiKorisnika/${unosKorisnickogImena}`);
@@ -146,7 +142,7 @@ const AdminPage = () => {
   };
 
 
-  // Funkcija za prikaz svih korisnika preko Axios
+  // Funkcija za prikaz svih korisnika  
   const fetchUsers = async () => {
     try {
       const response = await api.get('/Korisnik/PrikaziKorisnike');

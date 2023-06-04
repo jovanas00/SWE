@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import icon from "../../images/user.webp";
-import axios from "axios";
-import Cookies from "js-cookie";
 import { vratiKorisnickoIme } from "../Auth/VratIKorisnickoIme";
 import { useNavigate } from "react-router-dom";
 import { Card } from "react-bootstrap";
