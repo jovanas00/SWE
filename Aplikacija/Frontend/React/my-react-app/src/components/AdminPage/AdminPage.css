@@ -17,38 +17,44 @@
   flex-grow: 1;
 }
 
-.admin-sidebar {
-  width: 200px;
-  flex-shrink: 0;
-  background-color: #a9ebfc;
-  overflow-y: auto;
-}
-
-
-.admin-main {
-  flex-grow: 1;
+.admin-info {
+  flex: 0 0 auto;
   padding: 20px;
-  overflow-y: auto;
+  text-align: center;
 }
 
-.admin-sidebar ul {
-  list-style-type: none;
-  padding: 0;
-  margin-bottom: 0;
+.admin-sidebar {	
+  width: 200px;	
+  min-height: 400px;
+  flex-shrink: 0;	
+  background-color: #a9ebfc;	
+  overflow-y: auto;	
 }
 
-.admin-sidebar li {
-  padding: 10px;
-  cursor: pointer;
-  border-bottom: 1px solid #338fa5;
+.admin-main {	
+  margin-top:5px;
+  margin-left: 20px;
+  margin-right: 20px;	
 }
+		
+.admin-sidebar ul {	
+  list-style-type: none;	
+  padding: 0;	
+  margin-bottom: 0;	
+}	
 
-.admin-sidebar li:hover {
-  background-color: #fc6c6c;
-}
+.admin-sidebar li {	
+  padding: 10px;	
+  cursor: pointer;	
+  border-bottom: 1px solid #338fa5;	
+}	
 
-.admin-sidebar li.selected {
-  background-color: #338fa5;
+.admin-sidebar li:hover {	
+  background-color: #fc6c6c;	
+}	
+
+.admin-sidebar li.selected {	
+  background-color: #338fa5;	
 }
 
 .user-list {
@@ -61,13 +67,15 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+  min-width: 70vw;
+  max-width: 70vw;
   margin: 10px;
   gap: 37px;
 }
 
-.user-card{
+.user-card {
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-  padding: 5px;
+  padding: 8px;
 }
 
 .user-list li {
@@ -80,7 +88,6 @@
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
 }
 
-
 .user-list div {
   margin-bottom: 10px;
 }
@@ -88,7 +95,6 @@
 .input-container select {
   padding: 6px 10px;
   font-size: 15px;
-  /* Dodajte ostale stilove po potrebi */
 }
 
 .modal {
@@ -109,7 +115,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.1); /* Prozirna pozadina */
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .modal-content {
@@ -128,19 +134,27 @@
 .close-button {
   padding: 6px 10px;
   font-size: 15px;
-  /* Dodajte ostale stilove po potrebi */
   border: 1px solid black;
   border-radius: 4px;
   cursor: pointer;
-  /* Dodajte ostale stilove po potrebi */
-  transition: background-color 0.3s ease; /* Dodajemo tranziciju za glatku promenu boje */
+  transition: background-color 0.3s ease;
 }
 
 .close-button:hover {
-  background-color: #e0e0e0; /* Promena boje na hover */
+  background-color: #e0e0e0;
 }
 
-.dodatneInformacije-button{
+.close {
+  margin-left: 190px;
+  transition: background-color 0.3s ease;
+}
+
+.close:hover {
+  background-color: #fc6c6c;
+}
+
+
+.dodatneInformacije-button {
   padding: 3px 5px;
   font-size: 15px;
   border: 0.8px solid black;
@@ -149,8 +163,9 @@
   transition: background-color 0.3s ease;
 }
 
-.close-button:hover, .dodatneInformacije-button:hover {
-  background-color: #fc6c6c; /* Promenite boju po želji */
+.close-button:hover,
+.dodatneInformacije-button:hover {
+  background-color: #fc6c6c;
 }
 
 .img {
@@ -165,7 +180,7 @@
   width: 200px;
   height: 200px;
   border-radius: 50%;
-  background-color: #f1f1f1; /* Boja pozadine */
+  background-color: #f1f1f1;
   overflow: hidden;
 }
 
@@ -174,24 +189,21 @@
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
-  display: block; 
+  display: block;
   margin: auto;
 }
-
 
 .delete-user-button {
   padding: 6px 10px;
   font-size: 15px;
-  /* Dodajte ostale stilove po potrebi */
   border: 1px solid black;
   border-radius: 4px;
   cursor: pointer;
-  /* Dodajte ostale stilove po potrebi */
-  transition: background-color 0.3s ease; /* Dodajemo tranziciju za glatku promenu boje */
+  transition: background-color 0.3s ease;
 }
 
 .delete-user-button:hover {
-  background-color: #fc6c6c; /* Promenite boju po želji */
+  background-color: #fc6c6c;
 }
 
 /* Responsivnost */
@@ -200,8 +212,14 @@
     flex-direction: column;
   }
 
+  .admin-info,
   .admin-sidebar {
     width: 100%;
+  }
+
+  .admin-sidebar {
+    order: -1;
+    margin-top: 20px;
   }
 
   .image2 {
@@ -214,31 +232,49 @@
     justify-content: center;
     align-items: center;
   }
-  
+
+  .user-list li {
+    flex-basis: 100%;
+    justify-content: center;
+  }
+  .scrollable-window {
+    min-width: none;
+  }
+  .admin-sidebar {	
+    min-height: 0px;
+  }
 }
 
-.user-list li {
-  flex-basis: 100%;
-  justify-content: center;
+.filter-dropdown{
+  min-width: 70vw; /*82vw ali nije responsive za sve sirine*/
+  max-width: 70vw;
 }
 
 .scrollable-window {
-  max-height: 400px; /* Maksimalna visina prozora za prikaz kategorija */
+  max-height: 400px;
+  min-height: 400px;
+  min-width: 70vw; /*82vw ali nije responsive za sve sirine*/
+  max-width: 70vw;
   overflow-y: auto;
+  flex-grow: 1;
 }
 
 .category-list {
   list-style: none;
   padding: 0;
+  display: flex; 
+  flex-wrap: wrap; 
+  justify-content: flex-start; 
 }
 
 .category-list li {
-  display: grid; /* Koristimo CSS Grid */
-  grid-template-columns: 1fr 1fr; /* Podela na dva dela */
-  align-items: center; /* Centriranje sadržaja */
+  flex-basis: 100%; 
+  display: grid; 
+  grid-template-columns: 1fr 1fr;
+  align-items: center; 
   padding: 5px;
   border-bottom: 1px solid #cccccc;
-  border: none; /* Uklanja okvir oko celog elementa */
+  border: none; 
 }
 
 .category-list li:last-child {
@@ -246,50 +282,38 @@
 }
 
 .category-list li span {
-  background-color: #ccf5ff; /* Menja boju pozadine okvira */
-  color: #000000; /* Menja boju teksta */
-  padding: 5px 10px; /* Podesite veličinu paddinga prema potrebi */
+  background-color: #ccf5ff; 
+  color: #000000; 
+  padding: 5px 10px; 
   margin-right: 10px;
-  flex-grow: 1; /* Spaja okvire oko ID i naziva */
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1); /* Dodaje blagu liniju između redova */
+  flex-grow: 1;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1); 
 }
-
-
 
 .input-container {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 10px; 
 }
-
 
 .input-container input {
   margin-right: 10px;
 }
 
 .input-container button {
-  padding: 6px 10px; /* Podesite veličinu paddinga prema potrebi */
-  font-size: 15px; /* Podesite veličinu fonta prema potrebi */
+  padding: 6px 10px;
+  font-size: 15px;
   border: 1px solid black;
   border-radius: 4px;
-  transition: background-color 0.3s ease; /* Dodajemo tranziciju za glatku promenu boje */
+  transition: background-color 0.3s ease;
 }
 
-
-.input-container button:hover
-{
-  background-color: #fc6c6c; /* Promenite boju po želji */
+.input-container button:hover {
+  background-color: #fc6c6c;
 }
-
 
 .admin-info {
-  flex-direction: column;
-  align-items: center;
   text-align: center;
-}
-
-.admin-info h2 {
-  font-size: 24px;
 }
 
 .admin-info-details {
@@ -310,7 +334,7 @@
   margin-bottom: 5px;
 }
 
-.image1 { /*za profilnu sliku admina*/
+.image1 {
   width: 150px;
   height: 150px;
   object-fit: cover;
@@ -328,52 +352,18 @@
 .admin-info-edit input {
   margin-right: 10px;
   padding: 5px;
+  width: 100%;
+  max-width: 200px;
 }
 
-.admin-info-details p {
-  margin: 0;
-  margin-top: -8px; /* Podiže elemente malo gore */
-}
-
-.admin-info-details img {
-  max-width: 100%;
-  max-height: 100%;
-  margin-top: 5px; /* Dodajemo malo razmaka iznad slike */
-}
-
-.admin-info-details button {
-  margin-left: 10px;
-  padding: 4px 5px;
-  background-color: #daeef3;
-  border: 1px solid black; /* Dodato uokvirivanje crnom linijom */
+.admin-info-edit button {
+  padding: 6px 10px;
+  font-size: 15px;
+  border: 1px solid black;
   border-radius: 4px;
-  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.admin-info-details button:hover {
+.admin-info-edit button:hover {
   background-color: #fc6c6c;
-  color: #fff;
-}
-
-.admin-info-save-cancel {
-  margin-top: 10px;
-}
-
-.admin-info-save-cancel button {
-  margin-right: 10px;
-  padding: 5px 8px;
-  background-color: #daeef3;
-  border: 1px solid black; /* Dodato uokvirivanje crnom linijom */
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.admin-info-dimensions {
-  margin-top: 20px;
-}
-
-.admin-info-dimensions input {
-  margin-right: 10px;
-  padding: 5px;
-  width: 40px;
 }

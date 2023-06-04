@@ -15,6 +15,7 @@ import AdminInfoModal from "./AdminInfoModal";
 import TokenChecker from '../Auth/TokenChecker';
 import api from '../Auth/Interceptor';
 import { obavestenja } from '../UI/Obavestenja';
+import Informacije from './Informacije';
 
 const AdminPage = () => {
   const [selectedSection, setSelectedSection] = useState(null);
@@ -110,9 +111,9 @@ const AdminPage = () => {
     try {
       const response = await api.post(`/Admin/DodajKategoriju/${naziv}`);
       fetchCategories(); // osvežava listu kategorija u prozoru
-      obavestenja(response.data);
+      obavestenja("Uspešno dodata kategorija!", "success");
     } catch (error) {
-      handleError();
+      obavestenja("Greška pri dodavanju kategorije!", "danger");
     }
   };
 
@@ -121,8 +122,9 @@ const AdminPage = () => {
     try {
       const response = await api.post(`/Admin/ObrisiKategoriju/${id_kategorija}`);
       fetchCategories(); // osvežava listu kategorija u prozoru
-      alert("Uspešno obrisana kategorija!");
+      obavestenja("Uspešno obrisana kategorija!", "success");
     } catch (error) {
+      obavestenja("Greška pri brisanju kategorije!", "danger");
     }
   };
 
@@ -133,14 +135,13 @@ const AdminPage = () => {
       console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
 
       if (response.data == true) {
-        alert('Korisnik je uspešno obrisan.');
+        obavestenja("Korisnik je uspešno obrisan.", "success");
       } else {
-        alert('Korisnik nije pronađen. Navedite pravilno korisničko ime.');
+        obavestenja("Korisnik nije pronađen. Navedite pravilno korisničko ime.", "danger");
       }
       fetchUsers(); // Ažuriranje liste korisnika nakon brisanja
     } catch (error) {
-      alert('Greška prilikom brisanja korisnika');
-      handleError();
+      obavestenja("Greška prilikom brisanja korisnika, proverite da li ste uneli korisničko ime!", "danger");
     }
   };
 
@@ -168,71 +169,22 @@ const AdminPage = () => {
     }
   }, [isAdminInfoLoaded]);
 
-
   if (isAdmin()) {
     return (
       <div className="admin-page">
         <TokenChecker />
         <Header />
+        <Informacije />
         <div className="admin-content">
           <aside className="admin-sidebar">
             {/* Sidebar sa navigacijom */}
             <ul>
-              <li onClick={() => handleSectionChange('admin-info')}>Profil admina</li>
               <li onClick={() => handleSectionChange('user-management')}>Upravljanje korisnicima</li>
               <li onClick={() => handleSectionChange('category-management')}>Upravljanje kategorijama</li>
             </ul>
           </aside>
 
           <main className="admin-main">
-            {/* Prikaz odabrane sekcije */}
-            {selectedSection === 'admin-info' && (
-              <div className="admin-info">
-                <Card className="container-a">
-                  <div className="admin-info">
-                    <h2>Profil admina</h2>
-                    <div className="admin-info-details">
-                      <h5 className="admin-info-label"></h5>
-                      <img
-                        src={adminInfo.korisnik?.slika ? adminInfo.korisnik.slika : icon}
-                        alt="User"
-                        className="image1"
-                      />
-                    </div>
-                    <div className="admin-info-details">
-                      <h5 className="admin-info-label">Korisničko ime:</h5>
-                      <p>{adminInfo.korisnik?.korisnickoIme}</p>
-                    </div>
-                    <div className="admin-info-details">
-                      <h5 className="admin-info-label">Ime:</h5>
-                      <p>{adminInfo.ime}</p>
-                    </div>
-                    <div className="admin-info-details">
-                      <h5 className="admin-info-label">Prezime:</h5>
-                      <p>{adminInfo.prezime}</p>
-                    </div>
-
-                  </div>
-                  <div className="password-change">
-                    <button onClick={() => setShowModal(true)} className="button-primary">
-                      Promeni lozinku
-                    </button>
-                  </div>
-                  <ChangePasswordModal
-                    korisnicko_ime={adminInfo.korisnik?.korisnickoIme}
-                    showModal={showModal}
-                    setShowModal={setShowModal}
-                  />
-                  <button onClick={() => setShowInfoModal(true)} className="button-primary">
-                    Izmeni informacije
-                  </button>
-                  {showInfoModal && (
-                    <AdminInfoModal adminInfo={adminInfo} onClose={handleCancelAdminInfoChange} />
-                  )}
-                  <UploadFile onUploadFinished={handleUploadFinished} />
-                </Card>
-              </div>
-            )}
 
             {selectedSection === 'user-management' && (
               <div>
