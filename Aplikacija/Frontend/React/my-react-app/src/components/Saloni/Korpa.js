@@ -46,7 +46,7 @@ const Korpa = ({ id }) => {
     const handleDeleteClick = async (proizvodID) => {
         try {
             const response = await api.delete(`/Klijent/IzbaciIzKorpe/${proizvodID}/${korpaId}`);
-            obavestenja('Proizvod je uspešno izbačen iz korpe!', 'success');
+            //obavestenja('Proizvod je uspešno izbačen iz korpe!', 'success');
             obavestenja(response.data,'success');
             setProizvodi(prevProizvodi => prevProizvodi.filter(proizvod => proizvod.proizvodID !== proizvodID));
         } catch (error) {
