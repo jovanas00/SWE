@@ -7,6 +7,7 @@ import UploadFile from "../KlijentPage/Upload";
 import api from "../Auth/Interceptor";
 import ChangePasswordModal from "../KlijentPage/PasswordChangeModal";
 import AdminInfoModal from "./AdminInfoModal";
+import './Informacije.css';
 
 const Informacije = () => {
   const [adminInfo, setAdminInfo] = useState(null);
@@ -62,30 +63,27 @@ const Informacije = () => {
             <div className="admin-info1">
             <Card className="container-a">
             <div className="admin-info1">
-                <h2>Profil admina</h2>
                 <div className="admin-info-details">
-                <h5 className="admin-info-label"></h5>
-                <img
-                    src={adminInfo.korisnik?.slika ? adminInfo.korisnik.slika : icon}
-                    alt="User"
-                    className="image1"
-                />
+                  <h5 className="admin-info-label"></h5>
+                  <img
+                      src={adminInfo.korisnik?.slika ? adminInfo.korisnik.slika : icon}
+                      alt="User"
+                      className="image1"
+                  />
                 </div>
                 <div className="admin-info-details">
-                <h5 className="admin-info-label">Korisničko ime:</h5>
-                <p>{adminInfo.korisnik?.korisnickoIme}</p>
+                  <p><strong>Korisničko ime: </strong>{adminInfo.korisnik?.korisnickoIme}</p>
+                  
                 </div>
                 <div className="admin-info-details">
-                <h5 className="admin-info-label">Ime:</h5>
-                <p>{adminInfo.ime}</p>
+                  <p><strong>Ime: </strong>{adminInfo.ime}</p>
                 </div>
-                <div className="admin-info-details">
-                <h5 className="admin-info-label">Prezime:</h5>
-                <p>{adminInfo.prezime}</p>
+                <div className="admin-info-details1">
+                  <p><strong>Prezime: </strong>{adminInfo.prezime}</p>
                 </div>
 
             </div>
-            <div className="password-change">
+            <div className="password-change1">
                 <button onClick={() => setShowModal(true)} className="button-primary">
                 Promeni lozinku
                 </button>

@@ -1,6 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
 import "./AdminPage.css"
 import api from "../Auth/Interceptor";
 import { vratiKorisnickoIme } from '../Auth/VratIKorisnickoIme';

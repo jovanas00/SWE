@@ -14,7 +14,7 @@ import { obavestenja } from '../UI/Obavestenja';
 import Informacije from './Informacije';
 
 const AdminPage = () => {
-  const [selectedSection, setSelectedSection] = useState(null);
+  const [selectedSection, setSelectedSection] = useState('user-management');
   const [categoryName, setCategoryName] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [users, setUsers] = useState([]);
@@ -24,8 +24,6 @@ const AdminPage = () => {
   const [unosKorisnickogImena, setUnosKorisnickogImena] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [adminInfo, setAdminInfo] = useState(null);
-  const [isAdminInfoLoaded, setIsAdminInfoLoaded] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -44,38 +42,6 @@ const AdminPage = () => {
 
   const handleError = () => {
     window.location.reload();
-  };
-
-  // Funkcija za dohvatanje informacija o adminu
-  const fetchAdminInfo = async () => {
-    try {
-      const response = await api.get('/Admin/SviAdmini');
-      const korIme = vratiKorisnickoIme();
-      const adminInfo = response.data;
-      const admin = adminInfo.find((admin) => admin.korisnik.korisnickoIme === korIme);
-      if (admin) {
-        setAdminInfo(admin);
-        setIsAdminInfoLoaded(true);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-
-  const handleUploadFinished = (response) => {
-    const { dbPath } = response;
-    console.log(dbPath)
-    setAdminInfo((prevAdminInfo) => ({
-      ...prevAdminInfo,
-      slika: `http://localhost:5169/${dbPath}`,
-    })
-    );
-  };
-
-
-  const handleCancelAdminInfoChange = () => {
-    setShowInfoModal(false);
   };
 
   const handleShowImage = (imagePath) => {
@@ -157,13 +123,9 @@ const AdminPage = () => {
       // Pozivamo funkciju za dohvatanje korisnika pri prvom renderovanju komponente
       fetchUsers();
       // Dohvatamo informacije o adminu
-      fetchAdminInfo();
       fetchCategories();
     }
-    if (isAdminInfoLoaded) {
-      setSelectedSection('admin-info');
-    }
-  }, [isAdminInfoLoaded]);
+  }, []);
 
   if (isAdmin()) {
     return (
