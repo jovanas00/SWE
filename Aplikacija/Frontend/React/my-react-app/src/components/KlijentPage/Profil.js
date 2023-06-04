@@ -111,7 +111,6 @@ const Profil = () => {
           <button onClick={handleNarudzbineClick}><strong>Narudžbine</strong></button>
           <button onClick={handleZahteviClick}><strong>Zahtevi</strong></button>
         </div>
-        <div className="content"></div>
         <div className="narudzbine-container">
           {prikazNarudzbina ? (
             <>
@@ -123,7 +122,7 @@ const Profil = () => {
                   .map((narudzbina, index) => (
 
                     <li key={narudzbina.id}>
-                      <div className="container">
+                      <div className="container2">
                         <div className="card">
                           <p className="narudzbina-brojac">Narudžbina {index + 1}.</p>
                           <p><strong>Status narudžbine:</strong> {narudzbina.status}</p>
@@ -181,7 +180,7 @@ const Profil = () => {
                 <ul>
                   {zahtevi.map((zahtev, index) => (
                     <li key={zahtev.id}>
-                      <div className="container">
+                      <div className="container2">
                         <div className="card">
                           <p className="zahtev-brojac">Zahtev {index + 1}.</p>
                           <p><strong>Ime ljubimca:</strong> {zahtev.imeLjubimca}</p>

@@ -62,7 +62,7 @@ const Informacije = () => {
             <img
               src={userInfo.slika ? userInfo.slika : icon}
               alt="User"
-              className="image"
+              className="image3"
             />
             <p><strong>Ime:</strong> {userInfo.ime}</p>
             <p><strong>Prezime:</strong> {userInfo.prezime}</p>
