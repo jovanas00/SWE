@@ -5,6 +5,7 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import Cookies from 'js-cookie';
 import { vratiRole } from '../Auth/VratiRole';
+import { obavestenja } from '../UI/Obavestenja';
 
 const Footer = () => {
   const [prijava, setPrijava] = useState({
@@ -42,7 +43,7 @@ const Footer = () => {
       })
       .catch(error => {
         console.log(error);
-        window.alert('Pogrešno korisničko ime ili lozinka!');
+        obavestenja("Pogrešno korisničko ime ili lozinka!", "danger");
       });
   };
 
@@ -61,7 +62,7 @@ const Footer = () => {
         <div className="loginForm-button">
           <button className="prijava-button" type="submit">Prijavi se</button>
         </div>
-        <p className="registration-login">Nemaš nalog? <Link to="/registracija">Registruj se</Link></p>
+        <p className="registration-login1">Nemaš nalog? <Link to="/registracija">Registruj se</Link></p>
       </form>
     </div>
   );
