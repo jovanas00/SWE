@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import '../Registracija/Footer.css';
+import { obavestenja } from '../UI/Obavestenja';
 
 const KlijentRegistracija = () => {
   const [client, setClient] = useState({
@@ -29,12 +30,12 @@ const KlijentRegistracija = () => {
 
       .then(response => {
         console.log(response);
-        window.alert('Uspešno ste se registrovali!');
+        obavestenja("Uspešno ste se registrovali!", "success");
         resetFields(); // Poziv funkcije za resetovanje polja
       })
       .catch(error => {
         console.log(error);
-        window.alert('Greška pri registraciji, proverite sva polja ili možda već imate nalog.');
+        obavestenja("Greška pri registraciji, proverite sva polja ili možda već imate nalog.", "danger");
       });
   };
 
