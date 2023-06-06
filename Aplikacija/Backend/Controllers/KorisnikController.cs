@@ -143,7 +143,6 @@ public class KorisnikController : ControllerBase
             };
             Korpa kor = new Korpa
             {
-                //ukupnaCena=0,
                 Klijent = kl
             };
             Context.Korisnici.Add(k);
@@ -212,7 +211,6 @@ public class KorisnikController : ControllerBase
                 grad = grad,
                 brojTelefona = broj,
                 Korisnik = k,
-                //prosecnaOcena=0,
             };
             Context.Korisnici.Add(k);
             Context.Saloni.Add(s);
@@ -371,7 +369,7 @@ public class KorisnikController : ControllerBase
     {
         try
         {
-            var korisnici = Context.Korisnici.ToList(); // Preuzmi sve korisnike iz baze
+            var korisnici = Context.Korisnici.ToList();
 
             var rezultat = new List<object>();
 
@@ -387,8 +385,8 @@ public class KorisnikController : ControllerBase
                             k.ID,
                             k.email,
                             k.korisnickoIme,
-                            k.sifra,
-                            k.salt_value,
+                            //k.sifra,
+                            //k.salt_value,
                             k.tip,
                             k.slika,
                             klijent.ime,
@@ -411,8 +409,8 @@ public class KorisnikController : ControllerBase
                             k.ID,
                             k.email,
                             k.korisnickoIme,
-                            k.sifra,
-                            k.salt_value,
+                            //k.sifra,
+                            //k.salt_value,
                             k.tip,
                             k.slika,
                             salon.naziv,
@@ -430,8 +428,8 @@ public class KorisnikController : ControllerBase
                         k.ID,
                         k.email,
                         k.korisnickoIme,
-                        k.sifra,
-                        k.salt_value,
+                        //k.sifra,
+                        //k.salt_value,
                         k.tip,
                         k.slika
                     };

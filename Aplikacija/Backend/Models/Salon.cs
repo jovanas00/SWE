@@ -23,10 +23,6 @@ namespace BackEnd.Models
         [Required()]
         public string grad { get; set; }
 
-        // [Column("ProsecnaOcena")]
-        // [Required()]
-        // public float prosecnaOcena { get; set; }
-
         [Column("BrojTelefona")]
         [MaxLength(13)]
         [Required()] 

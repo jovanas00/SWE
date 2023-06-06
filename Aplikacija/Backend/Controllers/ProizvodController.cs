@@ -18,7 +18,6 @@ public class ProizvodController : ControllerBase
     [Authorize(Roles ="Salon")]
     public async Task<ActionResult<Proizvod>> DodajProizvod(string naziv, float cena, bool dostupnost, int id_kategorija, int id_salon)
     {
-        //Salon preko korisnikID
         Kategorija k = await Context.Kategorije.FindAsync(id_kategorija);
         if (k == null)
             return BadRequest("Trazena kategorija ne postoji.");
@@ -97,7 +96,6 @@ public class ProizvodController : ControllerBase
     [Authorize(Roles ="Salon")]
     public async Task<ActionResult> UploadProizvodSlika(int id_proizvod)
     {
-        //frontend za testiranje
         try
         {
             Proizvod retVal = Context.Proizvodi.Where(p => p.ID == id_proizvod).FirstOrDefault();
@@ -133,7 +131,6 @@ public class ProizvodController : ControllerBase
             return StatusCode(500, $"Internal server error: {e}");
         }
     }
-    //Mozda i samo za salon ova funkcija,kada se autorizuje
 
     [Route("VratiProizvodeSalona/{id_salon}")]
     [HttpGet]

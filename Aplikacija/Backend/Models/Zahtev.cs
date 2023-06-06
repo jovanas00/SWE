@@ -36,7 +36,6 @@ namespace BackEnd.Models
 
         [Column("KomentarSalona")]
         [MaxLength(150)]
-        //[Required()]
         public string komentarSalona { get; set; }
 
         #region ReferenceNaDrugeKlase

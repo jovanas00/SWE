@@ -26,7 +26,6 @@ public class SalonController : ControllerBase
             naziv = s.naziv,
             adresa = s.adresa,
             grad = s.grad,
-            // prosecnaOcena = s.ProsecnaOcena,
             brojTelefona = s.brojTelefona,
             slika = s.Korisnik?.slika
         });
@@ -39,7 +38,6 @@ public class SalonController : ControllerBase
     public async Task<ActionResult<Salon>> VratiSalon(int id_salon)
     {
         var salon = await Context.Saloni.Include(s => s.Korisnik).FirstOrDefaultAsync(s => s.ID == id_salon);
-        // s.ID = id_salon;
         if (salon == null)
             return NotFound();
         return salon;
@@ -69,10 +67,8 @@ public class SalonController : ControllerBase
 
     [Route("IzmeniProfilSalona/{korisnicko_ime}/{naziv}/{adresa}/{grad}/{brojTelefona}")]
     [HttpPut]
-    //[Authorize(Roles ="Salon")]
     public async Task<ActionResult<Salon>> IzmeniProfil(string korisnicko_ime, string naziv, string adresa, string grad, string brojTelefona)
     {
-        //nadjes na osnovu korisnika
         var k = await Context.Korisnici.Where(p => p.korisnickoIme == korisnicko_ime).FirstOrDefaultAsync();
         if (k == null)
             return NotFound();
@@ -94,7 +90,6 @@ public class SalonController : ControllerBase
 
     [Route("OdgovoriNaPitanje/{id_pitanje}/{tekst}")]
     [HttpPut]
-    //[Authorize(Roles ="Salon")]
     public async Task<ActionResult<Pitanje>> OdgovoriNaPitanje(int id_pitanje, string tekst)
     {
         try
@@ -117,7 +112,6 @@ public class SalonController : ControllerBase
     }
 
     [HttpPut("ObradiZahtev/{id_zahtev}/{status}/{komentarSalona}")]
-    //[Authorize(Roles ="Salon")]
     public async Task<ActionResult<Zahtev>> ObradiZahtev(int id_zahtev, string status, string komentarSalona)
     {
         try
@@ -142,7 +136,6 @@ public class SalonController : ControllerBase
 
 
     [HttpPut("ObradiNarudzbinu/{id_narudzbina}/{status}/{komentar_salona}")]
-    //[Authorize(Roles ="Salon")]
     public async Task<ActionResult<Narudzbina>> ObradiNarudzbinu(int id_narudzbina, string status, string komentar_salona)
     {
         try

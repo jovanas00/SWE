@@ -18,7 +18,6 @@ public class UslugaController : ControllerBase
     [Authorize(Roles ="Salon")]
     public async Task<ActionResult<Usluga>> DodajUslugu(string naziv, float cena, string opis, bool dostupnost, int id_salon)
     {
-        //preko korisnika nalazis salon
         Salon s = await Context.Saloni.FindAsync(id_salon);
         Usluga postojeca = Context.Usluge.Include(s=>s.Salon).Where(u=>u.Naziv==naziv && u.Salon.ID==id_salon).FirstOrDefault();
         if(postojeca!=null)
