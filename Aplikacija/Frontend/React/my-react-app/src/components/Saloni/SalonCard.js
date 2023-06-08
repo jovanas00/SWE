@@ -32,7 +32,7 @@ const SalonCard = ({ salon, slika }) => {
                 <p>Adresa: {salon.adresa}</p>
                 <p>Grad: {salon.grad}</p>
                 <p>Broj telefona: {salon.brojTelefona}</p>
-                <p>Prosečna ocena: {prosecnaOcena}</p>
+                <p>Prosečna ocena: {prosecnaOcena.toFixed(2)}</p>
             </div>
         </Card>
     );
