@@ -70,7 +70,7 @@ const SalonStranica = () => {
                         <p><strong>Adresa:</strong> {salon.adresa}</p>
                         <p><strong>Grad:</strong> {salon.grad}</p>
                         <p><strong>Broj telefona:</strong> {salon.brojTelefona}</p>
-                        <p><strong>Prosecna ocena:</strong> {prosecnaOcena}</p>
+                        <p><strong>Prosecna ocena:</strong> {prosecnaOcena.toFixed(2)}</p>
                     </div>
                 </div>
                 <div className="salon-info__items">
