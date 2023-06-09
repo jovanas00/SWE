@@ -221,7 +221,7 @@ public class KorisnikController : ControllerBase
     [Route("Login/{korisnicko_ime}/{lozinka}")]
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> Login(string korisnicko_ime, string lozinka)
+    public IActionResult Login(string korisnicko_ime, string lozinka)
     {
         try
         {
@@ -232,7 +232,6 @@ public class KorisnikController : ControllerBase
                 var response = new { Token = token }; // token and user information
                 return Ok(response);
             }
-
             else
             {
                 return null;
@@ -410,7 +409,8 @@ public class KorisnikController : ControllerBase
                         rezultat.Add(obj);
                     }
                 }
-                else {
+                else
+                {
                     var obj = new
                     {
                         k.ID,
@@ -433,6 +433,6 @@ public class KorisnikController : ControllerBase
     }
 
 
-    
+
 
 }
