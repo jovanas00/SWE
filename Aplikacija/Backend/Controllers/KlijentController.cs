@@ -418,14 +418,14 @@ public class KlijentController : ControllerBase
         return k;
     }
 
-    [Route("VratiSliku/{korisnicko_ime}")]
-    [HttpGet]
-    public async Task<ActionResult<object>> VratiSliku(string korisnicko_ime)
-    {
-        Korisnik kor = Context.Korisnici.Where(k => k.korisnickoIme == korisnicko_ime).FirstOrDefault();
-        Klijent kl = await Context.Klijenti.Include(k => k.Korisnik).Where(k => k.Korisnik.ID == kor.ID).FirstOrDefaultAsync();
-        return kl.Korisnik.slika;
-    }
+    // [Route("VratiSliku/{korisnicko_ime}")]
+    // [HttpGet]
+    // public async Task<ActionResult<object>> VratiSliku(string korisnicko_ime)
+    // {
+    //     Korisnik kor = Context.Korisnici.Where(k => k.korisnickoIme == korisnicko_ime).FirstOrDefault();
+    //     Klijent kl = await Context.Klijenti.Include(k => k.Korisnik).Where(k => k.Korisnik.ID == kor.ID).FirstOrDefaultAsync();
+    //     return kl.Korisnik.slika;
+    // }
 
     [AllowAnonymous]
     [HttpGet("PrikaziNarudzbineISalone/{korisnickoIme}")]
