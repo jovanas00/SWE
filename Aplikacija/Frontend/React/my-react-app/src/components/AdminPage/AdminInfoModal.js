@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./AdminPage.css"
 import api from "../Auth/Interceptor";
 import { vratiKorisnickoIme } from '../Auth/VratIKorisnickoIme';
+import { obavestenja } from "../UI/Obavestenja";
 
 const AdminInfoModal = ({ adminInfo, onClose }) => {
     const [ime, setIme] = useState();
@@ -9,7 +10,7 @@ const AdminInfoModal = ({ adminInfo, onClose }) => {
 
     const handleChangeAdminInfo = async () => {
         if (ime === "" || prezime === "") {
-            alert("Niste popunili sva polja!");
+            obavestenja("Niste popunili sva polja!", "danger");
             return;
         }
 

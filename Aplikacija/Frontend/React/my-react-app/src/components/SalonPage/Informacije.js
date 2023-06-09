@@ -52,7 +52,7 @@ const Informacije = () => {
             setShowModal(false);
             setCurrentPassword('');
             setNewPassword('');
-            // alert(response.data); // Display the response status code
+            // obavestenja(response.data, "success");
             obavestenja("Uspešno ste promenili lozinku!", "success");
         } catch (error) {
             console.error('Error changing password:', error);
@@ -82,7 +82,7 @@ const Informacije = () => {
             setGrad("");
             setBrojTelefona("");
             setSalon(response.data);
-            obavestenja("Uspešno ste izmenili informacije!", "success"); // Display success message
+            obavestenja("Uspešno ste izmenili informacije!", "success");
             window.location.reload()
         } catch (error) {
             console.error("Error changing user info:", error);

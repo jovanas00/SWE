@@ -78,7 +78,7 @@ const Proizvodi = ({ id }) => {
                 ucitajProizvode();
             })
             .catch((error) => {
-                window.alert('Greška prilikom brisanja proizvoda:', error);
+                console.log('Greška prilikom brisanja proizvoda:', error);
                 if (proizvodId == null)
                     obavestenja("Proizvod ne postoji!", "danger");
             });
@@ -123,8 +123,6 @@ const Proizvodi = ({ id }) => {
     const handleDodajKorpa = async (proizvodID) => {
         try {
             const response = await api.put(`http://localhost:5169/Klijent/DodajUKorpu/${proizvodID}`, {});
-            //console.log(response.data); // Response message
-            //alert(response.data);
             obavestenja(response.data,'success')
             //obavestenja("Uspešno ste dodali proizvod u korpu! Možete pregledati svoju korpu i naručiti proizvode.", "success");
         } catch (error) {

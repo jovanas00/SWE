@@ -41,7 +41,7 @@ const Zahtev = ({ id }) => {
             );
 
             // Handle the response
-            alert(response.data);
+            obavestenja(response.data, "success");
 
             // Reset form inputs
             setImeLjubimca('');
