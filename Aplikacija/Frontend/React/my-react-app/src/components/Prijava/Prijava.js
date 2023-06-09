@@ -8,6 +8,7 @@ const Prijava = () => {
       <Header />
       <div style={{ textAlign: "center", marginTop: "1em" }}>
         <h2>Stranica za prijavu</h2>
+        <h2>Prijavi se</h2>
       </div>
       <Footer />
     </div>
