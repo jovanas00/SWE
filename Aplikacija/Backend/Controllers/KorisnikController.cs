@@ -87,7 +87,6 @@ public class KorisnikController : ControllerBase
     //[AllowAnonymous]
     public async Task<ActionResult> RegistracijaKlijent(string korisnicko_ime, string lozinka, string email, string ime, string prezime, string adresa, string broj, string grad)
     {
-        //dodatna ogranicenja...
         if (string.IsNullOrWhiteSpace(korisnicko_ime))
             return BadRequest("Korisnicko ime nije validno");
         if (string.IsNullOrWhiteSpace(lozinka))
@@ -105,8 +104,6 @@ public class KorisnikController : ControllerBase
 
         if (await Context.Korisnici.Where(p => p.korisnickoIme == korisnicko_ime).FirstOrDefaultAsync() != null) return BadRequest("Korisnicko ime zauzeto");
         if (await Context.Korisnici.Where(p => p.email == email).FirstOrDefaultAsync() != null) return BadRequest("Email je zauzet");
-
-        lozinka = lozinka.Replace("01abfc750a0c942167651c40d088531d", "#");
 
         byte[] salt = new byte[128 / 8];
         using (var rngCsp = new RNGCryptoServiceProvider())
@@ -126,7 +123,7 @@ public class KorisnikController : ControllerBase
         {
             Korisnik k = new Korisnik
             {
-                korisnickoIme = korisnicko_ime.Replace("01abfc750a0c942167651c40d088531d", "#"),
+                korisnickoIme = korisnicko_ime,
                 sifra = hashed,
                 email = email,
                 tip = "Klijent",
@@ -134,8 +131,8 @@ public class KorisnikController : ControllerBase
             };
             Klijent kl = new Klijent
             {
-                ime = ime.Replace("01abfc750a0c942167651c40d088531d", ""),
-                prezime = prezime.Replace("01abfc750a0c942167651c40d088531d", ""),
+                ime = ime,
+                prezime = prezime,
                 adresa = adresa,
                 grad = grad,
                 brojTelefona = broj,
@@ -178,8 +175,6 @@ public class KorisnikController : ControllerBase
         if (await Context.Korisnici.Where(p => p.korisnickoIme == korisnicko_ime).FirstOrDefaultAsync() != null) return BadRequest("Korisnicko ime zauzeto");
         if (await Context.Korisnici.Where(p => p.email == email).FirstOrDefaultAsync() != null) return BadRequest("Email je zauzet");
 
-        lozinka = lozinka.Replace("01abfc750a0c942167651c40d088531d", "#");
-
         byte[] salt = new byte[128 / 8];
         using (var rngCsp = new RNGCryptoServiceProvider())
         {
@@ -198,7 +193,7 @@ public class KorisnikController : ControllerBase
         {
             Korisnik k = new Korisnik
             {
-                korisnickoIme = korisnicko_ime.Replace("01abfc750a0c942167651c40d088531d", "#"),
+                korisnickoIme = korisnicko_ime,
                 sifra = hashed,
                 email = email,
                 tip = "Salon",
@@ -230,7 +225,6 @@ public class KorisnikController : ControllerBase
     {
         try
         {
-            lozinka = lozinka.Replace("01abfc750a0c942167651c40d088531d", "#");
             Korisnik korisnik = Authenticate(korisnicko_ime, lozinka);
             if (korisnik != null)
             {
@@ -327,7 +321,6 @@ public class KorisnikController : ControllerBase
 
             if (file.Length > 0)
             {
-                // var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
                 var uniqueFileName = GetUniqueFileName(file.FileName);
                 var fullPath = Path.Combine(pathToSave, uniqueFileName);
                 var dbPath = Path.Combine(folderName, uniqueFileName);
@@ -356,7 +349,6 @@ public class KorisnikController : ControllerBase
 
     private string GetUniqueFileName(string fileName)
     {
-        // Generate a unique file name using timestamp and random string
         var timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
         var randomString = Path.GetRandomFileName().Replace(".", "");
         var extension = Path.GetExtension(fileName);
@@ -385,8 +377,6 @@ public class KorisnikController : ControllerBase
                             k.ID,
                             k.email,
                             k.korisnickoIme,
-                            //k.sifra,
-                            //k.salt_value,
                             k.tip,
                             k.slika,
                             klijent.ime,
@@ -409,8 +399,6 @@ public class KorisnikController : ControllerBase
                             k.ID,
                             k.email,
                             k.korisnickoIme,
-                            //k.sifra,
-                            //k.salt_value,
                             k.tip,
                             k.slika,
                             salon.naziv,
@@ -428,8 +416,6 @@ public class KorisnikController : ControllerBase
                         k.ID,
                         k.email,
                         k.korisnickoIme,
-                        //k.sifra,
-                        //k.salt_value,
                         k.tip,
                         k.slika
                     };

@@ -4,7 +4,6 @@ namespace BackEnd.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-//[Authorize(Roles ="Salon")]
 public class UslugaController : ControllerBase
 {
     public PPContext Context { get; set; }

@@ -33,7 +33,7 @@ public class ProizvodController : ControllerBase
                 cena = cena,
                 dostupnost = dostupnost,
                 Kategorija = k,
-                Salon = s//??
+                Salon = s
             };
             Context.Proizvodi.Add(p);
             await Context.SaveChangesAsync();
