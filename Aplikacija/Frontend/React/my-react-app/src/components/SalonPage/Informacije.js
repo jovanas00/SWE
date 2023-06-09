@@ -53,7 +53,7 @@ const Informacije = () => {
             setCurrentPassword('');
             setNewPassword('');
             // obavestenja(response.data, "success");
-            obavestenja("Uspešno ste promenili lozinku!", "success");
+            obavestenja(response.data, "success");
         } catch (error) {
             console.error('Error changing password:', error);
             setError('An error occurred while changing the password. Please try again.');

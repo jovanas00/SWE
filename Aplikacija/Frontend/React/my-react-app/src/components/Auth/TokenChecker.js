@@ -1,5 +1,3 @@
-// TokenChecker.js
-
 import { useRef, useEffect } from 'react';
 import Cookies from 'js-cookie';
 
@@ -24,14 +22,14 @@ const TokenChecker = () => {
   useEffect(() => {
     checkToken();
 
-    const interval = setInterval(checkToken, 1800*1000); // Adjust the interval as needed
+    const interval = setInterval(checkToken, 1800*1000); // Interval 30 min provera
 
     return () => {
       clearInterval(interval);
     };
   }, []);
 
-  return null; // Or you can return any JSX if needed
+  return null;
 };
 
 export default TokenChecker;

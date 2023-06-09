@@ -79,9 +79,8 @@ const Zahtev = ({ id }) => {
                     <option value="">-- Odaberite zivotinju --</option>
                     <option value="Pas">Pas</option>
                     <option value="Macka">Macka</option>
-                    <option value="Kornjaca">Kornjaca</option>
-                    <option value="Hrcak">Hrcak</option>
-                    <option value="Kapibara">Kapibara</option>
+                    <option value="Zec">Zec</option>
+                    <option value="Papagaj">Papagaj</option>
                 </select>
             </label>
 
@@ -140,8 +139,8 @@ const Zahtev = ({ id }) => {
 
 // Function to generate date options
 const generateDateOptions = () => {
-    const startDate = new Date('2023-05-12');
-    const endDate = new Date('2023-05-19');
+    const startDate = new Date('2023-06-12');
+    const endDate = new Date('2023-06-19');
     const options = [];
 
     while (startDate <= endDate) {

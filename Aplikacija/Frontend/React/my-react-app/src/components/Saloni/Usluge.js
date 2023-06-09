@@ -30,7 +30,7 @@ const Usluge = ({ id }) => {
         api.post(`/Usluga/DodajUslugu/${novaUsluga.naziv}/${novaUsluga.cena}/${novaUsluga.opis}/${novaUsluga.dostupnost}/${id}`)
             .then((response) => {
                 // obavestenja(response.data, "success")
-                obavestenja('Usluga uspešno dodata.', 'success');
+                obavestenja(response.data, 'success');
                 ucitajUsluge();
             })
             .catch((error) => {
@@ -87,7 +87,7 @@ const Usluge = ({ id }) => {
                 .put(putanjaSaParametrima)
                 .then((response) => {
                     // obavestenja(response.data, "success")
-                    obavestenja('Usluga je uspešno izmenjena!', 'success');
+                    obavestenja(response.data, 'success');
                     ucitajUsluge();
                     setTrenutnoIzmenjenRed(null);
                     setIzmenjeneVrednosti({});

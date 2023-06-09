@@ -11,6 +11,10 @@ const ChangePasswordModal = ({ korisnicko_ime, showModal, setShowModal }) => {
 
   const handlePasswordChange = async () => {
     try {
+      if (currentPassword === "" || newPassword == "") {
+        obavestenja("Niste popunili sva polja", "danger")
+        return;
+      }
       const response = await api.put(`/Korisnik/IzmeniLozinku/${korisnicko_ime}/${currentPassword}/${newPassword}`, {});
       setShowModal(false);
       setCurrentPassword("");
