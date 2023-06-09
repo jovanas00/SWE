@@ -1,10 +1,8 @@
 import React from 'react';
-import { isKlijent } from '../Auth/AuthKlijent';
 import { Navigate } from 'react-router-dom';
 import { vratiRole } from '../Auth/VratiRole';
 import Header from '../Pocetna/Header';
 import Body from '../Saloni/Body';
-import SalonStranica from '../Saloni/SalonStranica';
 import TokenChecker from '../Auth/TokenChecker';
 import { isAdmin } from '../Auth/AuthAdmin';
 

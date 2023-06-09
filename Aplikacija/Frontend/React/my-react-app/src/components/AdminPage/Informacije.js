@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import icon from "../../images/user.webp";
 import { vratiKorisnickoIme } from "../Auth/VratIKorisnickoIme";
-import { useNavigate } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import UploadFile from "../KlijentPage/Upload";
 import api from "../Auth/Interceptor";
@@ -11,7 +10,6 @@ import './Informacije.css';
 
 const Informacije = () => {
   const [adminInfo, setAdminInfo] = useState(null);
-  const korisnicko_ime = vratiKorisnickoIme();
   const [showModal, setShowModal] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [isAdminInfoLoaded, setIsAdminInfoLoaded] = useState(false);
@@ -34,9 +32,7 @@ const Informacije = () => {
     );
   };
 
-  const navigate = useNavigate();
 
-  // Funkcija za dohvatanje informacija o adminu
   const fetchAdminInfo = async () => {
     try {
       const response = await api.get('/Admin/SviAdmini');

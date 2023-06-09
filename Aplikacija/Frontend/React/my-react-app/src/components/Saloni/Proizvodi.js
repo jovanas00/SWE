@@ -3,7 +3,6 @@ import axios from "axios";
 import Card from "../UI/Card";
 import './Proizvodi.css';
 import { vratiRole } from "../Auth/VratiRole";
-import Cookies from "js-cookie"
 import { BsCart } from 'react-icons/bs';
 import FormDodajProizvod from "../SalonPage/FormDodajProizvod";
 import FormIzmeniProizvod from "../SalonPage/FormIzmeniProizvod";
@@ -18,13 +17,6 @@ const Proizvodi = ({ id }) => {
     const [proizvodID, setProizvodID] = useState();
     const [kategorije, setKategorije] = useState([]);
     const [odabranaKategorija, setOdabranaKategorija] = useState("");
-
-    const token = Cookies.get('token');
-    const config = {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    };
 
     const ucitajProizvode = () => {
         axios.get(`http://localhost:5169/Proizvod/VratiProizvodeSalona/${id}`)

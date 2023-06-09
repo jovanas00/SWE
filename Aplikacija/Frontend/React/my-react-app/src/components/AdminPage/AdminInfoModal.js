@@ -5,8 +5,8 @@ import { vratiKorisnickoIme } from '../Auth/VratIKorisnickoIme';
 import { obavestenja } from "../UI/Obavestenja";
 
 const AdminInfoModal = ({ adminInfo, onClose }) => {
-    const [ime, setIme] = useState();
-    const [prezime, setPrezime] = useState();
+    const [ime, setIme] = useState('');
+    const [prezime, setPrezime] = useState('');
 
     const handleChangeAdminInfo = async () => {
         if (ime === "" || prezime === "") {
@@ -19,13 +19,11 @@ const AdminInfoModal = ({ adminInfo, onClose }) => {
             const response = await api.put(
                 `/Admin/IzmeniAdmina/${korisnickoIme}/${ime}/${prezime}`
             );
-            const adminInfo = response.data;
-            console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
+            console.log(response.data);
             onClose();
             window.location.reload();
         } catch (error) {
             console.error("Error changing user info:", error);
-            // Handle the error
         }
     };
     

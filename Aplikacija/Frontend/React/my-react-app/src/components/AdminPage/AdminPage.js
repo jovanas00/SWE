@@ -1,13 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../Pocetna/Header';
 import './AdminPage.css';
 import { isAdmin } from '../Auth/AuthAdmin';
 import { vratiRole } from '../Auth/VratiRole';
-import { vratiKorisnickoIme } from '../Auth/VratIKorisnickoIme';
 import { Navigate } from 'react-router-dom';
-import { Card } from "react-bootstrap";
 import icon from "../../images/user.webp";
-import Cookies from 'js-cookie';
 import TokenChecker from '../Auth/TokenChecker';
 import api from '../Auth/Interceptor';
 import { obavestenja } from '../UI/Obavestenja';
@@ -24,17 +21,8 @@ const AdminPage = () => {
   const [unosKorisnickogImena, setUnosKorisnickogImena] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [showInfoModal, setShowInfoModal] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-
-
-  // Autorizacija
-  const token = Cookies.get('token');
-  const config = {
-    headers: { Authorization: `Bearer ${token}` }
-  };
 
   const handleSectionChange = (section) => {
     setSelectedSection(section);
@@ -57,72 +45,63 @@ const AdminPage = () => {
     setSelectedUser(user);
     setModalOpen(true);
   };
-
-  //Funkcija za prikaz svih kategorija  
+ 
   const fetchCategories = async () => {
     try {
       const response = await api.get('/Admin/SveKategorije');
-      setCategories(response.data); // Postavljanje podataka o kategorijama u state
+      setCategories(response.data);
     } catch (error) {
       handleError();
     }
   };
 
-  // Funkcija za dodavanje kategorije 
   const addCategory = async (naziv) => {
     try {
       const response = await api.post(`/Admin/DodajKategoriju/${naziv}`);
-      fetchCategories(); // osvežava listu kategorija u prozoru
-      obavestenja("Uspešno dodata kategorija!", "success");
+      fetchCategories();
+      obavestenja(response.data, "success");
     } catch (error) {
       obavestenja("Greška pri dodavanju kategorije!", "danger");
     }
   };
 
-  // Funkcija za brisanje kategorije 
   const deleteCategory = async (id_kategorija) => {
     try {
       const response = await api.post(`/Admin/ObrisiKategoriju/${id_kategorija}`);
-      fetchCategories(); // osvežava listu kategorija u prozoru
-      obavestenja("Uspešno obrisana kategorija!", "success");
+      fetchCategories();
+      obavestenja(response.data, "success");
     } catch (error) {
       obavestenja("Greška pri brisanju kategorije!", "danger");
     }
   };
 
-  // Funkcija za brisanje korisnika
   const deleteUser = async () => {
     try {
       const response = await api.delete(`/Admin/ObrisiKorisnika/${unosKorisnickogImena}`);
-      console.log(response.data); // Ovde možete manipulisati odgovorom sa servera
+      console.log(response.data); 
 
-      if (response.data == true) {
+      if (response.data === true) {
         obavestenja("Korisnik je uspešno obrisan.", "success");
       } else {
         obavestenja("Korisnik nije pronađen. Navedite pravilno korisničko ime.", "danger");
       }
-      fetchUsers(); // Ažuriranje liste korisnika nakon brisanja
+      fetchUsers();
     } catch (error) {
       obavestenja("Greška prilikom brisanja korisnika, proverite da li ste uneli korisničko ime!", "danger");
     }
   };
 
-
-  // Funkcija za prikaz svih korisnika  
   const fetchUsers = async () => {
     try {
       const response = await api.get('/Korisnik/PrikaziKorisnike');
-      setUsers(response.data); // Postavljanje podataka o korisnicima u state
+      setUsers(response.data);
     } catch (error) {
-      //handleError();
     }
   };
 
   useEffect(() => {
     if (isAdmin()) {
-      // Pozivamo funkciju za dohvatanje korisnika pri prvom renderovanju komponente
       fetchUsers();
-      // Dohvatamo informacije o adminu
       fetchCategories();
     }
   }, []);
@@ -135,7 +114,6 @@ const AdminPage = () => {
         <Informacije />
         <div className="admin-content">
           <aside className="admin-sidebar">
-            {/* Sidebar sa navigacijom */}
             <ul>
               <li onClick={() => handleSectionChange('user-management')}>Upravljanje korisnicima</li>
               <li onClick={() => handleSectionChange('category-management')}>Upravljanje kategorijama</li>
@@ -146,10 +124,8 @@ const AdminPage = () => {
 
             {selectedSection === 'user-management' && (
               <div>
-                {/* Sadržaj za upravljanje korisnicima */}
                 <h2>Upravljanje korisnicima</h2>
                 <h5>Brisanje korisnika:</h5>
-                {/* Dodajte sadržaj za upravljanje korisnicima */}
                 <div className="input-container">
                   <input
                     type="text"
@@ -162,7 +138,6 @@ const AdminPage = () => {
                     Obriši
                   </button>
                 </div>
-                {/* Padajuća lista za filtriranje */}
                 <div className="filter-dropdown">
                   <label htmlFor="tip-filter">Filtriraj po tipu: </label>
                   <select id="tip-filter" value={selectedTip} onChange={(e) => setSelectedTip(e.target.value)}>
@@ -171,7 +146,6 @@ const AdminPage = () => {
                     <option value="Salon">Salon</option>
                   </select>
                 </div>
-                {/* Prikaz podataka o korisnicima */}
                 <div className="user-list">
                   <div className="user-container">
                     {users
@@ -252,10 +226,8 @@ const AdminPage = () => {
 
             {selectedSection === 'category-management' && (
               <div>
-                {/* Sadržaj za upravljanje kategorijama */}
                 <h2>Upravljanje kategorijama</h2>
                 <h5>Dodaj kategoriju:</h5>
-                {/* Dodajte sadržaj za upravljanje kategorijama */}
                 <div className="input-container">
                   <input
                     type="text"
@@ -266,7 +238,7 @@ const AdminPage = () => {
                   <button
                     onClick={() => {
                       addCategory(categoryName);
-                      setCategoryName(""); // Očisti polje za unos
+                      setCategoryName("");
                     }}
                   >
                     Dodaj
@@ -283,7 +255,7 @@ const AdminPage = () => {
                   <button
                     onClick={() => {
                       deleteCategory(categoryId);
-                      setCategoryId(""); // Očisti polje za unos
+                      setCategoryId("");
                     }}
                   >
                     Obriši

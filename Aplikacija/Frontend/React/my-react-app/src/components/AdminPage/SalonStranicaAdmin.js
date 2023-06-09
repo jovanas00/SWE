@@ -17,8 +17,8 @@ const SalonStranicaAdmin = () => {
     }
     else {
         const role = vratiRole();
-        if (role === "Admin")
-            return <Navigate to={{ pathname: '/admin' }} />
+        if (role === "Klijent")
+            return <Navigate to={{ pathname: '/klijent' }} />
         if (role === "Salon")
             return <Navigate to={{ pathname: '/salon' }} />
         return <Navigate to={{ pathname: '/prijava' }} />

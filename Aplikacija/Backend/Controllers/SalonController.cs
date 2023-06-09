@@ -268,7 +268,7 @@ public class SalonController : ControllerBase
             ZahtevID = z.ID,
             ImeLjubimca = z.imeLjubimca,
             Zivotinja = z.zivotinja,
-            // ime_usluge = z.ime_usluge,
+            ime_usluge = z.ime_usluge,
             Cena = z.cena,
             DatumVreme = z.datumVreme,
             Status = z.status,
