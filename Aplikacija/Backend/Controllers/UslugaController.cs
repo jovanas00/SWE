@@ -90,7 +90,7 @@ public class UslugaController : ControllerBase
                 usluga.opis = opis;
             usluga.dostupnost = dostupnost;
             await Context.SaveChangesAsync();
-            return Ok(usluga);
+            return Ok("Uspesno izmenjena usluga!");
         }
         catch(Exception e)
         {

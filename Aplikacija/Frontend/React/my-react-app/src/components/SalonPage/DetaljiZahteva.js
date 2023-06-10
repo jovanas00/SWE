@@ -15,6 +15,11 @@ const DetaljiZahteva = ({ zahtev, ucitajZahteve }) => {
 
     const obradiZahtev = async () => {
         try {
+            if (status === "" || komentarSalona === "")
+            {
+                obavestenja("Niste uneli sva polja!", "danger");
+                return;
+            }
             const response = await api.put(
                 `/Salon/ObradiZahtev/${zahtev.zahtevID}/${status}/${komentarSalona}`
             );
@@ -23,8 +28,6 @@ const DetaljiZahteva = ({ zahtev, ucitajZahteve }) => {
             setObradaOpen(false);
         } catch (error) {
             console.error(error);
-            if (status === "" || komentarSalona === "")
-                obavestenja("Niste uneli sva polja!", "danger");
             if (zahtev.status === "Obrađen")
                 obavestenja("Zahtev je već obrađen!", "danger");
         }

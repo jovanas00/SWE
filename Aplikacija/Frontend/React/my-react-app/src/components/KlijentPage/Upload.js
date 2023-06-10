@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { vratiKorisnickoIme } from '../Auth/VratIKorisnickoIme';
-import Cookies from 'js-cookie';
 import api from '../Auth/Interceptor';
 import { obavestenja } from '../UI/Obavestenja';
 
@@ -28,10 +27,10 @@ const UploadFile = () => {
             .then((data) => {
                 console.log(data);
                 obavestenja('Uspesno promenjena slika','success')
-                window.location.reload(); // Osvežavanje stranice
+                window.location.reload();
             })
             .catch((error) => {
-                // Handle any errors
+                console.log(error.data)
             });
     };
 

@@ -30,7 +30,7 @@ const SalonRegistracija = () => {
       .then(response => {
         console.log(response);
         obavestenja("Uspešno ste se registrovali!", "success");
-        resetFields(); // Poziv funkcije za resetovanje polja
+        resetFields();
       })
       .catch(error => {
         console.log(error);

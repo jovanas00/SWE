@@ -12,21 +12,20 @@ const FormDodajUslugu = ({ dodajUslugu }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Kreiranje objekta usluge sa unetim podacima
         const novaUsluga = {
             naziv,
             cena: parseFloat(cena),
             opis,
             dostupnost
         };
+
         if (!naziv || !cena || !opis) {
             obavestenja('Molimo popunite sva polja', 'danger');
             return;
         }
-        // Prosleđivanje nove usluge funkciji za dodavanje
+        
         dodajUslugu(novaUsluga);
 
-        // Resetovanje polja forme nakon slanja
         setNaziv('');
         setCena('');
         setOpis('');

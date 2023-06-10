@@ -15,7 +15,6 @@ import { useState } from 'react';
 import AdminPage from './components/AdminPage/AdminPage';
 import SalonPage from './components/SalonPage/SalonPage';
 import SalonUpravljanje from './components/SalonPage/SalonUpravljanje';
-import KlijentPage from './components/KlijentPage/KlijentPage';
 import Profil from './components/KlijentPage/Profil';
 import SaloniKlijent from './components/KlijentPage/SaloniKlijent';
 import SalonStranicaKlijent from './components/KlijentPage/SalonStranicaKlijent';

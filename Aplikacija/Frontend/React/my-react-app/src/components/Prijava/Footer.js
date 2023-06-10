@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Footer.css';
 import axios from 'axios';
-import jwt_decode from 'jwt-decode';
 import Cookies from 'js-cookie';
 import { vratiRole } from '../Auth/VratiRole';
 import { obavestenja } from '../UI/Obavestenja';
@@ -27,10 +26,10 @@ const Footer = () => {
       .get(`http://localhost:5169/Korisnik/Login/${prijava.korisnickoIme}/${prijava.lozinka}`)
       .then(response => {
         const { token } = response.data;
-        console.log(token);
-        Cookies.set('token', token, { expires: 3600 / (24 * 60 * 60) });
+        //console.log(token);
+        Cookies.set('token', token, { expires: 3600 / (24 * 60 * 60) });//1h
         const userRole = vratiRole();
-        console.log(userRole);
+        //console.log(userRole);
         if (userRole === 'Klijent') {
           window.location.href = '/klijent';
         } else if (userRole === 'Salon') {
@@ -38,7 +37,7 @@ const Footer = () => {
         } else if (userRole === 'Admin') {
           window.location.href = '/admin';
         } else {
-          console.log('Ne znam koji je tip korisnika!');
+          console.log('Nepoznat tip!');
         }
       })
       .catch(error => {

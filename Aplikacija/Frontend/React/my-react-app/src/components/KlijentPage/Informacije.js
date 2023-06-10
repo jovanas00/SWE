@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import icon from "../../images/user.webp";
-import axios from "axios";
 import Cookies from "js-cookie";
 import { vratiKorisnickoIme } from "../Auth/VratIKorisnickoIme";
 import { useNavigate } from "react-router-dom";
@@ -47,11 +46,6 @@ const Informacije = () => {
 
   const handleCancelUserInfoChange = () => {
     setShowInfoModal(false);
-  };
-
-  const handlePictureChangeSuccess = () => {
-    // Handle the successful picture change, e.g., refetch user info
-    fetchUserInfo();
   };
 
   return (

@@ -15,7 +15,6 @@ const Zahtev = ({ id }) => {
         fetchUslugaList(id);
     }, [id]);
 
-    // Fetch usluga list from server
     const fetchUslugaList = async (id) => {
         try {
             const response = await api.get(`/Usluga/VratiUslugeSalona/${id}`);
@@ -26,7 +25,6 @@ const Zahtev = ({ id }) => {
         }
     };
 
-    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!imeLjubimca || !zivotinja || !selectedUslugaId || !selectedDate || !selectedTime) {
@@ -40,10 +38,8 @@ const Zahtev = ({ id }) => {
                 null
             );
 
-            // Handle the response
             obavestenja(response.data, "success");
 
-            // Reset form inputs
             setImeLjubimca('');
             setSelectedUslugaId('');
             setZivotinja('');
@@ -53,7 +49,6 @@ const Zahtev = ({ id }) => {
             console.error('Error submitting the form:', error);
             if (error.response) {
                 console.log('Error response:', error.response.data);
-                // obavestenja(error.response.data,'danger');
             }
         }
     };
@@ -107,7 +102,7 @@ const Zahtev = ({ id }) => {
                     onChange={(e) => setSelectedDate(e.target.value)}
                 >
                     <option value="">-- Odaberite datum --</option>
-                    {/* Generate date options */}
+                    {/* Datum opcije */}
                     {generateDateOptions().map((date) => (
                         <option value={date} key={date}>
                             {date}
@@ -123,7 +118,7 @@ const Zahtev = ({ id }) => {
                     onChange={(e) => setSelectedTime(e.target.value)}
                 >
                     <option value="">-- Odaberite vreme --</option>
-                    {/* Generate time options */}
+                    {/* Vreme opcije */}
                     {generateTimeOptions().map((time) => (
                         <option value={time} key={time}>
                             {time}
@@ -137,7 +132,6 @@ const Zahtev = ({ id }) => {
     );
 };
 
-// Function to generate date options
 const generateDateOptions = () => {
     const startDate = new Date('2023-06-12');
     const endDate = new Date('2023-06-19');
@@ -156,7 +150,6 @@ const generateDateOptions = () => {
     return options;
 };
 
-// Function to generate time options
 const generateTimeOptions = () => {
     const startTime = new Date('1970-01-01T09:00:00');
     const endTime = new Date('1970-01-01T15:00:00');

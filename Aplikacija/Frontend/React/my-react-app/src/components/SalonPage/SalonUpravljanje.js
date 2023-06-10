@@ -17,7 +17,6 @@ import api from '../Auth/Interceptor';
 
 const SalonUpravljanje = () => {
     const korisnicko_ime = vratiKorisnickoIme();
-    const [salon, setSalon] = useState(null);
     const [salonId, setSalonId] = useState(null);
 
     const [selectedSection, setSelectedSection] = useState('products-management');

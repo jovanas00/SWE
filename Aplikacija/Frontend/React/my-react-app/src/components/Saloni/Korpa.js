@@ -34,7 +34,7 @@ const Korpa = ({ id }) => {
         const VratiProizvodeIzKorpe = async (korpaId) => {
             try {
                 const response = await api.get(`/Klijent/VratiProizvodeIzKorpe/${korpaId}`);
-                console.log(response.data); // Log the response data
+                //console.log(response.data); // Log the response data
                 setProizvodi(response.data);
                 setShowNaruciButton(true);
             } catch (error) {
@@ -46,7 +46,6 @@ const Korpa = ({ id }) => {
     const handleDeleteClick = async (proizvodID) => {
         try {
             const response = await api.delete(`/Klijent/IzbaciIzKorpe/${proizvodID}/${korpaId}`);
-            //obavestenja('Proizvod je uspešno izbačen iz korpe!', 'success');
             obavestenja(response.data,'success');
             setProizvodi(prevProizvodi => prevProizvodi.filter(proizvod => proizvod.proizvodID !== proizvodID));
         } catch (error) {
@@ -59,10 +58,8 @@ const Korpa = ({ id }) => {
             const response = await api.post(`/Klijent/Naruci/${korpaId}/${id}`, null);
             obavestenja(response.data,'success');
             setProizvodi([]);
-            // Optionally, you can perform any necessary actions after placing the order
         } catch (error) {
             console.error('Error placing the order:', error);
-            // Handle error case if the order could not be placed
         }
     };
     return (
@@ -76,7 +73,7 @@ const Korpa = ({ id }) => {
                     <button className="obrisi-button" onClick={() => handleDeleteClick(proizvod.proizvodID)}>Obrisi</button>
                 </div>
             ))}
-            {/* Show "Nemate ništa u korpi" if there are no proizvodi in the cart */}
+            {/*"Nemate ništa u korpi"*/}
             {proizvodi.length === 0 && <p className="empty-cart-message">Ovde ce biti prikazani dodati proizvodi kada ih dodate u korpu!</p>}
             {/* Naruci button */}
             {proizvodi.length > 0 && (

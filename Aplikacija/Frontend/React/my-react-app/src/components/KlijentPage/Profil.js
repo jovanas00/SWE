@@ -3,16 +3,13 @@ import { isKlijent } from '../Auth/AuthKlijent';
 import { Navigate } from 'react-router-dom';
 import { vratiRole } from '../Auth/VratiRole';
 import { vratiKorisnickoIme } from '../Auth/VratIKorisnickoIme';
-import axios from 'axios';
 import iconP from "../../images/nemaSlike.gif";
 import Header from '../Pocetna/Header';
 import Informacije from './Informacije';
 import './Profil.css';
-import Cookies from 'js-cookie';
 import TokenChecker from '../Auth/TokenChecker';
 import api from '../Auth/Interceptor';
 import { formatirajDatum } from "../UI/FormatirajDatum";
-import { Card } from "react-bootstrap";
 import { obavestenja } from '../UI/Obavestenja';
 
 
@@ -20,29 +17,19 @@ const Profil = () => {
   const [narudzbine, setNarudzbine] = useState([]);
   const [prikazNarudzbina, setPrikazNarudzbina] = useState(true);
   const [zahtevi, setZahtevi] = useState([]);
-  const [prikazProizvoda, setPrikazProizvoda] = useState(false);
   const [prikaziModal, setPrikaziModal] = useState(false);
   const [modalProizvodi, setModalProizvodi] = useState([]);
-
-
-  // Autorizacija
-  const token = Cookies.get('token');
-  const config = {
-    headers: { Authorization: `Bearer ${token}` }
-  };
 
   const korisnickoIme = vratiKorisnickoIme();
 
   const handleDeleteZahtev = async (idZahteva) => {
     try {
       await api.delete(`/Klijent/ObrisiZahtev/${idZahteva}`);
-      // Zahtev je uspešno obrisan, možete ažurirati listu zahteva ako je potrebno
       obavestenja('Uspešno ste obrisali zahtev!','success');
       const updatedZahtevi = zahtevi.filter((zahtev) => zahtev.id !== idZahteva);
       setZahtevi(updatedZahtevi);
     } catch (error) {
       console.error(error);
-      // Došlo je do greške prilikom brisanja zahteva, možete prikazati odgovarajuću poruku ili preduzeti druge akcije
     }
   };
 
@@ -50,7 +37,7 @@ const Profil = () => {
     try {
       const response = await api.get(`/Klijent/VratiProizvodeNarudzbina/${idNarudzbine}`);
       const proizvodiNarudzbine = response.data;
-      setModalProizvodi(proizvodiNarudzbine); // Ažuriranje modalProizvodi stanja
+      setModalProizvodi(proizvodiNarudzbine);
     } catch (error) {
       console.error(error);
     }
@@ -143,7 +130,6 @@ const Profil = () => {
                       {prikaziModal && (
                         <div className="modal">
                           <div className="modal-content">
-                            {/* Ovde dodajte prikaz proizvoda u modalu */}
                               <div className="proizvodi-container">
                           <h5 style={{fontWeight: 'bold', fontStyle: 'italic' }}>Svi proizvodi:</h5>
                           <ul>

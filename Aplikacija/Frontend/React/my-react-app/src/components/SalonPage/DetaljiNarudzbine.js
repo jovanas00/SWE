@@ -31,6 +31,10 @@ const DetaljiNarudzbine = ({ narudzbina, ucitajNarudzbine }) => {
 
     const obradiNarudzbinu = async () => {
         try {
+            if (status === "" || komentarSalona === "") {
+                obavestenja("Niste uneli sva polja!", "danger");
+                return;
+            }
             const response = await api.put(
                 `/Salon/ObradiNarudzbinu/${narudzbina.narudzbinaID}/${status}/${komentarSalona}`
             );
@@ -39,8 +43,6 @@ const DetaljiNarudzbine = ({ narudzbina, ucitajNarudzbine }) => {
             setObradaOpen(false);
         } catch (error) {
             console.error(error);
-            if (status === "" || komentarSalona === "")
-                obavestenja("Niste uneli sva polja!", "danger");
             if (narudzbina.status === "Obrađena")
                 obavestenja("Narudžbina je već obrađena!", "danger");
         }
@@ -72,81 +74,79 @@ const DetaljiNarudzbine = ({ narudzbina, ucitajNarudzbine }) => {
     return (
         <>
             <button onClick={openModal} className="customButton">Pogledaj detalje</button>
-                <Modal show={modalOpen} onHide={closeModal}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Detalji narudžbine</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body >
-                        <h5><u><strong>Detalji Kupca:</strong></u></h5>
-                        <p>Ime: {narudzbina.klijent.ime}</p>
-                        <p>Prezime: {narudzbina.klijent.prezime}</p>
-                        <p>Korisničko ime: {narudzbina.korisnickoIme}</p>
-                        <p>Grad: {narudzbina.grad}</p>
-                        <p>Adresa: {narudzbina.adresa}</p>
-                        <p>Broj telefona: {narudzbina.klijent.brojTelefona}</p>
+            <Modal show={modalOpen} onHide={closeModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Detalji narudžbine</Modal.Title>
+                </Modal.Header>
+                <Modal.Body >
+                    <h5><u><strong>Detalji Kupca:</strong></u></h5>
+                    <p>Ime: {narudzbina.klijent.ime}</p>
+                    <p>Prezime: {narudzbina.klijent.prezime}</p>
+                    <p>Korisničko ime: {narudzbina.korisnickoIme}</p>
+                    <p>Grad: {narudzbina.grad}</p>
+                    <p>Adresa: {narudzbina.adresa}</p>
+                    <p>Broj telefona: {narudzbina.klijent.brojTelefona}</p>
 
-                        <h5><u><strong>Proizvodi:</strong></u></h5>
-                        {proizvodi.map((proizvod, index) => (
-                            <div key={proizvod.id}>
-                                <p>{index + 1}. Naziv: {proizvod.nazivProizvoda}</p>
-                                {/*slika*/}
-                                {/* <p>Cena: {proizvod.cena}</p> */}
-                                <p>Količina: {proizvod.kolicina}</p>
-                            </div>
-                        ))}
+                    <h5><u><strong>Proizvodi:</strong></u></h5>
+                    {proizvodi.map((proizvod, index) => (
+                        <div key={proizvod.id}>
+                            <p>{index + 1}. Naziv: {proizvod.nazivProizvoda}</p>
+                            <p>Količina: {proizvod.kolicina}</p>
+                        </div>
+                    ))}
 
-                        <h5><u><strong>Detalji narudžbine:</strong></u></h5>
-                        <p>Status: {narudzbina.status}</p>
-                        <p>Komentar: {narudzbina.komentarSalona}</p>
-                        <p>Ukupna cena: {narudzbina.ukupnaCena}</p>
-                        <p>Datum: {formatirajDatum(narudzbina.datum)}</p>
+                    <h5><u><strong>Detalji narudžbine:</strong></u></h5>
+                    <p>Status: {narudzbina.status}</p>
+                    <p>Komentar: {narudzbina.komentarSalona}</p>
+                    <p>Ukupna cena: {narudzbina.ukupnaCena}</p>
+                    <p>Datum: {formatirajDatum(narudzbina.datum)}</p>
 
-                        {obradaOpen && (
-                            <div>
-                                <h5>Obrada narudžbine</h5>
-                                <label>Status:</label>
-                                <select value={status} onChange={(e) => setStatus(e.target.value)}>
-                                    {statusi.map((option) => (
-                                        <option key={option} value={option}>
-                                            {option}
-                                        </option>
-                                    ))}
-                                </select>
-                                <label>Komentar:</label>
-                                <input
-                                    type="text"
-                                    value={komentarSalona}
-                                    onChange={(e) => setKomentarSalona(e.target.value)}
-                                />
-                            </div>
-                        )}
+                    {obradaOpen && (
+                        <div>
+                            <h5>Obrada narudžbine</h5>
+                            <label>Status:</label>
+                            <select value={status} onChange={(e) => setStatus(e.target.value)}>
+                                {statusi.map((option) => (
+                                    <option key={option} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </select>
+                            <label>Komentar:</label>
+                            <input
+                                type="text"
+                                value={komentarSalona}
+                                onChange={(e) => setKomentarSalona(e.target.value)}
+                            />
+                        </div>
+                    )}
 
 
-                    </Modal.Body>
-                    <Modal.Footer>
-                        {obradaOpen ? (
-                            <div className="modal-buttons-container">
-                                <Button variant="primary" onClick={obradiNarudzbinu} className="action-button">
-                                    Sačuvaj obradu
+                </Modal.Body>
+                <Modal.Footer>
+                    {obradaOpen ? (
+                        <div className="modal-buttons-container">
+                            <Button variant="primary" onClick={obradiNarudzbinu} className="action-button">
+                                Sačuvaj obradu
+                            </Button>
+                            <Button variant="secondary" onClick={closeObradaForma} className="action-button">
+                                Zatvori
+                            </Button>
+                        </div>
+                    ) : (
+                        <div className="modal-buttons-container">
+                            {narudzbina.status !== "Obrađena" && (
+                                <Button variant="primary" onClick={openObradaForma} className="action-button">
+                                    Obradi narudžbinu
                                 </Button>
-                                <Button variant="secondary" onClick={closeObradaForma} className="action-button">
-                                    Zatvori
-                                </Button>
-                            </div>
-                        ) : (
-                            <div className="modal-buttons-container">
-                                {narudzbina.status !== "Obrađena" && (
-                                    <Button variant="primary" onClick={openObradaForma} className="action-button">
-                                        Obradi narudžbinu
-                                    </Button>
-                                )}
-                                <Button variant="secondary" onClick={closeModal} className="action-button">
-                                    Zatvori
-                                </Button>
-                            </div>
-                        )}
-                    </Modal.Footer>
-                </Modal>
+                            )}
+                            <Button variant="secondary" onClick={closeModal} className="action-button">
+                                Zatvori
+                            </Button>
+                        </div>
+                    )}
+                </Modal.Footer>
+            </Modal>
         </>
     );
 };

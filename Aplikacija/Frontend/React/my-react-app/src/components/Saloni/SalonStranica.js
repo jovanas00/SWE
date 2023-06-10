@@ -2,13 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../Pocetna/Header';
-import SalonCard from './SalonCard';
 import SalonInfo from './SalonInfo';
 import "./SalonStranica.css";
-import Korpa from './Korpa';
-import Cookies from 'js-cookie';
 import icon from '../../images/salonIcon.png';
-import { isKlijent } from '../Auth/AuthKlijent';
 import { vratiRole } from '../Auth/VratiRole';
 import api from '../Auth/Interceptor';
 

@@ -4,7 +4,6 @@ import Card from "../UI/Card";
 import icon from '../../images/salonIcon.png';
 import { useNavigate } from "react-router-dom";
 import { vratiKorisnickoIme } from "../Auth/VratIKorisnickoIme";
-// import SalonProfilIzmene from "./SalonProfilIzmene";
 import './Informacije.css';
 import UploadFile from "../KlijentPage/Upload";
 import '../UI/Button.css';
@@ -52,7 +51,6 @@ const Informacije = () => {
             setShowModal(false);
             setCurrentPassword('');
             setNewPassword('');
-            // obavestenja(response.data, "success");
             obavestenja(response.data, "success");
         } catch (error) {
             console.error('Error changing password:', error);
@@ -126,7 +124,6 @@ const Informacije = () => {
                                 <p><strong>Adresa:</strong> {salon.adresa}</p>
                                 <p><strong>Grad:</strong> {salon.grad}</p>
                                 <p><strong>Broj telefona:</strong> {salon.brojTelefona}</p>
-                                {/* <p>Prosecna ocena: {salon.prosecnaOcena}</p> */}
                             </div>
                         )}
                     </div>
@@ -214,10 +211,6 @@ const Informacije = () => {
                     <UploadFile onUploadFinished={handleUploadFinished} /> 
                 </Card>
             </div>
-
-            {/* <div>
-                {salon && <SalonProfilIzmene salon={salon} fetchSalon={fetchSalon}/>}
-            </div> */}
         </div>
     );
 

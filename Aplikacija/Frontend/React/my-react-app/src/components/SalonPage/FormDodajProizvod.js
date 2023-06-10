@@ -4,7 +4,6 @@ import Button from '../UI/Button';
 import { obavestenja } from "../UI/Obavestenja";
 
 const FormDodajProizvod = ({ dodajProizvod, kategorije }) => {
-    //fali slika
     const [naziv, setNaziv] = useState('');
     const [cena, setCena] = useState('');
     const [dostupnost, setDostupnost] = useState(false);

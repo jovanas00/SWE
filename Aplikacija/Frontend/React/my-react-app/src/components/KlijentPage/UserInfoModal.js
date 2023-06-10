@@ -29,7 +29,6 @@ const UserInfoModal = ({ userInfo, onClose }) => {
             window.location.reload();
         } catch (error) {
             console.error("Error changing user info:", error);
-            // Handle the error
         }
     };
 

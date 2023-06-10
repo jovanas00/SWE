@@ -5,7 +5,6 @@ import user from '../../images/user.webp';
 import { vratiRole } from "../Auth/VratiRole";
 import { BsStarFill, BsStar } from 'react-icons/bs';
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
 import api from "../Auth/Interceptor";
 import { formatirajDatum } from "../UI/FormatirajDatum";
 import './Recenzije.css';
@@ -44,28 +43,22 @@ const Recenzije = ({ id }) => {
         event.preventDefault();
 
         if (inputText === "") {
-            obavestenja('Niste uneli tekst recenzije!','warning');
+            obavestenja('Niste uneli tekst recenzije!', 'warning');
             return;
         }
 
         const selectedValue = document.querySelector('input[name="ocena"]:checked').value;
 
         api.post(
-            `http://localhost:5169/Klijent/OceniSalon/${encodeURIComponent(inputText)}/${selectedValue}/${id}`,
-            null,
-            {
-                headers: {
-                    Authorization: `Bearer ${Cookies.get("token")}`,
-                },
-            }
+            `http://localhost:5169/Klijent/OceniSalon/${encodeURIComponent(inputText)}/${selectedValue}/${id}`
         )
             .then((response) => {
-                obavestenja(response.data,'success');
+                obavestenja(response.data, 'success');
                 window.location.reload();
             })
             .catch((error) => {
                 if (error.response && error.response.data === false) {
-                    obavestenja('Već ste ocenili salon!','warning');
+                    obavestenja('Već ste ocenili salon!', 'warning');
                 }
             });
     };

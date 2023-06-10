@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Table } from "react-bootstrap";
 import { vratiKorisnickoIme } from "../Auth/VratIKorisnickoIme";
-import { isSalon } from "../Auth/AuthSalon";
 import { formatirajDatum } from "../UI/FormatirajDatum";
 import DetaljiNarudzbine from "./DetaljiNarudzbine";
 import Card from "../UI/Card";

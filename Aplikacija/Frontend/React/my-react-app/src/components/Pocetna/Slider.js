@@ -8,7 +8,7 @@ import slider3Phone from '../../images/slider/slider3-phone.jpg';
 import Carousel from 'react-bootstrap/Carousel';
 import './Slider.css'
 
-const Slider = ({ slides }) => {
+const Slider = () => {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     useEffect(() => {
@@ -33,7 +33,6 @@ const Slider = ({ slides }) => {
         "Vaši ljubimci zaslužuju najbolje, a mi im to pružamo!",
         "Obezbedite svojim ljubimcima pažnju i negu koju zaslužuju u našim salonima za kućne ljubimce.",
         "U našim salonima za kućne ljubimce možete pronaći širok izbor usluga i proizvoda za negu vaših ljubimaca.",
-        // Add text for the remaining slides
     ];
 
     return (

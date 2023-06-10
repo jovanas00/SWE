@@ -29,7 +29,6 @@ const Usluge = ({ id }) => {
     const dodajUslugu = (novaUsluga) => {
         api.post(`/Usluga/DodajUslugu/${novaUsluga.naziv}/${novaUsluga.cena}/${novaUsluga.opis}/${novaUsluga.dostupnost}/${id}`)
             .then((response) => {
-                // obavestenja(response.data, "success")
                 obavestenja(response.data, 'success');
                 ucitajUsluge();
             })
@@ -86,7 +85,6 @@ const Usluge = ({ id }) => {
             api
                 .put(putanjaSaParametrima)
                 .then((response) => {
-                    // obavestenja(response.data, "success")
                     obavestenja(response.data, 'success');
                     ucitajUsluge();
                     setTrenutnoIzmenjenRed(null);
@@ -183,8 +181,6 @@ const Usluge = ({ id }) => {
                                                 usluga.dostupnost ? "DOSTUPNO" : "NIJE DOSTUPNO"
                                             )}
                                         </td>
-                                        {/* <td>{usluga.kapacitet}</td> */}
-                                        {/* <td></td> */}
                                         {role === "Salon" && (
                                             <td>
                                                 {trenutnoIzmenjenRed === index ? (
