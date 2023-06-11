@@ -67,7 +67,7 @@ const AdminPage = () => {
 
   const deleteCategory = async (id_kategorija) => {
     try {
-      const response = await api.post(`/Admin/ObrisiKategoriju/${id_kategorija}`);
+      const response = await api.delete(`/Admin/ObrisiKategoriju/${id_kategorija}`);
       fetchCategories();
       obavestenja(response.data, "success");
     } catch (error) {

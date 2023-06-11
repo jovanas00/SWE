@@ -110,7 +110,7 @@ public class AdminController : ControllerBase
     }
 
     [Route("ObrisiKategoriju/{id_kategorija}")]
-    [HttpPost]
+    [HttpDelete]
     public async Task<ActionResult> ObrisiKategoriju(int id_kategorija)
     {
         try
