@@ -59,7 +59,7 @@ public class KlijentController : ControllerBase
 
     [Route("PostaviPitanje/{tekst}/{id_salon}")]
     [HttpPost]
-    public async Task<ActionResult<Klijent>> PostaviPitanje(string tekst, int id_salon, int id_klijent)
+    public async Task<ActionResult<Klijent>> PostaviPitanje(string tekst, int id_salon)
     {
         Korisnik k = VratiKorisnika();
         Salon s = await Context.Saloni.FindAsync(id_salon);
