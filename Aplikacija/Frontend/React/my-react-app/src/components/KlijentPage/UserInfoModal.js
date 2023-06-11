@@ -1,12 +1,10 @@
 import { useState } from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
 import "./Informacije.css"
 import api from "../Auth/Interceptor";
 import { vratiKorisnickoIme } from "../Auth/VratIKorisnickoIme";
 import { obavestenja } from "../UI/Obavestenja";
 
-const UserInfoModal = ({ userInfo, onClose }) => {
+const UserInfoModal = ({ onClose }) => {
     const [ime, setIme] = useState('');
     const [prezime, setPrezime] = useState('');
     const [adresa, setAdresa] = useState('');
