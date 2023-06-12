@@ -29,8 +29,8 @@ const Proizvodi = ({ id }) => {
     }
 
     useEffect(() => {
-        if(id!=null)
-        ucitajProizvode();
+        if (id != null)
+            ucitajProizvode();
     }, [id]);
 
     const ucitajKategorije = () => {
@@ -50,9 +50,13 @@ const Proizvodi = ({ id }) => {
 
 
     const dodajProizvod = (noviProizvod) => {
+        if (noviProizvod.cena <= 0) {
+            obavestenja("Cena mora da bude veca od 0!", "danger");
+            return;
+        }
         api.post(`/Proizvod/DodajProizvod/${noviProizvod.naziv}/${noviProizvod.cena}/${noviProizvod.dostupnost}/${noviProizvod.kategorija}/${id}`)
             .then((response) => {
-                obavestenja('Proizvod uspešno dodat.', 'success');
+                obavestenja("Uspesno dodat proizvod!","success");
                 ucitajProizvode();
             })
             .catch((error) => {
@@ -80,7 +84,6 @@ const Proizvodi = ({ id }) => {
         const putanja = `/Proizvod/IzmeniProizvod/${izmenjenProizvod.id}?`;
 
         let parametri = [];
-
 
         if (izmenjenProizvod.naziv !== undefined) {
             parametri.push(`naziv=${izmenjenProizvod.naziv}`);
@@ -115,7 +118,7 @@ const Proizvodi = ({ id }) => {
     const handleDodajKorpa = async (proizvodID) => {
         try {
             const response = await api.put(`http://localhost:5169/Klijent/DodajUKorpu/${proizvodID}`, {});
-            obavestenja(response.data,'success')
+            obavestenja(response.data, 'success')
         } catch (error) {
             console.error('There was a problem with the PUT request:', error);
         }
@@ -123,13 +126,13 @@ const Proizvodi = ({ id }) => {
 
     const handleButtonClick = async (id) => {
         setProizvodID(id);
-        console.log(proizvodID)
+        //console.log(proizvodID)
         await handleDodajKorpa(id);
     }
 
     const handleUploadFinished = (response, proizvodID) => {
         const { dbPath } = response;
-        console.log(dbPath);
+        //console.log(dbPath);
 
         setProizvodi((prevProizvodi) => {
             const updatedProizvodi = prevProizvodi.map((proizvod) => {

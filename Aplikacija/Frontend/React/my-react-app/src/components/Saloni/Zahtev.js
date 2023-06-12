@@ -75,7 +75,6 @@ const Zahtev = ({ id }) => {
                     <option value="Pas">Pas</option>
                     <option value="Macka">Macka</option>
                     <option value="Zec">Zec</option>
-                    <option value="Papagaj">Papagaj</option>
                 </select>
             </label>
 
@@ -152,7 +151,7 @@ const generateDateOptions = () => {
 
 const generateTimeOptions = () => {
     const startTime = new Date('1970-01-01T09:00:00');
-    const endTime = new Date('1970-01-01T15:00:00');
+    const endTime = new Date('1970-01-01T17:00:00');
     const options = [];
 
     while (startTime <= endTime) {

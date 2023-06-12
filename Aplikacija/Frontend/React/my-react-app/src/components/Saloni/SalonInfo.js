@@ -8,7 +8,7 @@ import { vratiRole } from "../Auth/VratiRole";
 import Zahtev from "./Zahtev";
 import Korpa from "./Korpa"
 
-const SalonInfo = ({ salon, id }) => {
+const SalonInfo = ({ id }) => {
     const [selektovanaVr, setSelektovanaVr] = useState("Proizvodi");
 
     const handleVrClick = (vrednost) => {

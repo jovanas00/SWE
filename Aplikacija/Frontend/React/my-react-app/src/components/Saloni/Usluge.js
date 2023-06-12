@@ -27,6 +27,11 @@ const Usluge = ({ id }) => {
     }, []);
 
     const dodajUslugu = (novaUsluga) => {
+        if(novaUsluga.cena<=0)
+            {
+                obavestenja("Cena mora da bude veca od 0!","danger");
+                return;
+            }
         api.post(`/Usluga/DodajUslugu/${novaUsluga.naziv}/${novaUsluga.cena}/${novaUsluga.opis}/${novaUsluga.dostupnost}/${id}`)
             .then((response) => {
                 obavestenja(response.data, 'success');
@@ -55,7 +60,11 @@ const Usluge = ({ id }) => {
 
     const izmeniUslugu = (id, index) => {
         const putanja = `/Usluga/IzmeniUslugu/${id}?`;
-
+        if(izmenjeneVrednosti.cena<=0)
+            {
+                obavestenja("Cena mora da bude veca od 0!","danger");
+                return;
+            }
         let parametri = [];
         const naziv = izmenjeneVrednosti.naziv;
         const cena = izmenjeneVrednosti.cena;
@@ -63,6 +72,7 @@ const Usluge = ({ id }) => {
         const dostupnost = izmenjeneVrednosti.dostupnost !== undefined ?
             izmenjeneVrednosti.dostupnost :
             usluge[index].dostupnost;
+        
         if (naziv !== undefined) {
             parametri.push(`naziv=${naziv}`);
         }

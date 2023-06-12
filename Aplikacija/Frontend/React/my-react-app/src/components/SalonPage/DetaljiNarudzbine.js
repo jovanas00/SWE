@@ -38,7 +38,7 @@ const DetaljiNarudzbine = ({ narudzbina, ucitajNarudzbine }) => {
             const response = await api.put(
                 `/Salon/ObradiNarudzbinu/${narudzbina.narudzbinaID}/${status}/${komentarSalona}`
             );
-            console.log(response.data);
+            //console.log(response.data);
             ucitajNarudzbine();
             setObradaOpen(false);
         } catch (error) {

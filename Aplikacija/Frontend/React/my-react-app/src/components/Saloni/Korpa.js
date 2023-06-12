@@ -24,7 +24,7 @@ const Korpa = ({ id }) => {
 
                     const korpaId = response.data;
                     VratiProizvodeIzKorpe(korpaId)
-                    setKorpaId(korpaId); // Pass the korpaId to the parent component
+                    setKorpaId(korpaId);
                 }
             } catch (error) {
                 console.error("Error retrieving Korpa ID:", error);
@@ -34,7 +34,6 @@ const Korpa = ({ id }) => {
         const VratiProizvodeIzKorpe = async (korpaId) => {
             try {
                 const response = await api.get(`/Klijent/VratiProizvodeIzKorpe/${korpaId}`);
-                //console.log(response.data); // Log the response data
                 setProizvodi(response.data);
                 setShowNaruciButton(true);
             } catch (error) {

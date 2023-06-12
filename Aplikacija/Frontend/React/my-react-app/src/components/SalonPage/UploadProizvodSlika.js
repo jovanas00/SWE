@@ -6,7 +6,6 @@ import api from '../Auth/Interceptor';
 const UploadFile = ({id}) => {
     const [selectedFile, setSelectedFile] = useState(null);
     const fileInputRef = useRef(null);
-    const korisnicko_ime = vratiKorisnickoIme();
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];

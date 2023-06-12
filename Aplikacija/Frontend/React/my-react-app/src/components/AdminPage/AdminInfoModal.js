@@ -4,7 +4,7 @@ import api from "../Auth/Interceptor";
 import { vratiKorisnickoIme } from '../Auth/VratIKorisnickoIme';
 import { obavestenja } from "../UI/Obavestenja";
 
-const AdminInfoModal = ({ adminInfo, onClose }) => {
+const AdminInfoModal = ({ onClose }) => {
     const [ime, setIme] = useState('');
     const [prezime, setPrezime] = useState('');
 
@@ -20,7 +20,6 @@ const AdminInfoModal = ({ adminInfo, onClose }) => {
                 `/Admin/IzmeniAdmina/${korisnickoIme}/${ime}/${prezime}`
             );
             console.log(response.data);
-            onClose();
             window.location.reload();
         } catch (error) {
             console.error("Error changing user info:", error);
